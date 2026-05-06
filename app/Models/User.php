@@ -80,4 +80,8 @@ class User extends Authenticatable
         return $this->hasMany(Interest::class);
     }
 
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
 }

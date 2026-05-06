@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Information extends Model
 {
@@ -32,6 +33,21 @@ class Information extends Model
             'approved_at' => 'datetime',
             'deleted_at' => 'datetime',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function ($information) {
+            if (empty($information->slug)) {
+                $information->slug = Str::slug($information->title);
+            }
+        });
+
+        static::updating(function ($information) {
+            if ($information->isDirty('title')) {
+                $information->slug = Str::slug($information->title);
+            }
+        });
     }
 
     public function user()
