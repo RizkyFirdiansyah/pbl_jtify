@@ -13,12 +13,17 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class InterestResource extends Resource
 {
     protected static ?string $model = Interest::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedHeart;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::Users;
+    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $navigationLabel = 'Peminatan';
+    protected static ?string $pluralModelLabel = 'Peminatan';
+    protected static string|UnitEnum|null $navigationGroup = 'Konten JTI';
 
     public static function form(Schema $schema): Schema
     {
