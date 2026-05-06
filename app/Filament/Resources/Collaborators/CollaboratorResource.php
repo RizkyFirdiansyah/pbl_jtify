@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Collaborators;
 
-use App\Filament\Resources\Collaborators\Pages\CreateCollaborator;
 use App\Filament\Resources\Collaborators\Pages\EditCollaborator;
 use App\Filament\Resources\Collaborators\Pages\ListCollaborators;
 use App\Filament\Resources\Collaborators\Schemas\CollaboratorForm;
@@ -43,7 +42,6 @@ class CollaboratorResource extends Resource
     {
         return [
             'index' => ListCollaborators::route('/'),
-            'create' => CreateCollaborator::route('/create'),
             'edit' => EditCollaborator::route('/{record}/edit'),
         ];
     }
