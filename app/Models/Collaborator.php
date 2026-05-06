@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Collabolator extends Model
+class Collaborator extends Model
 {
-    protected $fillable = [
+  protected $fillable = [
     'user_id',
     'reason',
     'status',
