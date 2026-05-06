@@ -1,52 +1,39 @@
 <?php
 
-namespace App\Filament\Resources\Users\Tables;
+namespace App\Filament\Resources\Categories\Tables;
 
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\ViewAction;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 
-
-class UsersTable
+class CategoriesTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label('Nama Kategori')
                     ->searchable()
                     ->sortable(),
 
-                TextColumn::make('email')
+                TextColumn::make('slug')
                     ->searchable()
-                    ->sortable(),
-
-                TextColumn::make('phone')
-                    ->searchable(),
-
-                TextColumn::make('role')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'admin' => 'success',
-                        'collabolator' => 'primary',
-                        'reguler' => 'warning',
-                    })
                     ->sortable(),
 
                 TextColumn::make('created_at')
+                    ->label('Tanggal Dibuat')
                     ->dateTime('d M Y')
                     ->sortable(),
             ])
-            ->defaultSort('created_at', 'desc')
+            ->defaultSort('name', 'asc')
             ->filters([
-                
+                //
             ])
             ->recordActions([
-                ViewAction::make(),
                 EditAction::make(),
                 DeleteAction::make(),
             ])
