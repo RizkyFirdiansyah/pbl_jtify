@@ -21,6 +21,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'phone',
+        'cv_path',
+        'linkedin_url',
     ];
 
     /**
@@ -45,4 +49,35 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function information()
+    {
+        return $this->hasMany(Information::class);
+    }
+
+    public function collaborators()
+    {
+        return $this->hasMany(Collabolator::class);
+    }
+
+    public function reviewedCollaborators()
+    {
+        return $this->hasMany(Collabolator::class, 'reviewed_by');
+    }
+
+    public function bookmarks()
+    {
+        return $this->hasMany(Bookmark::class);
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
+
+    public function interests()
+    {
+        return $this->hasMany(Interest::class);
+    }
+
 }
