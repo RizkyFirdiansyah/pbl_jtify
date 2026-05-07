@@ -2,8 +2,6 @@
 
 namespace App\Filament\Resources\Notifications;
 
-use App\Filament\Resources\Notifications\Pages\CreateNotification;
-use App\Filament\Resources\Notifications\Pages\EditNotification;
 use App\Filament\Resources\Notifications\Pages\ListNotifications;
 use App\Filament\Resources\Notifications\Schemas\NotificationForm;
 use App\Filament\Resources\Notifications\Tables\NotificationsTable;
@@ -14,6 +12,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use UnitEnum;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationResource extends Resource
 {
@@ -41,6 +40,12 @@ class NotificationResource extends Resource
         return [
             //
         ];
+    }
+
+    public static function canViewAny(): bool
+    {
+        $user = Auth::user();
+        return $user && $user->isAdmin();
     }
 
     public static function canCreate(): bool

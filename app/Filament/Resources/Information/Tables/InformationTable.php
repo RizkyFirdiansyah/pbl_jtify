@@ -13,6 +13,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
+use Illuminate\Support\Facades\Auth;
 
 class InformationTable
 {
@@ -73,8 +74,10 @@ class InformationTable
             ])
             ->recordActions([
                 ViewAction::make(),
-                DeleteAction::make(),
-                EditAction::make(),
+                DeleteAction::make()
+                    ->visible(fn($record) => Auth::user()?->isAdmin() || Auth::id() === $record->user_id),
+                EditAction::make()
+                    ->visible(fn($record) => Auth::user()?->isAdmin() || Auth::id() === $record->user_id),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
