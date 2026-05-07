@@ -59,12 +59,16 @@ class UserForm
                             ->acceptedFileTypes(['application/pdf', 'image/*'])
                             ->directory('cvs')
                             ->preserveFilenames() //mempertahankan nama file asli
-                            ->maxSize(5120), 
+                            ->maxSize(5120)
+                            ->previewable()
+                            ->downloadable()
+                            ->openable(),
 
                         TextInput::make('linkedin_url')
                             ->label('LinkedIn URL')
                             ->url()
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->Copyable(),
                     ])
                     ->columnSpan('full'),
             ]);
