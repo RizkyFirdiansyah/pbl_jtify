@@ -57,12 +57,12 @@ class User extends Authenticatable
 
     public function collaborators()
     {
-        return $this->hasMany(Collabolator::class);
+        return $this->hasMany(Collaborator::class);
     }
 
     public function reviewedCollaborators()
     {
-        return $this->hasMany(Collabolator::class, 'reviewed_by');
+        return $this->hasMany(Collaborator::class, 'reviewed_by');
     }
 
     public function bookmarks()

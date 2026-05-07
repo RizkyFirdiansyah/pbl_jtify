@@ -80,7 +80,6 @@ class Information extends Model
         return $this->hasMany(Recruitment::class);
     }
 
-
     public function interests()
     {
         return $this->hasMany(Interest::class);
