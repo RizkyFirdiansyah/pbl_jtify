@@ -45,6 +45,10 @@ class InformationTable
                         'archived' => 'danger',
                         default => 'gray',
                     }),
+                TextColumn::make('user.name')
+                    ->label('Penulis')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('approver.name')
                     ->label('Disetujui Oleh')
                     ->placeholder('-')

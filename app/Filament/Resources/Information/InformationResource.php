@@ -5,6 +5,8 @@ namespace App\Filament\Resources\Information;
 use App\Filament\Resources\Information\Pages\CreateInformation;
 use App\Filament\Resources\Information\Pages\EditInformation;
 use App\Filament\Resources\Information\Pages\ListInformation;
+use App\Filament\Resources\Information\Pages\ViewInformation;
+use App\Filament\Resources\Information\RelationManagers\RecruitmentsRelationManager;
 use App\Filament\Resources\Information\Schemas\InformationForm;
 use App\Filament\Resources\Information\Tables\InformationTable;
 use App\Models\Information;
@@ -37,7 +39,7 @@ class InformationResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RecruitmentsRelationManager::class,
         ];
     }
 
@@ -46,6 +48,7 @@ class InformationResource extends Resource
         return [
             'index' => ListInformation::route('/'),
             'create' => CreateInformation::route('/create'),
+            'view' => ViewInformation::route('/{record}'), 
             'edit' => EditInformation::route('/{record}/edit'),
         ];
     }
