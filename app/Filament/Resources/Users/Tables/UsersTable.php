@@ -32,7 +32,7 @@ class UsersTable
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'admin' => 'success',
-                        'collabolator' => 'primary',
+                        'collaborator' => 'primary',
                         'reguler' => 'warning',
                     })
                     ->sortable(),
