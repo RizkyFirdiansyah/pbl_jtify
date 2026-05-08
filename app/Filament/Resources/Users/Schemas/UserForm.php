@@ -44,7 +44,7 @@ class UserForm
                         Select::make('role')
                             ->options([
                                 'admin' => 'Admin',
-                                'collabolator' => 'Collabolator',
+                                'collaborator' => 'Collaborator',
                                 'reguler' => 'Reguler',
                             ])
                             ->default('Reguler')
