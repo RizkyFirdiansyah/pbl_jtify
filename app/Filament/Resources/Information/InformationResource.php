@@ -18,6 +18,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use UnitEnum;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class InformationResource extends Resource
 {
@@ -52,7 +55,7 @@ class InformationResource extends Resource
         return [
             'index' => ListInformation::route('/'),
             'create' => CreateInformation::route('/create'),
-            'view' => ViewInformation::route('/{record}'), 
+            'view' => ViewInformation::route('/{record}'),
             'edit' => EditInformation::route('/{record}/edit'),
         ];
     }
@@ -63,5 +66,44 @@ class InformationResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    public static function canViewAny(): bool
+    {
+        $user = Auth::user();
+
+        return $user instanceof User && ($user->isAdmin() || $user->isCollaborator());
+    }
+
+    public static function canCreate(): bool
+    {
+        return static::canViewAny();
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        $user = Auth::user();
+
+        if (! $user instanceof User) {
+            return false;
+        }
+
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        return $user->isCollaborator() && (int) $record->getAttribute('user_id') === (int) $user->id;
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return static::canEdit($record);
+    }
+
+    public static function canDeleteAny(): bool
+    {
+        $user = Auth::user();
+
+        return $user instanceof User && $user->isAdmin();
     }
 }

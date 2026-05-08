@@ -4,6 +4,8 @@ namespace App\Filament\Resources\Information\Pages;
 
 use App\Filament\Resources\Information\InformationResource;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class CreateInformation extends CreateRecord
 {
