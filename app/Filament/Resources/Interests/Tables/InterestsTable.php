@@ -8,6 +8,9 @@ use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Table;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\Filter;
+
 
 class InterestsTable
 {
@@ -42,7 +45,23 @@ class InterestsTable
                     ->sortable(),
             ])
             ->filters([
-                //
+                // Filter berdasarkan kategori
+                SelectFilter::make('category')
+                    ->label('Kategori')
+                    ->relationship('information.category', 'name'),
+
+                // Filter berdasarkan informasi
+                SelectFilter::make('information_id')
+                    ->label('Informasi')
+                    ->relationship('information', 'title'),
+
+                // Filter berdasarkan status
+                SelectFilter::make('status')
+                    ->label('Status')
+                    ->options([
+                        'active' => 'Active',
+                        'cancelled' => 'Cancelled',
+                    ]),
             ])
             ->recordActions([
                 EditAction::make(),
