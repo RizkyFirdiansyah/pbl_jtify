@@ -26,7 +26,7 @@ class CreateInformation extends CreateRecord
             $data['approved_at'] = null;
         }
 
-        if ($user instanceof User && $user->isSuperAdmin() && (($data['status'] ?? null) === 'published')) {
+        if ($user instanceof User && $user->isAdmin() && (($data['status'] ?? null) === 'published')) {
             $data['approved_by'] = $user->id;
             $data['approved_at'] = now();
         }
