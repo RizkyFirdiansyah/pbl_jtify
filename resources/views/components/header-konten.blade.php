@@ -174,25 +174,32 @@
         <!-- Subtitle -->
         <div class="mb-8">
 
-            <h2
-                class="anim-line1 font-extrabold text-[#1A2E5A] leading-snug"
-                style="font-size: clamp(1.4rem, 3vw, 2.1rem);"
-            >
-                {{ $subtitle1 ?? 'Temukan' }}
-                <span class="bg-[#4C75F2] text-white px-2 py-1 rounded-sm">
-                    {{ $highlight1 ?? 'Peluang,' }}
-                </span>
-            </h2>
+            @if(isset($subtitle))
+                <p class="anim-line1 font-semibold text-[#1A2E5A] opacity-90 max-w-2xl mx-auto leading-relaxed"
+                   style="font-size: clamp(1.2rem, 2.5vw, 1.8rem);">
+                    {{ $subtitle }}
+                </p>
+            @else
+                <h2
+                    class="anim-line1 font-extrabold text-[#1A2E5A] leading-snug"
+                    style="font-size: clamp(1.4rem, 3vw, 2.1rem);"
+                >
+                    {{ $subtitle1 ?? 'Temukan' }}
+                    <span class="bg-[#4C75F2] text-white px-2 py-1 rounded-sm">
+                        {{ $highlight1 ?? 'Peluang,' }}
+                    </span>
+                </h2>
 
-            <h2
-                class="anim-line2 font-extrabold text-[#1A2E5A] leading-snug"
-                style="font-size: clamp(1.4rem, 3vw, 2.1rem);"
-            >
-                {{ $subtitle2 ?? 'Raih' }}
-                <span class="bg-[#E0A6F2] text-[#1A2E5A] px-2 py-1 rounded-sm">
-                    {{ $highlight2 ?? 'Prestasi' }}
-                </span>
-            </h2>
+                <h2
+                    class="anim-line2 font-extrabold text-[#1A2E5A] leading-snug"
+                    style="font-size: clamp(1.4rem, 3vw, 2.1rem);"
+                >
+                    {{ $subtitle2 ?? 'Raih' }}
+                    <span class="bg-[#E0A6F2] text-[#1A2E5A] px-2 py-1 rounded-sm">
+                        {{ $highlight2 ?? 'Prestasi' }}
+                    </span>
+                </h2>
+            @endif
 
         </div>
 
@@ -201,6 +208,7 @@
 </header>
 
 <!-- SEARCH BAR -->
+@if(!isset($showSearch) || $showSearch)
 <div class="px-4 md:px-10 -mt-10 relative z-20 anim-search">
 
     <div class="max-w-2xl mx-auto">
@@ -275,3 +283,4 @@
     </div>
 
 </div>
+@endif
