@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bookmark</title>
+    <title>JTIFY - Bookmark</title>
     <!-- Tailwind CSS (via Vite) -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <!-- Google Fonts: Plus Jakarta Sans -->
+    <!-- Google Fonts: Poppins & Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <style>
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Poppins', 'Plus Jakarta Sans', sans-serif;
             background: linear-gradient(179.9deg, #FFFFFF 73.43%, rgba(0, 125, 251, 0.05) 99.91%);
             min-height: 100vh;
         }
@@ -21,30 +22,35 @@
 <body class="antialiased text-[#898383] relative overflow-x-hidden">
 
     <!-- NAVBAR COMPONENT -->
-    <x-navbar />
+    @include('components.navbar')
 
     <!-- HEADER COMPONENT -->
-    <x-header />
+    @include('components.header-konten', [
+        'title' => 'BOOKMARK',
+        'subtitle' => 'Item Tersimpan'
+    ])
 
     <!-- MAIN CONTENT -->
-    <main class="max-w-[1440px] mx-auto px-6 lg:px-20 pt-[160px] pb-32">
-        
-        <!-- Hero Title Section -->
-        <div class="w-full flex justify-center mb-16 relative z-10">
-            <h1 class="text-center font-bold text-[48px] lg:text-[56px] leading-[1.2] text-[#486284] drop-shadow-sm">
-                Bookmark
-            </h1>
-        </div>
+    <main class="max-w-[1440px] mx-auto px-6 lg:px-20 pt-16 pb-32">
 
         <!-- Section Title & Improvisasi -->
         <div class="mb-10 flex flex-col md:flex-row justify-between items-end gap-6 relative z-10">
-            <div>
-                <h2 class="text-2xl md:text-3xl font-bold text-[#273266]">Item Tersimpan</h2>
-                <p class="text-sm md:text-base text-[#898383] mt-2">Kumpulan lomba, seminar, dan beasiswa yang telah Anda tandai untuk dilihat kembali.</p>
+            <div data-aos="fade-right">
+                <p class="uppercase tracking-[0.25em] text-xs font-bold text-[#8FA9C0] mb-3">
+                    Saved Items
+                </p>
+                <h2 class="text-3xl md:text-5xl font-extrabold text-[#1A2E5A] leading-tight">
+                    Item
+                    <span class="relative inline-block">
+                        Tersimpan
+                        <span class="absolute left-0 bottom-1 w-full h-3 bg-[#DDEBFF] -z-10 rounded-sm"></span>
+                    </span>
+                </h2>
+                <p class="text-sm md:text-base text-[#898383] mt-3">Kumpulan lomba, seminar, dan beasiswa yang telah Anda tandai untuk dilihat kembali.</p>
             </div>
             
             <!-- Improvisation: Filter/Sort Dropdown -->
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-3" data-aos="fade-left">
                 <span class="text-sm font-medium text-[#696262]">Kategori:</span>
                 <select onchange="window.location.href='?category=' + this.value" class="px-5 py-2.5 rounded-full border border-gray-200 bg-white text-[#486284] font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-[#85A8F8] transition-all hover:border-[#85A8F8] cursor-pointer">
                     <option value="Semua Kategori" {{ (isset($currentCategory) && $currentCategory == 'Semua Kategori') ? 'selected' : '' }}>Semua Kategori</option>
@@ -59,7 +65,9 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 relative z-10">
             @foreach ($bookmarks as $item)
             <!-- Card -->
-            <div class="bookmark-card h-[340px] w-full bg-[#E5E7EB] rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 relative group cursor-pointer overflow-hidden flex flex-col justify-end border border-gray-100">
+            <div class="bookmark-card h-[340px] w-full bg-[#E5E7EB] rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 relative group cursor-pointer overflow-hidden flex flex-col justify-end border border-gray-100"
+                 data-aos="fade-up"
+                 data-aos-delay="{{ $loop->index * 70 }}">
                 
                 <!-- Bookmark Icon Top Right -->
                 <button type="button" onclick="toggleBookmark(this, event)" class="absolute top-0 right-5 z-20 hover:scale-105 hover:-translate-y-1 transition-transform">
@@ -99,10 +107,25 @@
 
     </main>
 
-    <!-- FOOTER COMPONENT -->
-    <x-footer />
+    {{-- ================================
+         FOOTER TRANSITION
+    ================================= --}}
+    <section class="relative z-0 h-40" style="background: linear-gradient(180deg, #ffffff 0%, #c8dff0 100%);"></section>
 
+    {{-- ================================
+         FOOTER
+    ================================= --}}
+    @include('components.footer')
+
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script>
+        AOS.init({
+            duration: 1000,
+            once: false,
+            mirror: true,
+            easing: 'ease-out-cubic'
+        });
+
         function toggleBookmark(btn, event) {
             // Mencegah navigasi ke halaman detail jika card diklik
             event.preventDefault();
