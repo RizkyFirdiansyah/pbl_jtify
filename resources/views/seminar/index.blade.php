@@ -26,8 +26,11 @@
          HEADER
     ================================= --}}
     @include('components.header-konten', [
-        'title' => 'Seminar',
-        'subtitle' => 'Informasi Seminar'
+        'title'      => 'Seminar',
+        'subtitle1'  => 'Perluas',
+        'highlight1' => 'Wawasan,',
+        'subtitle2'  => 'Tingkatkan',
+        'highlight2' => 'Pengetahuan'
     ])
 
     {{-- ================================
@@ -51,57 +54,65 @@
             </div>
 
             {{-- GRID --}}
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                
-                @for ($i = 0; $i < 8; $i++)
-                    <div class="group bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-[0_8px_30px_rgba(0,0,0,0.05)] hover:shadow-[0_18px_40px_rgba(0,0,0,0.08)] hover:-translate-y-2 transition-all duration-500 cursor-pointer" data-aos="fade-up" data-aos-delay="{{ $i * 70 }}">
+            @php
+                $seminarData = [
+                    ['title' => 'Seminar Inovasi Teknologi Nasional',    'deadline' => '12 Jun 2025'],
+                    ['title' => 'Workshop Kecerdasan Buatan & ML',        'deadline' => '19 Jun 2025'],
+                    ['title' => 'Seminar Kewirausahaan Digital 2025',     'deadline' => '26 Jun 2025'],
+                    ['title' => 'Webinar Pengembangan Karier Mahasiswa',  'deadline' => '03 Jul 2025'],
+                    ['title' => 'Talk Show Startup & Inovasi Muda',       'deadline' => '10 Jul 2025'],
+                    ['title' => 'Seminar Nasional Pendidikan 4.0',        'deadline' => '17 Jul 2025'],
+                    ['title' => 'Workshop Desain Grafis Profesional',     'deadline' => '24 Jul 2025'],
+                    ['title' => 'Webinar Cloud Computing & DevOps',       'deadline' => '31 Jul 2025'],
+                ];
+            @endphp
 
-                        {{-- IMAGE --}}
-                        <div class="bg-[#E5E7EB] flex items-center justify-center" style="aspect-ratio: 3/4;">
-                            <svg class="w-12 h-12 text-[#9CA3AF]" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+
+                @foreach ($seminarData as $i => $item)
+                    <a href="{{ route('seminar.detail') }}"
+                       class="group relative block rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_18px_45px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-500 cursor-pointer"
+                       style="aspect-ratio: 2/3;"
+                       data-aos="fade-up"
+                       data-aos-delay="{{ $i * 70 }}">
+
+                        {{-- Poster Placeholder --}}
+                        <div class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#E8EEF8] to-[#D0DCEE] group-hover:from-[#D0DCEE] group-hover:to-[#BBC9E0] transition-colors duration-500">
+                            <svg class="w-16 h-16 text-[#486284]/30 group-hover:scale-110 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M21 19V5C21 3.9 20.1 3 19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19ZM8.5 13.5L11 16.51L14.5 12L19 18H5L8.5 13.5Z"/>
                             </svg>
                         </div>
 
-                        {{-- CONTENT --}}
-                        <div class="p-4">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="text-[10px] font-bold uppercase tracking-wide bg-[#EEF3FF] text-[#1A2E5A] px-3 py-1 rounded-full">
-                                    Competition
-                                </span>
-                                <span class="text-xs text-gray-400">
-                                    Online
-                                </span>
-                            </div>
 
-                            <h3 class="text-sm md:text-base font-bold text-[#1A2E5A] leading-snug line-clamp-2 mb-2">
-                                UI/UX Design Competition 2025
+                        {{-- Content Overlay --}}
+                        <div class="absolute bottom-0 left-0 right-0 z-10 p-4"
+                             style="background: linear-gradient(to top, rgba(26,46,90,0.95) 0%, rgba(26,46,90,0.5) 70%, transparent 100%);">
+
+                            {{-- Judul --}}
+                            <h3 class="text-white font-bold text-sm leading-snug line-clamp-2 mb-2 drop-shadow-sm">
+                                {{ $item['title'] }}
                             </h3>
 
-                            <p class="text-xs md:text-sm text-gray-500 leading-relaxed line-clamp-2">
-                                Kompetisi desain nasional untuk mahasiswa dengan tema inovasi digital kreatif.
-                            </p>
-
-                            <div class="mt-4 flex items-center justify-between">
-                                <div>
-                                    <p class="text-[11px] text-gray-400">
-                                        Deadline
-                                    </p>
-                                    <p class="text-xs font-semibold text-[#1A2E5A]">
-                                        25 Agustus 2025
-                                    </p>
-                                </div>
-
-                                <div class="w-9 h-9 rounded-full bg-[#F4F7FF] flex items-center justify-center text-[#1A2E5A] group-hover:bg-[#1A2E5A] group-hover:text-white transition-all duration-300">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                </div>
+                            {{-- Deadline --}}
+                            <div class="flex items-center gap-1.5 mb-3">
+                                <svg class="w-3.5 h-3.5 text-white/70 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                                <span class="text-white/70 text-[11px]">Deadline: {{ $item['deadline'] }}</span>
                             </div>
+
+                            {{-- Tombol Lihat Detail --}}
+                            <span class="inline-flex items-center gap-2 w-full justify-center bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 text-white text-xs font-bold py-2 rounded-xl transition-all duration-300 group-hover:bg-[#3B4C7E] group-hover:border-[#3B4C7E]">
+                                Lihat Detail
+                                <svg class="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </span>
+
                         </div>
 
-                    </div>
-                @endfor
+                    </a>
+                @endforeach
 
             </div>
 

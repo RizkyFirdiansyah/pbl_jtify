@@ -181,13 +181,81 @@
 
             <div class="overflow-hidden">
                 <div id="cardsSlider" class="flex transition-transform duration-700 ease-in-out cursor-grab active:cursor-grabbing select-none" style="gap: 16px;">
+                    @php
+                        $cardData = [
+                            ['label' => 'Lomba',    'color' => '#FFB8B8', 'text' => '#EE2828'],
+                            ['label' => 'Seminar',  'color' => '#B8D4FF', 'text' => '#1A56DB'],
+                            ['label' => 'Beasiswa', 'color' => '#B8F5D4', 'text' => '#0D7A4E'],
+                            ['label' => 'Lomba',    'color' => '#FFB8B8', 'text' => '#EE2828'],
+                            ['label' => 'Seminar',  'color' => '#B8D4FF', 'text' => '#1A56DB'],
+                            ['label' => 'Beasiswa', 'color' => '#B8F5D4', 'text' => '#0D7A4E'],
+                            ['label' => 'Lomba',    'color' => '#FFB8B8', 'text' => '#EE2828'],
+                            ['label' => 'Seminar',  'color' => '#B8D4FF', 'text' => '#1A56DB'],
+                        ];
+                        $deadlines = [
+                            '10 Jun 2025', '15 Jun 2025', '20 Jun 2025', '25 Jun 2025',
+                            '30 Jun 2025', '05 Jul 2025', '10 Jul 2025', '15 Jul 2025',
+                        ];
+                        $titles = [
+                            'UI/UX Design Competition 2025',
+                            'Seminar Inovasi Teknologi Nasional',
+                            'Beasiswa Prestasi Mahasiswa Berprestasi',
+                            'Hackathon Data Science Challenge',
+                            'Workshop Kecerdasan Buatan & ML',
+                            'Beasiswa Polinema Unggulan 2025',
+                            'National Coding Competition 2025',
+                            'Seminar Kewirausahaan Digital',
+                        ];
+                    @endphp
+
                     @for($i = 0; $i < 8; $i++)
-                    <div class="card-item flex-none">
-                        <div class="bg-[#E5E7EB] rounded-3xl flex items-center justify-center shadow-sm hover:shadow-md transition cursor-pointer" style="aspect-ratio: 2/3;">
-                            <svg class="w-12 h-12 text-gray-300" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                            </svg>
-                        </div>
+                    <div class="card-item flex-none" data-index="{{ $i }}">
+                        {{-- Seluruh card bisa di-klik --}}
+                        <a href="#" class="card-link block group relative bg-[#E5E7EB] rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_18px_45px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-500 cursor-pointer" style="aspect-ratio: 2/3;">
+
+                            {{-- Poster Placeholder --}}
+                            <div class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#E8EEF8] to-[#D0DCEE] group-hover:from-[#D0DCEE] group-hover:to-[#BBC9E0] transition-colors duration-500">
+                                <svg class="w-16 h-16 text-[#486284]/30 group-hover:scale-110 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M21 19V5C21 3.9 20.1 3 19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19ZM8.5 13.5L11 16.51L14.5 12L19 18H5L8.5 13.5Z"/>
+                                </svg>
+                            </div>
+
+                            {{-- Badge Kategori (top-left) --}}
+                            <div class="absolute top-3 left-3 z-20">
+                                <span class="card-badge text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full shadow-sm"
+                                    style="background: {{ $cardData[$i]['color'] }}; color: {{ $cardData[$i]['text'] }};">
+                                    {{ $cardData[$i]['label'] }}
+                                </span>
+                            </div>
+
+                            {{-- Content overlay gradient (bottom) --}}
+                            <div class="absolute bottom-0 left-0 right-0 z-10 p-4"
+                                style="background: linear-gradient(to top, rgba(26,46,90,0.95) 0%, rgba(26,46,90,0.5) 70%, transparent 100%);">
+
+                                {{-- Judul --}}
+                                <h3 class="card-title text-white font-bold text-sm leading-snug line-clamp-2 mb-2 drop-shadow-sm">
+                                    {{ $titles[$i] }}
+                                </h3>
+
+                                {{-- Deadline --}}
+                                <div class="flex items-center gap-1.5 mb-3">
+                                    <svg class="w-3.5 h-3.5 text-white/70 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                    <span class="card-deadline text-white/70 text-[11px]">Deadline: {{ $deadlines[$i] }}</span>
+                                </div>
+
+                                {{-- Tombol Lihat Detail --}}
+                                <span class="card-detail-btn inline-flex items-center gap-2 w-full justify-center bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 text-white text-xs font-bold py-2 rounded-xl transition-all duration-300 group-hover:bg-[#3B4C7E] group-hover:border-[#3B4C7E]">
+                                    Lihat Detail
+                                    <svg class="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                                    </svg>
+                                </span>
+
+                            </div>
+
+                        </a>
                     </div>
                     @endfor
                 </div>
@@ -318,6 +386,85 @@
             beasiswa: '{{ route("beasiswa") }}'
         };
 
+        // Route detail per kategori untuk setiap card
+        const detailRoutes = {
+            popular:  ['{{ route("lomba.detail") }}', '{{ route("seminar.detail") }}', '{{ route("beasiswa.detail") }}',
+                       '{{ route("lomba.detail") }}', '{{ route("seminar.detail") }}', '{{ route("beasiswa.detail") }}',
+                       '{{ route("lomba.detail") }}', '{{ route("seminar.detail") }}'],
+            lomba:    Array(8).fill('{{ route("lomba.detail") }}'),
+            seminar:  Array(8).fill('{{ route("seminar.detail") }}'),
+            beasiswa: Array(8).fill('{{ route("beasiswa.detail") }}')
+        };
+
+        // Data konten card per kategori
+        const cardSets = {
+            popular: [
+                { label: 'Lomba',    bg: '#FFB8B8', color: '#EE2828', title: 'UI/UX Design Competition 2025',          deadline: '10 Jun 2025' },
+                { label: 'Seminar',  bg: '#B8D4FF', color: '#1A56DB', title: 'Seminar Inovasi Teknologi Nasional',     deadline: '15 Jun 2025' },
+                { label: 'Beasiswa', bg: '#B8F5D4', color: '#0D7A4E', title: 'Beasiswa Prestasi Mahasiswa Unggulan',   deadline: '20 Jun 2025' },
+                { label: 'Lomba',    bg: '#FFB8B8', color: '#EE2828', title: 'Hackathon Data Science Challenge',       deadline: '25 Jun 2025' },
+                { label: 'Seminar',  bg: '#B8D4FF', color: '#1A56DB', title: 'Workshop Kecerdasan Buatan & ML',       deadline: '30 Jun 2025' },
+                { label: 'Beasiswa', bg: '#B8F5D4', color: '#0D7A4E', title: 'Beasiswa Polinema Unggulan 2025',       deadline: '05 Jul 2025' },
+                { label: 'Lomba',    bg: '#FFB8B8', color: '#EE2828', title: 'National Coding Competition 2025',      deadline: '10 Jul 2025' },
+                { label: 'Seminar',  bg: '#B8D4FF', color: '#1A56DB', title: 'Seminar Kewirausahaan Digital',         deadline: '15 Jul 2025' },
+            ],
+            lomba: [
+                { label: 'Lomba', bg: '#FFB8B8', color: '#EE2828', title: 'UI/UX Design Competition 2025',            deadline: '10 Jun 2025' },
+                { label: 'Lomba', bg: '#FFB8B8', color: '#EE2828', title: 'Hackathon Data Science Challenge',          deadline: '18 Jun 2025' },
+                { label: 'Lomba', bg: '#FFB8B8', color: '#EE2828', title: 'National Coding Competition 2025',          deadline: '25 Jun 2025' },
+                { label: 'Lomba', bg: '#FFB8B8', color: '#EE2828', title: 'Business Plan Competition Nasional',        deadline: '02 Jul 2025' },
+                { label: 'Lomba', bg: '#FFB8B8', color: '#EE2828', title: 'Robotics Engineering Challenge 2025',       deadline: '09 Jul 2025' },
+                { label: 'Lomba', bg: '#FFB8B8', color: '#EE2828', title: 'Essay & Karya Tulis Ilmiah Nasional',       deadline: '16 Jul 2025' },
+                { label: 'Lomba', bg: '#FFB8B8', color: '#EE2828', title: 'Mobile App Innovation Contest 2025',        deadline: '23 Jul 2025' },
+                { label: 'Lomba', bg: '#FFB8B8', color: '#EE2828', title: 'Video Kreatif & Sinematografi Mahasiswa',   deadline: '30 Jul 2025' },
+            ],
+            seminar: [
+                { label: 'Seminar', bg: '#B8D4FF', color: '#1A56DB', title: 'Seminar Inovasi Teknologi Nasional',      deadline: '12 Jun 2025' },
+                { label: 'Seminar', bg: '#B8D4FF', color: '#1A56DB', title: 'Workshop Kecerdasan Buatan & ML',        deadline: '19 Jun 2025' },
+                { label: 'Seminar', bg: '#B8D4FF', color: '#1A56DB', title: 'Seminar Kewirausahaan Digital 2025',      deadline: '26 Jun 2025' },
+                { label: 'Seminar', bg: '#B8D4FF', color: '#1A56DB', title: 'Webinar Pengembangan Karier Mahasiswa',   deadline: '03 Jul 2025' },
+                { label: 'Seminar', bg: '#B8D4FF', color: '#1A56DB', title: 'Talk Show Startup & Inovasi Muda',        deadline: '10 Jul 2025' },
+                { label: 'Seminar', bg: '#B8D4FF', color: '#1A56DB', title: 'Seminar Nasional Pendidikan 4.0',         deadline: '17 Jul 2025' },
+                { label: 'Seminar', bg: '#B8D4FF', color: '#1A56DB', title: 'Workshop Desain Grafis Profesional',      deadline: '24 Jul 2025' },
+                { label: 'Seminar', bg: '#B8D4FF', color: '#1A56DB', title: 'Webinar Cloud Computing & DevOps',        deadline: '31 Jul 2025' },
+            ],
+            beasiswa: [
+                { label: 'Beasiswa', bg: '#B8F5D4', color: '#0D7A4E', title: 'Beasiswa Prestasi Mahasiswa Unggulan',  deadline: '14 Jun 2025' },
+                { label: 'Beasiswa', bg: '#B8F5D4', color: '#0D7A4E', title: 'Beasiswa Polinema Unggulan 2025',       deadline: '21 Jun 2025' },
+                { label: 'Beasiswa', bg: '#B8F5D4', color: '#0D7A4E', title: 'Beasiswa Kemendikbud Ristek 2025',      deadline: '28 Jun 2025' },
+                { label: 'Beasiswa', bg: '#B8F5D4', color: '#0D7A4E', title: 'Beasiswa BCA Finance Peduli Negeri',    deadline: '05 Jul 2025' },
+                { label: 'Beasiswa', bg: '#B8F5D4', color: '#0D7A4E', title: 'Beasiswa Djarum Plus 2025',             deadline: '12 Jul 2025' },
+                { label: 'Beasiswa', bg: '#B8F5D4', color: '#0D7A4E', title: 'Beasiswa LPDP Program S1 2025',         deadline: '19 Jul 2025' },
+                { label: 'Beasiswa', bg: '#B8F5D4', color: '#0D7A4E', title: 'Beasiswa Bank Indonesia Mahasiswa',     deadline: '26 Jul 2025' },
+                { label: 'Beasiswa', bg: '#B8F5D4', color: '#0D7A4E', title: 'Beasiswa XL Future Leaders 2025',       deadline: '02 Agu 2025' },
+            ],
+        };
+
+        function updateCardLinks(category) {
+            document.querySelectorAll('.card-item').forEach((card, i) => {
+                const link = card.querySelector('.card-link');
+                if (link) link.href = (detailRoutes[category] || detailRoutes['popular'])[i];
+            });
+        }
+
+        function updateCardContent(category) {
+            const set = cardSets[category] || cardSets['popular'];
+            document.querySelectorAll('.card-item').forEach((card, i) => {
+                const data   = set[i];
+                const badge  = card.querySelector('.card-badge');
+                const title  = card.querySelector('.card-title');
+                const dl     = card.querySelector('.card-deadline');
+
+                if (badge) {
+                    badge.textContent       = data.label;
+                    badge.style.background  = data.bg;
+                    badge.style.color       = data.color;
+                }
+                if (title)  title.textContent  = data.title;
+                if (dl)     dl.textContent     = 'Deadline: ' + data.deadline;
+            });
+        }
+
         const totalCards   = 8;
         let currentCard    = 0;
         let activeCategory = 'popular';
@@ -381,6 +528,8 @@
 
         // Init
         updateCardWidth();
+        updateCardLinks('popular');
+        updateCardContent('popular');
         lihatSemua.href = categoryRoutes['popular'];
         let autoSlide = startAutoSlide();
 
@@ -412,6 +561,10 @@
                 // Update lihat semua
                 lihatSemua.href = categoryRoutes[activeCategory] || '/';
 
+                // Update href dan konten tiap card sesuai kategori
+                updateCardLinks(activeCategory);
+                updateCardContent(activeCategory);
+
                 clearInterval(autoSlide);
                 goToCard(0);
                 autoSlide = startAutoSlide();
@@ -441,7 +594,7 @@
         let startX       = 0;
         let dragDistance = 0;
 
-        // Mouse drag (desktop)
+        // Mouse drag (desktop) — cegah navigasi card saat dragging
         slider.addEventListener('mousedown', (e) => {
             isDragging   = true;
             startX       = e.clientX;
@@ -467,6 +620,11 @@
             else                         goToCard(currentCard);
             autoSlide = startAutoSlide();
         });
+
+        // Cegah klik pada card-link jika baru saja drag
+        slider.addEventListener('click', (e) => {
+            if (Math.abs(dragDistance) > 10) e.preventDefault();
+        }, true);
 
         // Touch swipe (mobile)
         slider.addEventListener('touchstart', (e) => {
