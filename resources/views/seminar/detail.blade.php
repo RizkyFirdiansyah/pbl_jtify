@@ -6,13 +6,15 @@
     <title>Detail Seminar/Workshop</title>
     <!-- Tailwind CSS (via Vite) -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <!-- Google Fonts: Plus Jakarta Sans -->
+    <!-- Google Fonts: Poppins & Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- AOS Library CSS -->
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <style>
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Poppins', sans-serif;
             background: linear-gradient(179.9deg, #FFFFFF 73.43%, rgba(0, 125, 251, 0.05) 99.91%);
             min-height: 100vh;
         }
@@ -24,31 +26,35 @@
 </head>
 <body class="antialiased text-[#898383] relative overflow-x-hidden">
 
-    <!-- ========================================== -->
-    <!-- Back Button -->
-    <div class="absolute top-[40px] left-6 lg:left-20 z-50">
-        <button onclick="history.back()" class="w-[50px] h-[50px] bg-[#486284] hover:bg-[#313B6D] text-white rounded-full flex items-center justify-center shadow-md hover:shadow-lg hover:-translate-x-1 transition-all duration-300">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    {{-- ================================
+         NAVBAR
+    ================================= --}}
+    @include('components.navbar')
+
+    {{-- ================================
+         HEADER
+    ================================= --}}
+    @include('components.header-konten', [
+        'title'      => 'DETAIL SEMINAR',
+        'label'      => 'Explore Seminar',
+        'subtitle'   => 'Pelajari detail materi, pembicara, dan jadwal pelaksanaan seminar terbaru',
+        'showSearch' => false
+    ])
+
+    <!-- Back Button (placed below header) -->
+    <div class="relative z-50 max-w-[1440px] mx-auto px-6 lg:px-20 -mt-4 mb-4">
+        <button onclick="history.back()" class="w-[46px] h-[46px] bg-[#486284] hover:bg-[#313B6D] text-white rounded-full flex items-center justify-center shadow-md hover:shadow-lg hover:-translate-x-1 transition-all duration-300">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="19" y1="12" x2="5" y2="12"></line>
                 <polyline points="12 19 5 12 12 5"></polyline>
             </svg>
         </button>
     </div>
-    <!-- ========================================== -->
 
-    <x-header />
-
-    <main class="max-w-[1440px] mx-auto px-6 lg:px-20 pt-[120px] pb-32">
-        
-        <!-- Hero Title Section -->
-        <div class="w-full flex justify-center mb-16 relative z-10">
-            <h1 class="text-center font-bold text-[48px] lg:text-[56px] leading-[1.2] text-[#486284] drop-shadow-sm">
-                Detail Lengkap <br> Kegiatan Seminar
-            </h1>
-        </div>
+    <main class="max-w-[1440px] mx-auto px-6 lg:px-20 pt-8 pb-32">
 
         <!-- Info Bar Section -->
-        <div class="w-full bg-white/90 border border-[#898383]/30 rounded-2xl p-6 shadow-sm flex flex-col md:flex-row justify-between items-center gap-6 relative z-10 backdrop-blur-sm">
+        <div class="w-full bg-white/90 border border-[#898383]/30 rounded-2xl p-6 shadow-sm flex flex-col md:flex-row justify-between items-center gap-6 relative z-10 backdrop-blur-sm" data-aos="fade-up">
             
             <div class="flex flex-wrap md:flex-nowrap items-center w-full justify-between gap-6 md:gap-0">
                 <!-- Tanggal -->
@@ -119,7 +125,7 @@
         <div class="mt-20 flex flex-col lg:flex-row gap-16 lg:gap-24 items-start">
             
             <!-- Poster Card (Left) -->
-            <div class="w-full lg:w-1/3 flex justify-center lg:justify-start">
+            <div class="w-full lg:w-1/3 flex justify-center lg:justify-start" data-aos="fade-right">
                 <div class="w-[300px] h-[400px] bg-[#DDE0E4] rounded-xl shadow-xl relative overflow-hidden group hover:-translate-y-2 transition-transform duration-300">
                     <!-- Placeholder Icon -->
                     <div class="absolute inset-0 flex items-center justify-center bg-[#85A8F8]/20">
@@ -131,7 +137,7 @@
             </div>
 
             <!-- Description (Right) -->
-            <div class="w-full lg:w-2/3 flex flex-col">
+            <div class="w-full lg:w-2/3 flex flex-col" data-aos="fade-left" data-aos-delay="100">
                 <h1 class="text-[30px] font-semibold text-[#486284] mb-8 text-center lg:text-left">Deskripsi Seminar/Workshop</h1>
                 
                 <div class="text-[15px] text-[#898383] text-justify space-y-6 leading-relaxed">
@@ -140,15 +146,15 @@
                 </div>
 
                 <!-- Action Buttons -->
-                <div class="mt-14 flex flex-wrap items-center gap-6 justify-center lg:justify-start">
+                <div class="mt-14 flex items-center justify-between">
                     
                     <!-- Button Daftar -->
-                    <button class="bg-btn-gradient text-white font-bold text-[20px] px-10 py-3 rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
+                    <button class="bg-btn-gradient text-white font-semibold text-sm sm:text-base px-10 py-3 rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
                         Daftar Sekarang
                     </button>
 
                     <!-- Icon Buttons -->
-                    <div class="flex gap-4">
+                    <div class="flex gap-2">
                         <button class="w-[46px] h-[46px] rounded-full bg-btn-gradient flex justify-center items-center text-white shadow-md hover:scale-110 transition-transform duration-300">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
                         </button>
@@ -187,24 +193,44 @@
             <div class="flex gap-4 lg:gap-6 w-max px-2">
                 @for ($i = 1; $i <= 6; $i++)
                 <!-- Card {{ $i }} -->
-                <div style="height: 380px; width: 320px;" class="bookmark-card shrink-0 bg-[#E5E7EB] rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 relative group cursor-pointer overflow-hidden flex flex-col justify-end border border-gray-100">
-                    <!-- Center Placeholder Icon -->
-                    <div class="absolute inset-0 flex items-center justify-center bg-[#E5E7EB] group-hover:bg-[#D1D5DB] transition-colors duration-500 z-0">
-                        <svg class="w-16 h-16 text-[#486284]/40 group-hover:scale-110 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor">
+                <a href="{{ route('seminar.detail') }}"
+                   style="height: 380px; width: 260px;"
+                   class="group shrink-0 relative block rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_18px_45px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-500 cursor-pointer"
+                   data-aos="fade-up" data-aos-delay="{{ ($i - 1) * 70 }}">
+
+                    {{-- Poster Placeholder --}}
+                    <div class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#E8EEF8] to-[#D0DCEE] group-hover:from-[#D0DCEE] group-hover:to-[#BBC9E0] transition-colors duration-500">
+                        <svg class="w-16 h-16 text-[#486284]/30 group-hover:scale-110 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M21 19V5C21 3.9 20.1 3 19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19ZM8.5 13.5L11 16.51L14.5 12L19 18H5L8.5 13.5Z"/>
                         </svg>
                     </div>
 
-                    <!-- Content Overlay on Hover -->
-                    <div class="bg-gradient-to-t from-[#273266] via-[#273266]/80 to-transparent p-6 pt-16 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 relative">
-                        <span class="bg-[#FFB8B8] text-[#EE2828] text-[10px] font-bold px-2 py-1 rounded-md w-max mb-2 uppercase tracking-wider">SEMINAR</span>
-                        <h3 class="text-white font-semibold text-[17px] line-clamp-1 leading-snug">Event Seminar Menarik {{ $i }}</h3>
-                        <p class="text-white/70 text-[13px] mt-1.5 flex items-center gap-1.5">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                            Segera Hadir
-                        </p>
+
+                    {{-- Content Overlay --}}
+                    <div class="absolute bottom-0 left-0 right-0 z-10 p-4"
+                         style="background: linear-gradient(to top, rgba(26,46,90,0.95) 0%, rgba(26,46,90,0.5) 70%, transparent 100%);">
+
+                        <h3 class="text-white font-bold text-sm leading-snug line-clamp-2 mb-2 drop-shadow-sm">
+                            Event Seminar Menarik {{ $i }}
+                        </h3>
+
+                        <div class="flex items-center gap-1.5 mb-3">
+                            <svg class="w-3.5 h-3.5 text-white/70 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            <span class="text-white/70 text-[11px]">Segera Hadir</span>
+                        </div>
+
+                        <span class="inline-flex items-center gap-2 w-full justify-center bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 text-white text-xs font-bold py-2 rounded-xl transition-all duration-300 group-hover:bg-[#3B4C7E] group-hover:border-[#3B4C7E]">
+                            Lihat Detail
+                            <svg class="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </span>
+
                     </div>
-                </div>
+
+                </a>
                 @endfor
             </div>
         </div>
@@ -236,10 +262,25 @@
 
     </main>
 
-    <!-- ========================================== -->
-    <!-- [FOOTER WRAPPER] -->
-    <x-footer />
-    <!-- ========================================== -->
+    {{-- ================================
+         FOOTER TRANSITION
+    ================================= --}}
+    <section class="relative z-0 h-40" style="background: linear-gradient(180deg, #ffffff 0%, #c8dff0 100%);"></section>
+
+    {{-- ================================
+         FOOTER
+    ================================= --}}
+    @include('components.footer')
+
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: false,
+            mirror: true,
+            easing: 'ease-out-cubic'
+        });
+    </script>
 
 </body>
 </html>
