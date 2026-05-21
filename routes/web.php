@@ -1,135 +1,92 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group.
+|
+*/
 
-Route::get('/detail-lomba', function () {
-    return view('lomba.detail');
-});
+// ============================================================
+// HALAMAN UTAMA
+// ============================================================
 
-Route::get('/detail-seminar', function () {
-    return view('seminar.detail');
-});
+Route::get('/', fn () => view('index'))->name('home');
 
-Route::get('/feedback', function () {
-    return view('feedback');
-});
+Route::get('/popular', fn () => view('index'))->name('popular');
 
-Route::get('/detail-beasiswa', function () {
-    return view('beasiswa.detail');
-});
+Route::get('/recruitment', fn () => view('recruitment'))->name('recruitment');
 
-Route::get('/bookmark', function (\Illuminate\Http\Request $request) {
-    $items = collect();
-    $categories = ['Lomba', 'Seminar', 'Beasiswa'];
-    for ($i = 1; $i <= 42; $i++) {
-        $items->push((object)[
-            'id' => $i,
-            'title' => 'Event ' . $categories[$i % 3] . ' Tingkat Nasional ' . $i,
-            'category' => $categories[$i % 3],
-            'date' => now()->addDays($i)->format('d M Y')
-        ]);
-    }
-    
-    // Filter by category if requested
-    $filterCategory = $request->input('category');
-    if ($filterCategory && $filterCategory !== 'Semua Kategori') {
-        $items = $items->filter(function($item) use ($filterCategory) {
-            return $item->category === $filterCategory;
-        })->values(); // Reset keys
-    }
-    
-    $perPage = 8;
-    $page = $request->input('page', 1);
-    
-    $paginatedItems = new \Illuminate\Pagination\LengthAwarePaginator(
-        $items->forPage($page, $perPage),
-        $items->count(),
-        $perPage,
-        $page,
-        ['path' => $request->url(), 'query' => $request->query()]
-    );
+Route::get('/feedback', fn () => view('feedback'))->name('feedback');
+
+// ============================================================
+// LOMBA
+// ============================================================
+
+Route::get('/lomba', fn () => view('lomba.index'))->name('lomba');
+
+Route::get('/detail-lomba', fn () => view('lomba.detail'))->name('lomba.detail');
+
+// ============================================================
+// BEASISWA
+// ============================================================
+
+Route::get('/beasiswa', fn () => view('beasiswa.index'))->name('beasiswa');
+
+Route::get('/detail-beasiswa', fn () => view('beasiswa.detail'))->name('beasiswa.detail');
+
+// ============================================================
+// SEMINAR
+// ============================================================
+
+Route::get('/seminar', fn () => view('seminar.index'))->name('seminar');
+
+Route::get('/detail-seminar', fn () => view('seminar.detail'))->name('seminar.detail');
+
+// ============================================================
+// BOOKMARK
+// ============================================================
+
+Route::get('/bookmark', function (Request $request) {
+    $items = _buildPaginatedItems($request);
 
     return view('bookmark', [
-        'bookmarks' => $paginatedItems,
-        'currentCategory' => $filterCategory ?? 'Semua Kategori'
+        'bookmarks'       => $items['paginated'],
+        'currentCategory' => $items['category'],
     ]);
-});
-
-Route::get('/diminati', function (\Illuminate\Http\Request $request) {
-    $items = collect();
-    $categories = ['Lomba', 'Seminar', 'Beasiswa'];
-    for ($i = 1; $i <= 42; $i++) {
-        $items->push((object)[
-            'id' => $i,
-            'title' => 'Event ' . $categories[$i % 3] . ' Tingkat Nasional ' . $i,
-            'category' => $categories[$i % 3],
-            'date' => now()->addDays($i)->format('d M Y')
-        ]);
-    }
-    
-    // Filter by category if requested
-    $filterCategory = $request->input('category');
-    if ($filterCategory && $filterCategory !== 'Semua Kategori') {
-        $items = $items->filter(function($item) use ($filterCategory) {
-            return $item->category === $filterCategory;
-        })->values(); // Reset keys
-    }
-    
-    $perPage = 8;
-    $page = $request->input('page', 1);
-    
-    $paginatedItems = new \Illuminate\Pagination\LengthAwarePaginator(
-        $items->forPage($page, $perPage),
-        $items->count(),
-        $perPage,
-        $page,
-        ['path' => $request->url(), 'query' => $request->query()]
-    );
-
-    return view('diminati', [
-        'bookmarks' => $paginatedItems,
-        'currentCategory' => $filterCategory ?? 'Semua Kategori'
-    ]);
-});
-    return view('index');
-})->name('home');
-
-Route::get('/bookmark', function () {
-    return view('bookmark');
 })->name('bookmark');
 
-Route::get('/recruitment', function () {
-    return view('recruitment');
-})->name('recruitment');
+// ============================================================
+// PEMINATAN / DIMINATI
+// ============================================================
 
-Route::get('/lomba', function () {
-    return view('lomba');
-})->name('lomba');
+/**
+ * Shared handler untuk route /peminatan dan /diminati.
+ * Membuat daftar event dummy, memfilter berdasarkan kategori,
+ * lalu mengembalikan view peminatan dengan data terpaginasi.
+ */
+$peminatanHandler = function (Request $request) {
+    $items = _buildPaginatedItems($request);
 
-Route::get('/seminar', function () {
-    return view('seminar');
-})->name('seminar');
+    return view('peminatan', [
+        'bookmarks'       => $items['paginated'],
+        'currentCategory' => $items['category'],
+    ]);
+};
 
-Route::get('/beasiswa', function () {
-    return view('beasiswa');
-})->name('beasiswa');
+Route::get('/peminatan', $peminatanHandler)->name('peminatan');
+Route::get('/diminati', $peminatanHandler)->name('diminati');
 
-Route::get('/peminatan', function () {
-    return view('peminatan');
-})->name('peminatan');
+    // // ============================================================
+    // // DETAIL GENERIC
+    // // ============================================================
 
-Route::get('/feedback', function () {
-    return view('feedback');
-})->name('feedback');
-
-Route::get('/popular', function () {
-    return view('index');
-})->name('popular');
-
-Route::get('/detail', function () {
-    return view('detail');
-})->name('detail');
+    // Route::get('/detail', fn () => view('detail'))->name('detail');
