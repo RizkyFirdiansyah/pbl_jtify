@@ -4,13 +4,60 @@ namespace App\Http\Controllers;
 
 use App\Models\Bookmark;
 use App\Models\Information;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
 class BookmarkController extends Controller
 {
-     //Toggle bookmark dan reminder untuk informasi
+    public function index(Request $request): JsonResponse|View
+    {
+        $query = Bookmark::query()
+            ->with(['information.category'])
+            ->when(Auth::check(), fn($builder) => $builder->where('user_id', Auth::id()), fn($builder) => $builder->whereRaw('1 = 0'));
+
+        if ($request->filled('category') && $request->category !== 'Semua Kategori') {
+            $query->whereHas('information.category', function ($builder) use ($request) {
+                $builder->where('slug', $request->category);
+            });
+        }
+
+        $bookmarks = $query->latest()->get()->map(function (Bookmark $bookmark) {
+            return (object) [
+                'id' => $bookmark->id,
+                'title' => $bookmark->information?->title ?? '-',
+                'category' => $bookmark->information?->category?->name ?? '-',
+                'date' => $bookmark->information?->deadline?->format('d M Y') ?? '-',
+                'reminder_enabled' => (bool) $bookmark->reminder_enabled,
+            ];
+        });
+
+        $page = (int) $request->input('page', 1);
+        $perPage = 8;
+        $paginated = new LengthAwarePaginator(
+            $bookmarks->forPage($page, $perPage)->values(),
+            $bookmarks->count(),
+            $perPage,
+            $page,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
+
+        if ($request->expectsJson() || $request->is('api/*') || ! view()->exists('bookmark')) {
+            return response()->json([
+                'success' => true,
+                'data' => $paginated,
+            ]);
+        }
+
+        return view('bookmark', [
+            'bookmarks' => $paginated,
+            'currentCategory' => $request->input('category', 'Semua Kategori'),
+        ]);
+    }
+
+    //Toggle bookmark dan reminder untuk informasi
     public function toggle(Request $request): JsonResponse
     {
         $request->validate([
