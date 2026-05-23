@@ -1,0 +1,106 @@
+<?php
+
+namespace App\Filament\Resources\Articles;
+
+use App\Filament\Resources\Articles\Pages\CreateArticle;
+use App\Filament\Resources\Articles\Pages\EditArticle;
+use App\Filament\Resources\Articles\Pages\ListArticles;
+use App\Filament\Resources\Articles\Schemas\ArticleForm;
+use App\Filament\Resources\Articles\Tables\ArticlesTable;
+use App\Models\Article;
+use App\Models\User;
+use BackedEnum;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
+use UnitEnum;
+
+class ArticleResource extends Resource
+{
+    protected static ?string $model = Article::class;
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+
+    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $navigationLabel = 'Artikel';
+    protected static ?string $pluralModelLabel = 'Artikel';
+    protected static string|UnitEnum|null $navigationGroup = 'Konten JTI';
+
+    public static function form(Schema $schema): Schema
+    {
+        return ArticleForm::configure($schema);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return ArticlesTable::configure($table);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => ListArticles::route('/'),
+            'create' => CreateArticle::route('/create'),
+            'edit' => EditArticle::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRecordRouteBindingEloquentQuery(): Builder
+    {
+        return parent::getRecordRouteBindingEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+    }
+
+    public static function canViewAny(): bool
+    {
+        $user = Auth::user();
+
+        return $user instanceof User && ($user->isAdmin() || $user->isCollaborator());
+    }
+
+    public static function canCreate(): bool
+    {
+        return static::canViewAny();
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        $user = Auth::user();
+
+        if (! $user instanceof User) {
+            return false;
+        }
+
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        return $user->isCollaborator() && (int) $record->getAttribute('user_id') === (int) $user->id;
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return static::canEdit($record);
+    }
+
+    public static function canDeleteAny(): bool
+    {
+        $user = Auth::user();
+
+        return $user instanceof User && $user->isAdmin();
+    }
+}
