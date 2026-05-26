@@ -80,8 +80,8 @@ class Information extends Model
         return $this->hasMany(Recruitment::class);
     }
 
-    public function interests()
+    public function likes()
     {
-        return $this->hasMany(Interest::class);
+        return $this->hasMany(Like::class);
     }
 }

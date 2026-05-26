@@ -79,9 +79,9 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Notification::class);
     }
 
-    public function interests()
+    public function like()
     {
-        return $this->hasMany(Interest::class);
+        return $this->hasMany(Like::class);
     }
 
     public function feedbacks()
