@@ -88,7 +88,9 @@ class LikeController extends Controller
         if ($like) {
             // Toggle status
             $newStatus = $like->status === 'active' ? 'cancelled' : 'active';
-            $like->update(['status' => $newStatus]);
+            $like->update([
+                'status' => $newStatus,
+            ]);
             $isActive = $newStatus === 'active';
         } else {
             // Buat baru dengan status active
@@ -108,29 +110,7 @@ class LikeController extends Controller
     }
 
 
-    //Get daftar peminat per informasi (hanya admin)
-    public function getByInformation(Information $information): JsonResponse
-    {
-        /** @var User|null $user */
-        $user = Auth::user();
-        if (!$user || !$user->isAdmin()) {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }
-
-        $likes = $information->likes()
-            ->where('status', 'active')
-            ->with(['user' => function ($query) {
-                $query->select('id', 'name', 'email', 'phone', 'linkedin_url');
-            }])
-            ->get();
-
-        return response()->json([
-            'information_id' => $information->id,
-            'information_title' => $information->title,
-            'count' => $likes->count(),
-            'likes' => $likes,
-        ]);
-    }
+    // admin listing of likers is intentionally not present here; interests handle registration lists
 
 
     //Mengecekapakah user sudah punya like untuk information tertentu
