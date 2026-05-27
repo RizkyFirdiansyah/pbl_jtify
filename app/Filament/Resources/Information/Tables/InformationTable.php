@@ -73,10 +73,12 @@ class InformationTable
                     ]),
             ])
             ->recordActions([
-                ViewAction::make(),
+                ViewAction::make()->iconButton(),
                 DeleteAction::make()
+                    ->iconButton()
                     ->visible(fn($record) => Auth::user()?->isAdmin() || Auth::id() === $record->user_id),
                 EditAction::make()
+                    ->iconButton()
                     ->visible(fn($record) => Auth::user()?->isAdmin() || Auth::id() === $record->user_id),
             ])
             ->toolbarActions([
