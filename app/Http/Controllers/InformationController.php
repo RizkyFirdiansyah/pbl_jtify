@@ -33,10 +33,13 @@ class InformationController extends Controller
             });
         }
 
-        // Check if API request
-        if ($request->wantsJson()) {
+        // Return JSON for API requests or when the web views are unavailable.
+        if ($request->expectsJson() || $request->is('api/*') || ! view()->exists('informations.index')) {
             $informations = $query->paginate(10);
-            return response()->json($informations);
+            return response()->json([
+                'success' => true,
+                'data' => $informations,
+            ]);
         }
 
         // Web view
@@ -48,16 +51,19 @@ class InformationController extends Controller
     public function show(Information $information, Request $request): JsonResponse|View
     {
         if ($information->status !== 'published') {
-            if ($request->wantsJson()) {
+            if ($request->expectsJson() || $request->is('api/*')) {
                 return response()->json(['message' => 'Information not found'], 404);
             }
             abort(404);
         }
 
-        $information->load(['category', 'user', 'recruitmentTeams']);
+        $information->load(['category', 'user']);
 
-        if ($request->wantsJson()) {
-            return response()->json($information);
+        if ($request->expectsJson() || $request->is('api/*') || ! view()->exists('informations.show')) {
+            return response()->json([
+                'success' => true,
+                'data' => $information,
+            ]);
         }
 
         return view('informations.show', compact('information'));

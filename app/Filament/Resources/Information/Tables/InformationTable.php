@@ -46,6 +46,12 @@ class InformationTable
                         'archived' => 'danger',
                         default => 'gray',
                     }),
+                TextColumn::make('interests_count')
+                    ->label('Jumlah Peminat')
+                    ->counts([
+                        'interests' => fn($query) => $query->where('status', 'active'),
+                    ])
+                    ->sortable(),
                 TextColumn::make('user.name')
                     ->label('Penulis')
                     ->searchable()
