@@ -4,12 +4,14 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\InformationController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\InterestController;
 use App\Http\Controllers\UserProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/auth/login', [AuthController::class, 'login']);
+Route::post('/auth/register', [AuthController::class, 'register']);
 
 Route::get('/informations', [InformationController::class, 'index']);
 Route::get('/informations/categories', [InformationController::class, 'categories']);
@@ -31,6 +33,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/bookmarks/check', [BookmarkController::class, 'check']);
     Route::patch('/bookmarks/reminder', [BookmarkController::class, 'updateReminder']);
 
+    // Likes (heart icon) - quick toggle, no consent
+    Route::get('/likes', [LikeController::class, 'index']);
+    Route::post('/likes/toggle', [LikeController::class, 'toggle']);
+    Route::get('/likes/check', [LikeController::class, 'check']);
+
+    // Interests (registration) - requires consent checkbox
     Route::get('/interests', [InterestController::class, 'index']);
     Route::post('/interests/toggle', [InterestController::class, 'toggle']);
     Route::get('/interests/check', [InterestController::class, 'check']);
