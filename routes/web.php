@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookmarkController;
+use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\LikeController;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,7 +28,13 @@ Route::get('/popular', fn () => view('index'))->name('popular');
 
 Route::get('/recruitment', fn () => view('recruitment'))->name('recruitment');
 
-Route::get('/feedback', fn () => view('feedback'))->name('feedback');
+Route::get('/login', [AuthController::class, 'showLogin']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::get('/register', [AuthController::class, 'showRegister']);
+Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback');
 
 // ============================================================
 // LOMBA
@@ -55,35 +64,14 @@ Route::get('/detail-seminar', fn () => view('seminar.detail'))->name('seminar.de
 // BOOKMARK
 // ============================================================
 
-Route::get('/bookmark', function (Request $request) {
-    $items = _buildPaginatedItems($request);
-
-    return view('bookmark', [
-        'bookmarks'       => $items['paginated'],
-        'currentCategory' => $items['category'],
-    ]);
-})->name('bookmark');
+Route::get('/bookmark', [BookmarkController::class, 'index'])->name('bookmark');
 
 // ============================================================
 // PEMINATAN / DIMINATI
 // ============================================================
 
-/**
- * Shared handler untuk route /peminatan dan /diminati.
- * Membuat daftar event dummy, memfilter berdasarkan kategori,
- * lalu mengembalikan view peminatan dengan data terpaginasi.
- */
-$peminatanHandler = function (Request $request) {
-    $items = _buildPaginatedItems($request);
-
-    return view('peminatan', [
-        'bookmarks'       => $items['paginated'],
-        'currentCategory' => $items['category'],
-    ]);
-};
-
-Route::get('/peminatan', $peminatanHandler)->name('peminatan');
-Route::get('/diminati', $peminatanHandler)->name('diminati');
+Route::get('/peminatan', [LikeController::class, 'index'])->name('peminatan');
+Route::get('/diminati', [LikeController::class, 'index'])->name('diminati');
 
     // // ============================================================
     // // DETAIL GENERIC

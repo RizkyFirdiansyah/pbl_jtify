@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+  public function showLogin()
+  {
+    return view('login');
+  }
+
+  public function showRegister()
+  {
+    return view('register');
+  }
+
   public function login(Request $request): JsonResponse|\Illuminate\Http\RedirectResponse
   {
     $credentials = $request->validate([
@@ -45,6 +55,43 @@ class AuthController extends Controller
     }
 
     return redirect()->intended('/');
+  }
+
+  public function register(Request $request): JsonResponse|\Illuminate\Http\RedirectResponse
+  {
+    $validated = $request->validate([
+      'name' => ['required', 'string', 'max:255'],
+      'email' => ['required', 'email', 'max:255', 'unique:users,email'],
+      'phone' => ['required', 'string', 'max:20'],
+      'password' => ['required', 'string', 'min:6', 'confirmed'],
+    ]);
+
+    $user = User::create([
+      'name' => $validated['name'],
+      'email' => $validated['email'],
+      'phone' => $validated['phone'],
+      'password' => $validated['password'],
+      'role' => 'reguler',
+    ]);
+
+    Auth::guard('web')->login($user);
+    $request->session()->regenerate();
+
+    if ($request->expectsJson() || $request->is('api/*')) {
+      $token = $user->createToken('frontend')->plainTextToken;
+
+      return response()->json([
+        'success' => true,
+        'message' => 'Registrasi berhasil',
+        'data' => [
+          'user' => $user,
+          'token' => $token,
+          'token_type' => 'Bearer',
+        ],
+      ], 201);
+    }
+
+    return redirect('/');
   }
 
   public function logout(Request $request): JsonResponse|\Illuminate\Http\RedirectResponse
