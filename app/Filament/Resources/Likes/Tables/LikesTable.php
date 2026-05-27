@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Filament\Resources\Interests\Tables;
+namespace App\Filament\Resources\Likes\Tables;
 
-use Filament\Actions\ViewAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Tables\Table;
+use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Table;
 
-class InterestsTable
+class LikesTable
 {
     public static function configure(Table $table): Table
     {
@@ -26,31 +29,31 @@ class InterestsTable
                     ->label('Kategori')
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('status')
+                SelectColumn::make('status')
                     ->label('Status')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'active' => 'success',
-                        'cancelled' => 'gray',
-                    })
+                    ->options([
+                        'active' => 'Active',
+                        'cancelled' => 'Cancelled',
+                    ])
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('consented_at')
-                    ->label('Persetujuan')
-                    ->dateTime('d M Y H:i')
-                    ->sortable(),
                 TextColumn::make('created_at')
-                    ->label('Tanggal Daftar')
+                    ->label('Tanggal Tertarik')
                     ->dateTime()
                     ->sortable(),
             ])
             ->filters([
+                // Filter berdasarkan kategori
                 SelectFilter::make('category')
                     ->label('Kategori')
                     ->relationship('information.category', 'name'),
+
+                // Filter berdasarkan informasi
                 SelectFilter::make('information_id')
                     ->label('Informasi')
                     ->relationship('information', 'title'),
+
+                // Filter berdasarkan status
                 SelectFilter::make('status')
                     ->label('Status')
                     ->options([
@@ -59,8 +62,12 @@ class InterestsTable
                     ]),
             ])
             ->recordActions([
-                ViewAction::make(),
+                EditAction::make(),
             ])
-            ->toolbarActions([]);
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
+            ]);
     }
 }

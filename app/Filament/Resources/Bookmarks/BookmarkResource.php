@@ -1,0 +1,71 @@
+<?php
+
+namespace App\Filament\Resources\Bookmarks;
+
+use App\Filament\Resources\Bookmarks\Pages\CreateBookmark;
+use App\Filament\Resources\Bookmarks\Pages\EditBookmark;
+use App\Filament\Resources\Bookmarks\Pages\ListBookmarks;
+use App\Filament\Resources\Bookmarks\Pages\ViewBookmark;
+use App\Filament\Resources\Bookmarks\Schemas\BookmarkForm;
+use App\Filament\Resources\Bookmarks\Schemas\BookmarkInfolist;
+use App\Filament\Resources\Bookmarks\Tables\BookmarksTable;
+use App\Models\Bookmark;
+use BackedEnum;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Table;
+use UnitEnum;
+use Illuminate\Support\Facades\Auth;
+
+class BookmarkResource extends Resource
+{
+    protected static ?string $model = Bookmark::class;
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::Bookmark;
+    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $navigationLabel = 'Daftar Tersimpan';
+    protected static ?string $pluralModelLabel = 'Daftar Tersimpan';
+    protected static string|UnitEnum|null $navigationGroup = 'Konten JTI';
+
+
+    public static function form(Schema $schema): Schema
+    {
+        return BookmarkForm::configure($schema);
+    }
+
+    public static function infolist(Schema $schema): Schema
+    {
+        return BookmarkInfolist::configure($schema);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return BookmarksTable::configure($table);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function canViewAny(): bool
+    {
+        $user = Auth::user();
+        return $user && $user->isAdmin();
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => ListBookmarks::route('/'),
+        ];
+    }
+}

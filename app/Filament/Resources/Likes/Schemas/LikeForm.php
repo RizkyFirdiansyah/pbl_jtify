@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Filament\Resources\Interests\Schemas;
+namespace App\Filament\Resources\Likes\Schemas;
 
-use Filament\Forms\Components\Select;
 use Filament\Schemas\Schema;
+use Filament\Forms\Components\Select;
 
-class InterestForm
+class LikeForm
 {
     public static function configure(Schema $schema): Schema
     {

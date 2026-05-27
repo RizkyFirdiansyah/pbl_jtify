@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Information\Tables;
+namespace App\Filament\Resources\Articles\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -15,7 +15,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use Illuminate\Support\Facades\Auth;
 
-class InformationTable
+class ArticlesTable
 {
     public static function configure(Table $table): Table
     {
@@ -29,29 +29,15 @@ class InformationTable
                     ->sortable(),
                 TextColumn::make('slug')
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('category.name')
-                    ->badge()
-                    ->color('info'),
-                TextColumn::make('deadline')
-                    ->date()
-                    ->sortable()
-                    ->badge()
-                    ->color(fn($state) => $state < now() ? 'danger' : 'success'),
                 TextColumn::make('status')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'draft' => 'gray',
                         'pending_review' => 'warning',
                         'published' => 'success',
                         'archived' => 'danger',
                         default => 'gray',
                     }),
-                TextColumn::make('interests_count')
-                    ->label('Jumlah Peminat')
-                    ->counts([
-                        'interests' => fn($query) => $query->where('status', 'active'),
-                    ])
-                    ->sortable(),
                 TextColumn::make('user.name')
                     ->label('Penulis')
                     ->searchable()
@@ -65,11 +51,13 @@ class InformationTable
                     ->dateTime('d M Y, H:i')
                     ->placeholder('-')
                     ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('created_at')
+                    ->label('Dibuat')
+                    ->dateTime('d M Y')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                SelectFilter::make('category_id')
-                    ->label('Kategori')
-                    ->relationship('category', 'name'),
                 SelectFilter::make('status')
                     ->options([
                         'draft' => 'Draft',
@@ -79,13 +67,11 @@ class InformationTable
                     ]),
             ])
             ->recordActions([
-                ViewAction::make()->iconButton(),
-                DeleteAction::make()
-                    ->iconButton()
-                    ->visible(fn($record) => Auth::user()?->isAdmin() || Auth::id() === $record->user_id),
+                ViewAction::make(),
                 EditAction::make()
-                    ->iconButton()
-                    ->visible(fn($record) => Auth::user()?->isAdmin() || Auth::id() === $record->user_id),
+                    ->visible(fn ($record) => Auth::user()?->role === 'admin' || Auth::id() === $record->user_id),
+                DeleteAction::make()
+                    ->visible(fn ($record) => Auth::user()?->role === 'admin' || Auth::id() === $record->user_id),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

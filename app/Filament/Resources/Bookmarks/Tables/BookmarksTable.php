@@ -1,13 +1,17 @@
 <?php
 
-namespace App\Filament\Resources\Interests\Tables;
+namespace App\Filament\Resources\Bookmarks\Tables;
 
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\SelectColumn;
+use Filament\Tables\Filters\SelectFilter;
 
-class InterestsTable
+class BookmarksTable
 {
     public static function configure(Table $table): Table
     {
@@ -26,41 +30,46 @@ class InterestsTable
                     ->label('Kategori')
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('status')
-                    ->label('Status')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'active' => 'success',
-                        'cancelled' => 'gray',
-                    })
+                SelectColumn::make('Status Pengingat')
+                    ->label('Status Pengingat')
+                    ->options([
+                        'active' => 'Active',
+                        'none' => 'None',
+                    ])
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('consented_at')
-                    ->label('Persetujuan')
-                    ->dateTime('d M Y H:i')
-                    ->sortable(),
                 TextColumn::make('created_at')
-                    ->label('Tanggal Daftar')
+                    ->label('Tanggal Tertarik')
                     ->dateTime()
                     ->sortable(),
             ])
             ->filters([
+                // Filter berdasarkan kategori
                 SelectFilter::make('category')
                     ->label('Kategori')
                     ->relationship('information.category', 'name'),
+
+                // Filter berdasarkan informasi
                 SelectFilter::make('information_id')
                     ->label('Informasi')
                     ->relationship('information', 'title'),
+
+                // Filter berdasarkan status
                 SelectFilter::make('status')
                     ->label('Status')
                     ->options([
                         'active' => 'Active',
-                        'cancelled' => 'Cancelled',
+                        'none' => 'None',
                     ]),
             ])
             ->recordActions([
-                ViewAction::make(),
+                // ViewAction::make(),
+                // EditAction::make(),
             ])
-            ->toolbarActions([]);
+            ->toolbarActions([
+                // BulkActionGroup::make([
+                // DeleteBulkAction::make(),
+                // ]),
+            ]);
     }
 }

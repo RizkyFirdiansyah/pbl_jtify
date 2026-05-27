@@ -75,9 +75,9 @@ class Information extends Model
         return $this->hasMany(Bookmark::class);
     }
 
-    public function recruitments()
+    public function likes()
     {
-        return $this->hasMany(Recruitment::class);
+        return $this->hasMany(Like::class);
     }
 
     public function interests()

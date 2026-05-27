@@ -1,45 +1,44 @@
 <?php
 
-namespace App\Filament\Resources\Information;
+namespace App\Filament\Resources\Articles;
 
-use App\Filament\Resources\Information\Pages\CreateInformation;
-use App\Filament\Resources\Information\Pages\EditInformation;
-use App\Filament\Resources\Information\Pages\ListInformation;
-use App\Filament\Resources\Information\Pages\ViewInformation;
-use App\Filament\Resources\Information\Schemas\InformationForm;
-use App\Filament\Resources\Information\Tables\InformationTable;
-use App\Models\Information;
+use App\Filament\Resources\Articles\Pages\CreateArticle;
+use App\Filament\Resources\Articles\Pages\EditArticle;
+use App\Filament\Resources\Articles\Pages\ListArticles;
+use App\Filament\Resources\Articles\Schemas\ArticleForm;
+use App\Filament\Resources\Articles\Tables\ArticlesTable;
+use App\Models\Article;
+use App\Models\User;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use UnitEnum;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
+use UnitEnum;
 
-class InformationResource extends Resource
+class ArticleResource extends Resource
 {
-    protected static ?string $model = Information::class;
+    protected static ?string $model = Article::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::DocumentText;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'name';
-    protected static ?string $navigationLabel = 'Informasi';
-    protected static ?string $pluralModelLabel = 'Informasi';
+    protected static ?string $navigationLabel = 'Artikel';
+    protected static ?string $pluralModelLabel = 'Artikel';
     protected static string|UnitEnum|null $navigationGroup = 'Konten JTI';
 
     public static function form(Schema $schema): Schema
     {
-        return InformationForm::configure($schema);
+        return ArticleForm::configure($schema);
     }
 
     public static function table(Table $table): Table
     {
-        return InformationTable::configure($table);
+        return ArticlesTable::configure($table);
     }
 
     public static function getRelations(): array
@@ -52,10 +51,9 @@ class InformationResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ListInformation::route('/'),
-            'create' => CreateInformation::route('/create'),
-            'view' => ViewInformation::route('/{record}'),
-            'edit' => EditInformation::route('/{record}/edit'),
+            'index' => ListArticles::route('/'),
+            'create' => CreateArticle::route('/create'),
+            'edit' => EditArticle::route('/{record}/edit'),
         ];
     }
 

@@ -4,13 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Recruitment extends Model
+class Like extends Model
 {
     protected $fillable = [
+        'user_id',
         'information_id',
-        'role_name',
-        'slots_available',
+        'status',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function information()
     {
