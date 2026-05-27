@@ -75,13 +75,13 @@ class Information extends Model
         return $this->hasMany(Bookmark::class);
     }
 
-    public function recruitments()
-    {
-        return $this->hasMany(Recruitment::class);
-    }
-
     public function likes()
     {
         return $this->hasMany(Like::class);
+    }
+
+    public function interests()
+    {
+        return $this->hasMany(Interest::class);
     }
 }
