@@ -80,7 +80,7 @@
 
                         <!-- Lomba -->
                         <li>
-                            <a href="/Lomba"
+                            <a href="/lomba"
                                 class="flex items-center gap-3 text-[#3B4C7E] hover:text-blue-900 hover:translate-x-1 transition-all duration-300 text-sm font-medium">
 
                                 <img src="https://img.icons8.com/ios-glyphs/20/1A2E5A/trophy.png"
@@ -125,19 +125,6 @@
                         Feature
                     </h4>
                     <ul class="space-y-5">
-
-                        <!-- Recruitment -->
-                        <li>
-                            <a href="/recruitment"
-                                class="flex items-center gap-3 text-[#3B4C7E] hover:text-blue-900 hover:translate-x-1 transition-all duration-300 text-sm font-medium">
-
-                                <img src="https://img.icons8.com/ios-glyphs/20/1A2E5A/group.png"
-                                    alt="Recruitment"
-                                    class="w-5 h-5"/>
-
-                                Recruitment Team
-                            </a>
-                        </li>
 
                         <!-- Bookmark -->
                         <li>
