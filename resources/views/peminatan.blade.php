@@ -99,13 +99,53 @@
             @endforeach
         </div>
 
-        <!-- Pagination -->
-        <div class="mt-20 relative z-10 flex justify-center">
-            <div class="w-full max-w-lg">
-                {{ $bookmarks->links() }}
-            </div>
-        </div>
+            {{-- ================================
+                 PAGINATION
+            ================================= --}}
+            <div class="mt-20 flex items-center justify-center gap-2">
 
+                {{-- PREV --}}
+                <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:bg-[#1A2E5A] hover:text-white transition-all duration-300">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M15 19l-7-7 7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+
+                {{-- ACTIVE PAGE --}}
+                <button class="w-10 h-10 rounded-full bg-[#1A2E5A] text-white text-sm font-bold shadow-lg">
+                    1
+                </button>
+
+                {{-- PAGE --}}
+                <button class="w-10 h-10 rounded-full text-[#1A2E5A] text-sm font-medium hover:bg-gray-100 transition-all duration-300">
+                    2
+                </button>
+                <button class="w-10 h-10 rounded-full text-[#1A2E5A] text-sm font-medium hover:bg-gray-100 transition-all duration-300">
+                    3
+                </button>
+
+                {{-- DOT --}}
+                <span class="px-1 text-gray-400">
+                    ...
+                </span>
+
+                {{-- LAST --}}
+                <button class="w-10 h-10 rounded-full text-[#1A2E5A] text-sm font-medium hover:bg-gray-100 transition-all duration-300">
+                    68
+                </button>
+
+                {{-- NEXT --}}
+                <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:bg-[#1A2E5A] hover:text-white transition-all duration-300">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+
+            </div>
+
+        </div>
+    </section>
+    
     </main>
 
     {{-- ================================

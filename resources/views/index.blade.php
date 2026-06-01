@@ -83,17 +83,17 @@
     <header class="relative w-full min-h-[700px] bg-no-repeat bg-cover bg-center flex flex-col pt-24 overflow-hidden"
             style="background-image: url('{{ asset('assets/homepage.svg') }}');">
 
-        <div class="flex-1 flex flex-col items-center justify-center relative z-10 px-4 text-center">
+        <div class="flex-1 flex flex-col items-center justify-start relative z-10 px-4 text-center pt-16">
 
             <!-- JTIFY -->
             <div class="relative inline-block mb-4 anim-jtify">
-                <div class="absolute inset-0 bg-[#E8F19A] rounded-md"></div>
+                <div class="absolute inset-0 bg-[#E8F19A] rounded-sm"></div>
                 <h1 class="relative font-black text-[#1A2E5A] uppercase leading-none px-4 py-2 tracking-wider drop-shadow-xl"
                     style="font-size: clamp(4rem, 7vw, 6rem);">JTIFY</h1>
             </div>
 
             <!-- Subtitle -->
-            <div class="mb-8">
+            <div class="mb-14">
                 <h2 class="anim-line1 font-extrabold text-[#1A2E5A] leading-snug"
                     style="font-size: clamp(1.5rem, 3vw, 2.2rem);">
                     Temukan <span class="bg-[#4C75F2] text-white px-2 py-0.5 rounded-sm">Peluang,</span>
@@ -117,7 +117,6 @@
                                     <option value="{{ route('lomba') }}">Lomba</option>
                                     <option value="{{ route('seminar') }}">Seminar</option>
                                     <option value="{{ route('beasiswa') }}">Beasiswa</option>
-                                    <option value="{{ route('recruitment') }}">Recruitment</option>
                                 </select>
                             </div>
 
@@ -143,8 +142,8 @@
     </header>
 
     <!-- CATEGORY TABS & CARDS -->
-    <section class="mt-20 px-4 md:px-10 w-full overflow-hidden">
-        <div class="max-w-7xl mx-auto overflow-hidden">
+    <section class="mt-20 px-4 md:px-10 w-full overflow-x-hidden">
+        <div class="max-w-7xl mx-auto overflow-x-hidden overflow-y-visible">
 
             <!-- Tabs -->
             <div class="relative mb-10">
@@ -179,8 +178,8 @@
                 </a>
             </div>
 
-            <div class="overflow-hidden">
-                <div id="cardsSlider" class="flex transition-transform duration-700 ease-in-out cursor-grab active:cursor-grabbing select-none" style="gap: 16px;">
+            <div class="overflow-x-hidden overflow-y-visible pb-4">
+                <div id="cardsSlider" class="flex transition-transform duration-700 ease-in-out cursor-grab active:cursor-grabbing select-none py-3" style="gap: 16px;">
                     @php
                         $cardData = [
                             ['label' => 'Lomba',    'color' => '#FFB8B8', 'text' => '#EE2828'],
@@ -209,12 +208,12 @@
                     @endphp
 
                     @for($i = 0; $i < 8; $i++)
-                    <div class="card-item flex-none" data-index="{{ $i }}">
+                    <div class="card-item flex-none relative" data-index="{{ $i }}">
                         {{-- Seluruh card bisa di-klik --}}
-                        <a href="#" class="card-link block group relative bg-[#E5E7EB] rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_18px_45px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-500 cursor-pointer" style="aspect-ratio: 2/3;">
+                        <a href="#" class="card-link block group relative rounded-[10px] overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.06)] bg-gradient-to-br from-[#E8EEF8] to-[#D0DCEE] hover:shadow-[0_18px_45px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-500 cursor-pointer" style="aspect-ratio: 3/4;">
 
                             {{-- Poster Placeholder --}}
-                            <div class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#E8EEF8] to-[#D0DCEE] group-hover:from-[#D0DCEE] group-hover:to-[#BBC9E0] transition-colors duration-500">
+                            <div class="absolute inset-0 flex items-center justify-center transition-colors duration-500 ">
                                 <svg class="w-16 h-16 text-[#486284]/30 group-hover:scale-110 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M21 19V5C21 3.9 20.1 3 19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19ZM8.5 13.5L11 16.51L14.5 12L19 18H5L8.5 13.5Z"/>
                                 </svg>
@@ -298,12 +297,12 @@
             <p class="text-gray-500 max-w-2xl mx-auto mb-10 leading-relaxed text-sm md:text-lg join-anim join-delay-4">
                 Jadilah bagian dari tim kreatif JTIFY untuk membantu mahasiswa menemukan peluang terbaik, mengembangkan skill, dan menciptakan komunitas yang inspiratif.
             </p>
-            <button class="group bg-[#3B4C7E] hover:bg-[#2D3A61] text-white px-8 md:px-10 py-3 md:py-4 rounded-full font-bold inline-flex items-center gap-3 shadow-[0_12px_30px_rgba(59,76,126,0.35)] hover:scale-105 active:scale-95 transition-all duration-300 join-anim join-delay-5">
+            <a href="{{ route('register') }}" class="group bg-[#3B4C7E] hover:bg-[#2D3A61] text-white px-8 md:px-10 py-3 md:py-4 rounded-full font-bold inline-flex items-center gap-3 shadow-[0_12px_30px_rgba(59,76,126,0.35)] hover:scale-105 active:scale-95 transition-all duration-300 join-anim join-delay-5">
                 Yuk Gabung
                 <svg class="w-4 md:w-5 h-4 md:h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-            </button>
+            </a>
         </div>
     </section>
 
@@ -533,12 +532,32 @@
         lihatSemua.href = categoryRoutes['popular'];
         let autoSlide = startAutoSlide();
 
+        // Pause saat hover di atas slider
+        slider.addEventListener('mouseenter', () => {
+            clearInterval(autoSlide);
+        });
+
+        // Resume saat mouse keluar
+        slider.addEventListener('mouseleave', () => {
+            autoSlide = startAutoSlide();
+        });
+
+        // Stop auto slide saat card diklik
+        document.querySelectorAll('.card-item').forEach(card => {
+            card.addEventListener('click', () => {
+                clearInterval(autoSlide);
+            });
+        });
+
+        
+
         window.addEventListener('load', () => {
             setTimeout(() => {
                 updateIndicator(tabs[0]);
                 goToCard(0);
             }, 100);
         });
+
 
         tabs.forEach(tab => {
             tab.addEventListener('click', function() {
