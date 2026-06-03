@@ -24,12 +24,13 @@ class ArticleResource extends Resource
 {
     protected static ?string $model = Article::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::Newspaper;
 
     protected static ?string $recordTitleAttribute = 'name';
     protected static ?string $navigationLabel = 'Artikel';
     protected static ?string $pluralModelLabel = 'Artikel';
     protected static string|UnitEnum|null $navigationGroup = 'Konten JTI';
+    protected static ?int $navigationSort = 3;
 
     public static function form(Schema $schema): Schema
     {

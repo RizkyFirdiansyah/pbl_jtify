@@ -31,6 +31,7 @@ class InformationResource extends Resource
     protected static ?string $navigationLabel = 'Informasi';
     protected static ?string $pluralModelLabel = 'Informasi';
     protected static string|UnitEnum|null $navigationGroup = 'Konten JTI';
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {
