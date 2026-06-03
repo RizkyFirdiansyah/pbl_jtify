@@ -6,66 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JTIFY - Tentang Kami</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-    <style>
-        body { font-family: 'Poppins', sans-serif; }
-
-        /* --------------------------------
-            PIN WOBBLE
-        -------------------------------- */
-        @keyframes pinWobble {
-            0%, 100% { transform: rotate(-8deg) scale(1); }
-            50%      { transform: rotate(-8deg) scale(1.15); }
-        }
-        @keyframes pinWobbleR {
-            0%, 100% { transform: rotate(8deg) scale(1); }
-            50%      { transform: rotate(8deg) scale(1.15); }
-        }
-
-        /* --------------------------------
-            STICKY NOTE TILT
-        -------------------------------- */
-        .note-left  { transform: rotate(-2deg); }
-        .note-right { transform: rotate(2deg); }
-
-        .note-left:hover  { transform: rotate(0deg) scale(1.03); }
-        .note-right:hover { transform: rotate(0deg) scale(1.03); }
-
-        /* --------------------------------
-            DASHED LINE
-        -------------------------------- */
-        .zigzag-line {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 2px;
-            background: repeating-linear-gradient(
-                to bottom,
-                #CBD5E1 0px,
-                #CBD5E1 8px,
-                transparent 8px,
-                transparent 16px
-            );
-        }
-
-        /* --------------------------------
-            FEATURE CARD HOVER
-        -------------------------------- */
-        .feature-card {
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-                        box-shadow 0.4s ease;
-        }
-        .feature-card:hover {
-            transform: translateY(-8px) rotate(0deg);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-        }
-    </style>
 </head>
 
-<body class="bg-white overflow-x-hidden">
+<body class="bg-white overflow-x-hidden font-sans">
 
     @include('components.navbar')
     @include('components.header-detail', [
@@ -117,7 +63,7 @@
                                 <span class="text-white text-[10px] font-black">01</span>
                             </div>
                         </div>
-                        <div class="note-left transition-all duration-500 bg-[#FFFDE7] rounded-2xl p-7 shadow-[0_8px_30px_rgba(0,0,0,0.08)] border border-yellow-100 h-full">
+                        <div class="rotate-[-2deg] hover:rotate-0 hover:scale-[1.03] transition-all duration-500 bg-[#FFFDE7] rounded-2xl p-7 shadow-[0_8px_30px_rgba(0,0,0,0.08)] border border-yellow-100 h-full">
                             <p class="text-[10px] font-bold text-yellow-500 uppercase tracking-widest mb-2">Latar Belakang</p>
                             <h3 class="text-xl font-black text-[#1A2E5A] mb-3">Kenapa JTIFY Dibuat?</h3>
                             <p class="text-sm text-gray-500 leading-relaxed">
@@ -137,7 +83,7 @@
                                 <span class="text-white text-[10px] font-black">02</span>
                             </div>
                         </div>
-                        <div class="note-right transition-all duration-500 bg-[#F0F4FF] rounded-2xl p-7 shadow-[0_8px_30px_rgba(0,0,0,0.08)] border border-blue-100 h-full">
+                        <div class="rotate-[2deg] hover:rotate-0 hover:scale-[1.03] transition-all duration-500 bg-[#F0F4FF] rounded-2xl p-7 shadow-[0_8px_30px_rgba(0,0,0,0.08)] border border-blue-100 h-full">
                             <p class="text-[10px] font-bold text-[#4C75F2] uppercase tracking-widest mb-2">Solusi</p>
                             <h3 class="text-xl font-black text-[#1A2E5A] mb-3">Satu Pintu, Semua Peluang</h3>
                             <p class="text-sm text-gray-500 leading-relaxed">
@@ -157,7 +103,7 @@
                                 <span class="text-white text-[10px] font-black">03</span>
                             </div>
                         </div>
-                        <div class="note-left transition-all duration-500 bg-[#F0FDF4] rounded-2xl p-7 shadow-[0_8px_30px_rgba(0,0,0,0.08)] border border-green-100 h-full">
+                        <div class="rotate-[-2deg] hover:rotate-0 hover:scale-[1.03] transition-all duration-500 bg-[#F0FDF4] rounded-2xl p-7 shadow-[0_8px_30px_rgba(0,0,0,0.08)] border border-green-100 h-full">
                             <p class="text-[10px] font-bold text-green-500 uppercase tracking-widest mb-2">Visi</p>
                             <h3 class="text-xl font-black text-[#1A2E5A] mb-3">Menjadi Ruang Tumbuh Mahasiswa</h3>
                             <p class="text-sm text-gray-500 leading-relaxed">
@@ -177,7 +123,7 @@
                                 <span class="text-white text-[10px] font-black">04</span>
                             </div>
                         </div>
-                        <div class="note-right transition-all duration-500 bg-[#FFF7ED] rounded-2xl p-7 shadow-[0_8px_30px_rgba(0,0,0,0.08)] border border-orange-100 h-full">
+                        <div class="rotate-[2deg] hover:rotate-0 hover:scale-[1.03] transition-all duration-500 bg-[#FFF7ED] rounded-2xl p-7 shadow-[0_8px_30px_rgba(0,0,0,0.08)] border border-orange-100 h-full">
                             <p class="text-[10px] font-bold text-orange-400 uppercase tracking-widest mb-2">Misi</p>
                             <h3 class="text-xl font-black text-[#1A2E5A] mb-3">Apa yang Kami Lakukan</h3>
                             <ul class="text-sm text-gray-500 leading-relaxed space-y-1.5">
@@ -224,7 +170,7 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
 
-                <div class="feature-card bg-white rounded-2xl p-6 shadow-[0_8px_30px_rgba(0,0,0,0.06)] border border-gray-100 rotate-[-1deg] flex flex-col"
+                <div class="transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:rotate-0 bg-white rounded-2xl p-6 shadow-[0_8px_30px_rgba(0,0,0,0.06)] border border-gray-100 rotate-[-1deg] flex flex-col"
                     data-aos="fade-up" data-aos-delay="0">
                     <div class="w-12 h-12 rounded-xl bg-[#FFE8E8] flex items-center justify-center mb-5">
                         <img src="https://img.icons8.com/ios-glyphs/28/EE2828/trophy.png" alt="Lomba"/>
@@ -241,7 +187,7 @@
                     </a>
                 </div>
 
-                <div class="feature-card bg-white rounded-2xl p-6 shadow-[0_8px_30px_rgba(0,0,0,0.06)] border border-gray-100 rotate-[1deg] flex flex-col"
+                <div class="transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:rotate-0 bg-white rounded-2xl p-6 shadow-[0_8px_30px_rgba(0,0,0,0.06)] border border-gray-100 rotate-[1deg] flex flex-col"
                     data-aos="fade-up" data-aos-delay="100">
                     <div class="w-12 h-12 rounded-xl bg-[#E8F0FF] flex items-center justify-center mb-5">
                         <img src="https://img.icons8.com/ios-glyphs/28/1A56DB/megaphone.png" alt="Seminar"/>
@@ -258,7 +204,7 @@
                     </a>
                 </div>
 
-                <div class="feature-card bg-white rounded-2xl p-6 shadow-[0_8px_30px_rgba(0,0,0,0.06)] border border-gray-100 rotate-[-1deg] flex flex-col"
+                <div class="transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:rotate-0 bg-white rounded-2xl p-6 shadow-[0_8px_30px_rgba(0,0,0,0.06)] border border-gray-100 rotate-[-1deg] flex flex-col"
                     data-aos="fade-up" data-aos-delay="200">
                     <div class="w-12 h-12 rounded-xl bg-[#E8FFF4] flex items-center justify-center mb-5">
                         <img src="https://img.icons8.com/ios-glyphs/28/0D7A4E/graduation-cap.png" alt="Beasiswa"/>

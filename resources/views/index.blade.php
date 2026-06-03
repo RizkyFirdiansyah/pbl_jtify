@@ -5,75 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JTIFY - Homepage</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Poppins', sans-serif; }
-
-        @keyframes popIn {
-            0%   { opacity: 0; transform: scale(0.3) translateY(40px); }
-            60%  { opacity: 1; transform: scale(1.15) translateY(-10px); }
-            80%  { transform: scale(0.95) translateY(5px); }
-            100% { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        @keyframes popInLeft {
-            0%   { opacity: 0; transform: scale(0.5) translateX(-60px); }
-            60%  { opacity: 1; transform: scale(1.1) translateX(8px); }
-            80%  { transform: scale(0.97) translateX(-4px); }
-            100% { opacity: 1; transform: scale(1) translateX(0); }
-        }
-        @keyframes popInRight {
-            0%   { opacity: 0; transform: scale(0.5) translateX(60px); }
-            60%  { opacity: 1; transform: scale(1.1) translateX(-8px); }
-            80%  { transform: scale(0.97) translateX(4px); }
-            100% { opacity: 1; transform: scale(1) translateX(0); }
-        }
-        @keyframes fadeUp {
-            0%   { opacity: 0; transform: translateY(30px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes floatSlow {
-            0%, 100% { transform: translateY(0); }
-            50%      { transform: translateY(-16px); }
-        }
-        @keyframes floatMedium {
-            0%, 100% { transform: translateY(0); }
-            50%      { transform: translateY(-10px); }
-        }
-        @keyframes floatFast {
-            0%, 100% { transform: translateY(0); }
-            50%      { transform: translateY(-8px); }
-        }
-        @keyframes popReveal {
-            0%   { opacity: 0; transform: scale(0.7) translateY(50px); }
-            60%  { opacity: 1; transform: scale(1.05) translateY(-8px); }
-            100% { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        .anim-jtify  { opacity: 0; animation: popIn 0.9s cubic-bezier(0.34,1.56,0.64,1) 0.2s forwards, floatSlow 6s ease-in-out 1.5s infinite; }
-        .anim-line1  { opacity: 0; animation: popInLeft 0.8s cubic-bezier(0.34,1.56,0.64,1) 0.7s forwards, floatMedium 5s ease-in-out 1.8s infinite; }
-        .anim-line2  { opacity: 0; animation: popInRight 0.8s cubic-bezier(0.34,1.56,0.64,1) 1s forwards, floatMedium 5s ease-in-out 2s infinite; }
-        .anim-search { opacity: 0; animation: fadeUp 0.8s ease-out 1.3s forwards; }
-
-        .animate-float-slow   { animation: floatSlow   6s ease-in-out infinite; }
-        .animate-float-medium { animation: floatMedium 5s ease-in-out infinite; }
-        .animate-float-fast   { animation: floatFast   4s ease-in-out infinite; }
-
-        .join-anim { opacity: 0; }
-        #joinSection.show .join-anim { animation: popReveal 0.9s cubic-bezier(0.34,1.56,0.64,1) forwards; }
-        .join-delay-1 { animation-delay: 0.1s !important; }
-        .join-delay-2 { animation-delay: 0.3s !important; }
-        .join-delay-3 { animation-delay: 0.5s !important; }
-        .join-delay-4 { animation-delay: 0.7s !important; }
-        .join-delay-5 { animation-delay: 0.9s !important; }
-
-        #tabsWrapper::-webkit-scrollbar { display: none; }
-
-        /* Feedback card widths */
-        .feedback-card { width: calc((100% - 48px) / 3); }
-        @media (max-width: 1024px) { .feedback-card { width: calc((100% - 24px) / 2); } }
-        @media (max-width: 640px)  { .feedback-card { width: calc(100% - 32px); } }
-    </style>
 </head>
 <body class="bg-white overflow-x-hidden">
 
@@ -106,17 +39,18 @@
 
             <!-- Search Bar -->
                 <div class="w-full z-20 anim-search px-4" style="max-width: 651px;">
-                    <form id="searchForm">
+                    <form id="searchForm" method="GET" action="#">
                         <div class="bg-white/95 backdrop-blur-md rounded-full flex items-center shadow-[0_15px_35px_rgba(0,0,0,0.18)] border border-white/50 transition-all duration-500"
                             style="height: 60px; padding: 0 6px;">
                             
                             <!-- Kategori: hidden di mobile -->
                             <div class="hidden sm:flex items-center px-4 border-r border-gray-200 shrink-0">
-                                <select id="categorySelect" class="bg-transparent text-sm text-gray-600 outline-none cursor-pointer font-medium">
+                                <select name="category" id="categorySelect" class="bg-transparent text-sm text-gray-600 outline-none cursor-pointer font-medium">
                                     <option value="">Kategori</option>
-                                    <option value="{{ route('lomba') }}">Lomba</option>
-                                    <option value="{{ route('seminar') }}">Seminar</option>
-                                    <option value="{{ route('beasiswa') }}">Beasiswa</option>
+                                    <option value="lomba">Lomba</option>
+                                    <option value="seminar">Seminar</option>
+                                    <option value="beasiswa">Beasiswa</option>
+                                    <option value="workshop">Tips &amp; Insight</option>
                                 </select>
                             </div>
 
@@ -125,11 +59,11 @@
                                 <svg class="w-4 h-4 text-gray-400 mr-2 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
-                                <input type="text" placeholder="Cari informasi"
+                                <input type="text" name="q" placeholder="Cari informasi"
                                     class="w-full bg-transparent outline-none text-sm text-gray-700 placeholder-gray-400 min-w-0">
                             </div>
 
-                            <!-- Button -->
+                            <!-- Tombol -->
                             <button type="submit" 
                                     class="bg-[#3B4C7E] text-white px-5 sm:px-8 rounded-full text-sm font-bold hover:bg-[#2D3A61] hover:scale-105 active:scale-95 transition-all duration-300 shrink-0 whitespace-nowrap"
                                     style="height: 46px;">Cari</button>
@@ -147,7 +81,7 @@
 
             <!-- Tabs -->
             <div class="relative mb-10">
-                <div id="tabsWrapper" class="border-b border-gray-100 overflow-x-auto"
+                <div id="tabsWrapper" class="border-b border-gray-100 overflow-x-auto [&::-webkit-scrollbar]:hidden"
                     style="scrollbar-width: none; -ms-overflow-style: none;">
                     <div class="flex w-full">
                         <button data-tab="0" data-category="popular"
@@ -170,7 +104,7 @@
                     <span class="dot w-8 h-2 bg-[#1A2E5A] rounded-full cursor-pointer transition-all duration-300"></span>
                     <span class="dot w-2 h-2 bg-gray-200 rounded-full cursor-pointer transition-all duration-300"></span>
                 </div>
-                <a href="/" id="lihatSemua" class="text-sm text-gray-400 font-bold flex items-center gap-1 hover:text-[#3B4C7E] transition">
+                <a href="/" id="lihatSemua" class="text-sm text-gray-400 font-bold hidden items-center gap-1 hover:text-[#3B4C7E] transition">
                     Lihat semua
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path d="M9 5l7 7-7 7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
@@ -342,7 +276,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 overflow-hidden">
             <div id="feedbackSlider" class="flex transition-transform duration-700 ease-in-out" style="gap: 16px;">
                 @for($i = 0; $i < 6; $i++)
-                <div class="feedback-card flex-none">
+                <div class="flex-none w-[calc(100%-32px)] sm:w-[calc((100%-24px)/2)] lg:w-[calc((100%-48px)/3)]">
                     <div class="bg-white border border-gray-100 rounded-[28px] p-4 sm:p-6 lg:p-8 h-full shadow-[0_8px_30px_rgba(0,0,0,0.05)] hover:shadow-[0_15px_40px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-500">
                         <div class="flex items-start gap-3 mb-4 sm:mb-6">
                             <div class="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-[#1A2E5A] to-[#5D8EFF] flex-shrink-0"></div>
@@ -371,8 +305,77 @@
         // ================================
         document.getElementById('searchForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const val = document.getElementById('categorySelect').value;
-            if (val) window.location.href = val;
+            const q        = this.querySelector('input[name="q"]').value.trim();
+            const category = this.querySelector('select[name="category"]').value;
+
+            const routes = {
+                'lomba':    '{{ route("lomba") }}',
+                'seminar':  '{{ route("seminar") }}',
+                'beasiswa': '{{ route("beasiswa") }}',
+                'workshop': '{{ route("tips") }}',
+            };
+
+            let targetCategory = category;
+
+            // Jika kategori tidak dipilih, deteksi otomatis dari kata kunci atau judul konten
+            if (!targetCategory && q) {
+                const qLower = q.toLowerCase();
+
+                // 1. Deteksi berdasarkan kata kunci langsung
+                if (qLower.includes('lomba') || qLower.includes('competition') || qLower.includes('hackathon') || qLower.includes('contest') || qLower.includes('kontes')) {
+                    targetCategory = 'lomba';
+                } else if (qLower.includes('seminar') || qLower.includes('webinar') || qLower.includes('workshop') || qLower.includes('talkshow') || qLower.includes('talk show') || qLower.includes('kelas') || qLower.includes('wawasan')) {
+                    targetCategory = 'seminar';
+                } else if (qLower.includes('beasiswa') || qLower.includes('scholarship') || qLower.includes('lpdp') || qLower.includes('bantuan') || qLower.includes('prestasi')) {
+                    targetCategory = 'beasiswa';
+                } else if (qLower.includes('tips') || qLower.includes('insight') || qLower.includes('cara') || qLower.includes('strategi') || qLower.includes('cv') || qLower.includes('portofolio') || qLower.includes('speaking') || qLower.includes('artikel')) {
+                    targetCategory = 'workshop';
+                } else {
+                    // 2. Deteksi berdasarkan kecocokan judul di dataset (cardSets)
+                    let foundCategory = null;
+
+                    const hasMatch = (items) => {
+                        return items.some(item => item.title.toLowerCase().includes(qLower));
+                    };
+
+                    if (typeof cardSets !== 'undefined') {
+                        if (cardSets.lomba && hasMatch(cardSets.lomba)) {
+                            foundCategory = 'lomba';
+                        } else if (cardSets.seminar && hasMatch(cardSets.seminar)) {
+                            foundCategory = 'seminar';
+                        } else if (cardSets.beasiswa && hasMatch(cardSets.beasiswa)) {
+                            foundCategory = 'beasiswa';
+                        }
+                    }
+
+                    // Cek di judul tips manual
+                    if (!foundCategory) {
+                        const tipsTitles = [
+                            'cara meningkatkan peluang lolos seleksi kompetisi',
+                            'kesalahan umum yang sering dilakukan peserta kompetisi',
+                            'strategi menyusun tim yang solid dan efektif',
+                            'tips mengatur waktu antara kuliah dan organisasi',
+                            'cara membangun portofolio yang menarik',
+                            'meningkatkan kemampuan public speaking mahasiswa',
+                            'tips menulis cv yang ats friendly',
+                            'rahasia produktif saat deadline menumpuk'
+                        ];
+                        const matchTips = tipsTitles.some(title => title.includes(qLower));
+                        if (matchTips) {
+                            foundCategory = 'workshop';
+                        }
+                    }
+
+                    if (foundCategory) {
+                        targetCategory = foundCategory;
+                    }
+                }
+            }
+
+            // Tentukan URL tujuan: sesuai kategori, default ke lomba jika tidak terpilih/terdeteksi
+            const base = routes[targetCategory] || routes['lomba'];
+            const url  = q ? base + '?q=' + encodeURIComponent(q) : base;
+            window.location.href = url;
         });
 
         // ================================
@@ -530,6 +533,8 @@
         updateCardLinks('popular');
         updateCardContent('popular');
         lihatSemua.href = categoryRoutes['popular'];
+        lihatSemua.classList.add('hidden');
+        lihatSemua.classList.remove('flex');
         let autoSlide = startAutoSlide();
 
         // Pause saat hover di atas slider
@@ -579,6 +584,13 @@
 
                 // Update lihat semua
                 lihatSemua.href = categoryRoutes[activeCategory] || '/';
+                if (activeCategory === 'popular') {
+                    lihatSemua.classList.add('hidden');
+                    lihatSemua.classList.remove('flex');
+                } else {
+                    lihatSemua.classList.remove('hidden');
+                    lihatSemua.classList.add('flex');
+                }
 
                 // Update href dan konten tiap card sesuai kategori
                 updateCardLinks(activeCategory);
