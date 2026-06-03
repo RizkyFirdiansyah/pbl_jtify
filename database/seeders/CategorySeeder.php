@@ -13,13 +13,16 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['name' => 'Workshop', 'slug' => 'workshop'],
             ['name' => 'Lomba', 'slug' => 'lomba'],
+            ['name' => 'Seminar', 'slug' => 'seminar'],
             ['name' => 'Beasiswa', 'slug' => 'beasiswa'],
         ];
 
         foreach ($categories as $category) {
-            Category::create($category);
+            Category::updateOrCreate(
+                ['slug' => $category['slug']],
+                $category
+            );
         }
     }
 }

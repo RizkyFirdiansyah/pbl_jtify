@@ -38,6 +38,12 @@ class SettingSeeder extends Seeder
         'description' => 'Mark kecil pada logo/footer seperti yang dipakai FE sekarang.',
       ],
       [
+        'key_name' => 'footer_logo_text',
+        'value' => 'Logo',
+        'data_type' => 'text',
+        'description' => 'Teks logo yang tampil di footer saat ini.',
+      ],
+      [
         'key_name' => 'footer_description',
         'value' => 'Cari peluang baru, upgrade skill, dan raih pengalaman terbaik bersama JTIFY.',
         'data_type' => 'textarea',

@@ -4,133 +4,106 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Information;
-use App\Models\Interest;
+use App\Models\Category;
 use App\Models\User;
+use Illuminate\Support\Str;
 
 class InformationSeeder extends Seeder
 {
     public function run(): void
     {
-        $users = User::pluck('id')->toArray();
+        $users = User::whereIn('role', ['admin', 'collaborator'])->pluck('id')->toArray();
+        $adminId = User::where('role', 'admin')->value('id');
 
-        $informations = [
-            // Workshop
-            [
-                'user_id' => $users[array_rand($users)],
-                'category_id' => 1,
-                'title' => 'Workshop Laravel Dasar',
-                'slug' => 'workshop-laravel-dasar',
-                'description' => 'Belajar Laravel dari dasar.',
-                'deadline' => now()->addDays(10),
-                'registration_link' => 'https://example.com',
-                'guidebook_link' => 'https://example.com',
-                'poster_path' => 'posters/workshop1.jpg',
-                'status' => 'published',
-            ],
-            [
-                'user_id' => $users[array_rand($users)],
-                'category_id' => 1,
-                'title' => 'Workshop UI UX',
-                'slug' => 'workshop-ui-ux',
-                'description' => 'Belajar desain UI UX.',
-                'deadline' => now()->addDays(15),
-                'registration_link' => 'https://example.com',
-                'guidebook_link' => 'https://example.com',
-                'poster_path' => 'posters/workshop2.jpg',
-                'status' => 'published',
-            ],
-            [
-                'user_id' => $users[array_rand($users)],
-                'category_id' => 1,
-                'title' => 'Workshop AI',
-                'slug' => 'workshop-ai',
-                'description' => 'Belajar Artificial Intelligence.',
-                'deadline' => now()->addDays(20),
-                'registration_link' => 'https://example.com',
-                'guidebook_link' => 'https://example.com',
-                'poster_path' => 'posters/workshop3.jpg',
-                'status' => 'published',
-            ],
+        $categoryMap = Category::query()->pluck('id', 'slug');
 
-            // Lomba
-            [
-                'user_id' => $users[array_rand($users)],
-                'category_id' => 2,
-                'title' => 'Lomba Web Design',
-                'slug' => 'lomba-web-design',
-                'description' => 'Kompetisi desain website.',
-                'deadline' => now()->addDays(12),
-                'registration_link' => 'https://example.com',
-                'guidebook_link' => 'https://example.com',
-                'poster_path' => 'posters/lomba1.jpg',
-                'status' => 'published',
+        $datasets = [
+            'lomba' => [
+                'UI/UX Design Challenge 2026',
+                'Web Innovation Cup 2026',
+                'Mobile App Hackathon 2026',
+                'Data Science Competition 2026',
+                'Business Plan Contest 2026',
+                'Cyber Security Challenge 2026',
+                'IoT Prototype Competition 2026',
+                'Poster Design Contest 2026',
+                'Smart Campus Innovation 2026',
+                'Software Engineering Challenge 2026',
+                'AI for Student Competition 2026',
+                'Digital Marketing Competition 2026',
+                'Game Development Challenge 2026',
+                'Startup Pitch Battle 2026',
+                'Creative Coding Challenge 2026',
             ],
-            [
-                'user_id' => $users[array_rand($users)],
-                'category_id' => 2,
-                'title' => 'Lomba Mobile App',
-                'slug' => 'lomba-mobile-app',
-                'description' => 'Kompetisi aplikasi mobile.',
-                'deadline' => now()->addDays(18),
-                'registration_link' => 'https://example.com',
-                'guidebook_link' => 'https://example.com',
-                'poster_path' => 'posters/lomba2.jpg',
-                'status' => 'published',
+            'seminar' => [
+                'Seminar Inovasi Teknologi 2026',
+                'Webinar Karier Digital 2026',
+                'Seminar AI dan Machine Learning',
+                'Workshop Frontend Modern',
+                'Seminar Product Management',
+                'Webinar Cyber Security Awareness',
+                'Seminar Data Analytics for Students',
+                'Workshop UI/UX Practical Session',
+                'Seminar Kewirausahaan Digital',
+                'Webinar Personal Branding',
+                'Seminar Cloud Computing',
+                'Workshop Git dan Kolaborasi Tim',
+                'Seminar Public Speaking',
+                'Webinar Portofolio Mahasiswa',
+                'Seminar Internet of Things',
             ],
-            [
-                'user_id' => $users[array_rand($users)],
-                'category_id' => 2,
-                'title' => 'Lomba Data Science',
-                'slug' => 'lomba-data-science',
-                'description' => 'Kompetisi data science.',
-                'deadline' => now()->addDays(25),
-                'registration_link' => 'https://example.com',
-                'guidebook_link' => 'https://example.com',
-                'poster_path' => 'posters/lomba3.jpg',
-                'status' => 'published',
-            ],
-
-            // Beasiswa
-            [
-                'user_id' => $users[array_rand($users)],
-                'category_id' => 3,
-                'title' => 'Beasiswa Prestasi',
-                'slug' => 'beasiswa-prestasi',
-                'description' => 'Beasiswa untuk mahasiswa berprestasi.',
-                'deadline' => now()->addDays(30),
-                'registration_link' => 'https://example.com',
-                'guidebook_link' => 'https://example.com',
-                'poster_path' => 'posters/beasiswa1.jpg',
-                'status' => 'published',
-            ],
-            [
-                'user_id' => $users[array_rand($users)],
-                'category_id' => 3,
-                'title' => 'Beasiswa KIP',
-                'slug' => 'beasiswa-kip',
-                'description' => 'Program bantuan pendidikan.',
-                'deadline' => now()->addDays(35),
-                'registration_link' => 'https://example.com',
-                'guidebook_link' => 'https://example.com',
-                'poster_path' => 'posters/beasiswa2.jpg',
-                'status' => 'published',
-            ],
-            [
-                'user_id' => $users[array_rand($users)],
-                'category_id' => 3,
-                'title' => 'Beasiswa Bank Indonesia',
-                'slug' => 'beasiswa-bank-indonesia',
-                'description' => 'Beasiswa dari Bank Indonesia.',
-                'deadline' => now()->addDays(40),
-                'registration_link' => 'https://example.com',
-                'guidebook_link' => 'https://example.com',
-                'poster_path' => 'posters/beasiswa3.jpg',
-                'status' => 'published',
+            'beasiswa' => [
+                'Beasiswa Prestasi Nusantara 2026',
+                'Beasiswa Bank Indonesia 2026',
+                'Beasiswa KIP Kuliah Informasi',
+                'Beasiswa Talenta Digital',
+                'Beasiswa Cendekia Muda',
+                'Beasiswa Unggulan Mahasiswa',
+                'Beasiswa Bina Prestasi',
+                'Beasiswa Merdeka Belajar',
+                'Beasiswa Yayasan Pendidikan',
+                'Beasiswa Riset Mahasiswa',
+                'Beasiswa Aktivis Kampus',
+                'Beasiswa Informatika Berprestasi',
+                'Beasiswa Indonesia Maju',
+                'Beasiswa Masa Depan Cerdas',
+                'Beasiswa Sahabat Negeri',
             ],
         ];
 
-        foreach ($informations as $info) {
-            Information::create($info);
+        $dayOffset = 3;
+
+        foreach ($datasets as $categorySlug => $titles) {
+            $categoryId = $categoryMap->get($categorySlug);
+
+            if (! $categoryId) {
+                continue;
+            }
+
+            foreach ($titles as $index => $title) {
+                Information::updateOrCreate(
+                    [
+                        'slug' => Str::slug($title),
+                    ],
+                    [
+                        'user_id' => $users[array_rand($users)],
+                        'category_id' => $categoryId,
+                        'title' => $title,
+                        'description' => match ($categorySlug) {
+                            'lomba' => 'Kompetisi ' . strtolower($title) . ' untuk mahasiswa JTI.',
+                            'seminar' => 'Agenda ' . strtolower($title) . ' untuk menambah wawasan dan skill.',
+                            'beasiswa' => 'Informasi ' . strtolower($title) . ' untuk mendukung studi mahasiswa.',
+                        },
+                        'deadline' => now()->addDays($dayOffset + ($index * 2)),
+                        'registration_link' => 'https://example.com/register/' . Str::slug($title),
+                        'guidebook_link' => 'https://example.com/guide/' . Str::slug($title),
+                        'poster_path' => 'posters/' . Str::slug($title) . '.jpg',
+                        'status' => 'published',
+                        'approved_by' => $adminId,
+                        'approved_at' => now()->subDays(2 + $index),
+                    ]
+                );
+            }
         }
     }
 }

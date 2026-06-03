@@ -26,6 +26,20 @@ class PageContentSeeder extends Seeder
         ['key' => 'category_default', 'type' => 'text', 'value' => 'Kategori', 'order' => 7],
         ['key' => 'cta_lihat_semua', 'type' => 'text', 'value' => 'Lihat semua', 'order' => 8],
         ['key' => 'section_tabs', 'type' => 'json', 'value' => json_encode(['Popular', 'Lomba', 'Seminar', 'Beasiswa']), 'order' => 9],
+        ['key' => 'hero_card_titles', 'type' => 'json', 'value' => json_encode([
+          'UI/UX Design Competition 2025',
+          'Seminar Inovasi Teknologi Nasional',
+          'Beasiswa Prestasi Mahasiswa Berprestasi',
+          'Hackathon Data Science Challenge',
+          'Workshop Kecerdasan Buatan & ML',
+          'Beasiswa Polinema Unggulan 2025',
+          'National Coding Competition 2025',
+          'Seminar Kewirausahaan Digital',
+        ]), 'order' => 10],
+        ['key' => 'hero_card_deadlines', 'type' => 'json', 'value' => json_encode([
+          '10 Jun 2025', '15 Jun 2025', '20 Jun 2025', '25 Jun 2025',
+          '30 Jun 2025', '05 Jul 2025', '10 Jul 2025', '15 Jul 2025',
+        ]), 'order' => 11],
       ],
       'tentang-kami' => [
         ['key' => 'intro_label', 'type' => 'text', 'value' => 'Siapa Kami', 'order' => 1],
@@ -57,7 +71,7 @@ class PageContentSeeder extends Seeder
         ['key' => 'feature_scholarship_description', 'type' => 'textarea', 'value' => 'Info beasiswa dari berbagai lembaga, lengkap dengan syarat, deadline, dan cara daftar.', 'order' => 23],
       ],
       'footer' => [
-        ['key' => 'footer_brand_label', 'type' => 'text', 'value' => 'JTIFY', 'order' => 1],
+        ['key' => 'footer_brand_label', 'type' => 'text', 'value' => 'Logo', 'order' => 1],
         ['key' => 'footer_description', 'type' => 'textarea', 'value' => 'Cari peluang baru, upgrade skill, dan raih pengalaman terbaik bersama JTIFY.', 'order' => 2],
         ['key' => 'footer_social_label', 'type' => 'text', 'value' => 'Follow Us:', 'order' => 3],
         ['key' => 'footer_home_title', 'type' => 'text', 'value' => 'Beranda', 'order' => 4],
@@ -71,6 +85,7 @@ class PageContentSeeder extends Seeder
         ['key' => 'footer_instagram_url', 'type' => 'url', 'value' => 'https://www.instagram.com/jtipolinema?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==', 'order' => 12],
         ['key' => 'footer_x_url', 'type' => 'url', 'value' => 'https://x.com/polinema_campus?s=20', 'order' => 13],
         ['key' => 'footer_youtube_url', 'type' => 'url', 'value' => 'https://www.youtube.com/@jtipolinema367', 'order' => 14],
+        ['key' => 'footer_logo_mark', 'type' => 'text', 'value' => 'P', 'order' => 15],
       ],
       'navbar' => [
         ['key' => 'brand_name', 'type' => 'text', 'value' => 'JTIFY', 'order' => 1],

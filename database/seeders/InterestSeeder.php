@@ -6,30 +6,39 @@ use Illuminate\Database\Seeder;
 use App\Models\Interest;
 use App\Models\Information;
 use App\Models\User;
+use Illuminate\Support\Carbon;
 
 class InterestSeeder extends Seeder
 {
     public function run(): void
     {
-        $users = User::pluck('id')->toArray();
-        $informations = Information::all();
+        $users = User::where('role', 'reguler')->pluck('id')->toArray();
+        $informations = Information::query()->get();
 
-        foreach ($informations as $information) {
+        foreach ($informations as $index => $information) {
+            if (empty($users)) {
+                break;
+            }
 
-            // jumlah interest random
-            $totalInterest = rand(5, 20);
+            $totalInterest = min(count($users), 5 + ($index % 11));
 
             $randomUsers = collect($users)
                 ->shuffle()
                 ->take($totalInterest);
 
-            foreach ($randomUsers as $userId) {
+            foreach ($randomUsers as $offset => $userId) {
+                $isActive = ($offset + $index) % 5 !== 0;
 
-                Interest::create([
-                    'user_id' => $userId,
-                    'information_id' => $information->id,
-                    'status' => 'active',
-                ]);
+                Interest::updateOrCreate(
+                    [
+                        'user_id' => $userId,
+                        'information_id' => $information->id,
+                    ],
+                    [
+                        'status' => $isActive ? 'active' : 'cancelled',
+                        'consented_at' => $isActive ? Carbon::now()->subDays(rand(1, 40)) : null,
+                    ]
+                );
             }
         }
     }
