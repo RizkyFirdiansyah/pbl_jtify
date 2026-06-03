@@ -9,11 +9,9 @@ class TopTreeLomba extends ChartWidget
 {
     protected ?string $heading = 'Top 3 Lomba Peminat Terbanyak';
 
-    // protected int|string|array $columnSpan = 1;
-    protected int | string | array $columnSpan = [
-    'md' => 2,
-    'xl' => 1,
-];
+    protected static ?int $sort = 6;
+
+    protected int | string | array $columnSpan = 4;
 
     protected function getData(): array
     {
@@ -28,8 +26,8 @@ class TopTreeLomba extends ChartWidget
                 [
                     'label' => 'Total Peminat',
                     'data' => $topInformations->pluck('interests_count')->toArray(),
-                    'backgroundColor' => 'rgba(34, 197, 94, 0.5)',
-                    'borderColor' => 'rgba(34, 197, 94, 1)',
+                    'backgroundColor' => 'rgba(16, 185, 129, 0.5)',
+                    'borderColor' => '#10b981',
                     'borderWidth' => 2,
                 ],
             ],

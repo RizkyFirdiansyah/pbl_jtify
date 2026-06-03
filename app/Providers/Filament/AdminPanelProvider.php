@@ -6,7 +6,7 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages\Dashboard;
+use App\Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -18,7 +18,9 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use App\Filament\Widgets\TotalInformationByCategory;
+use App\Filament\Widgets\TotalWorkshopStat;
+use App\Filament\Widgets\TotalLombaStat;
+use App\Filament\Widgets\TotalBeasiswaStat;
 use App\Filament\Widgets\InformationByCategoryChart;
 use App\Filament\Widgets\TopRecruitmentsByInterestWidget;
 use App\Filament\Widgets\TopTreeLomba;
@@ -26,6 +28,7 @@ use App\Filament\Widgets\TopTreeWorkshop;
 use App\Filament\Widgets\TopTreeBeasiswa;
 use App\Filament\Widgets\CategoriesInformationBarChart;
 use App\Filament\Widgets\TotalUser;
+use App\Filament\Widgets\RecentActivityWidget;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -54,14 +57,14 @@ class AdminPanelProvider extends PanelProvider
                 'Sistem',
             ])
             ->widgets([
-                TotalInformationByCategory::class,
+                TotalWorkshopStat::class,
+                TotalLombaStat::class,
+                TotalBeasiswaStat::class,
                 TotalUser::class,
                 TopTreeWorkshop::class,
                 TopTreeLomba::class,
                 TopTreeBeasiswa::class,
-                //CategoriesInformationBarChart::class,
-                //InformationByCategoryChart::class,
-                //TopRecruitmentsByInterestWidget::class,
+                RecentActivityWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,

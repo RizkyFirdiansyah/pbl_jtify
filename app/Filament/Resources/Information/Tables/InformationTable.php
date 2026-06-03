@@ -30,13 +30,14 @@ class InformationTable
                 TextColumn::make('slug')
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('category.name')
-                    ->badge()
-                    ->color('info'),
+                    ->label('Kategori')
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('deadline')
                     ->date()
                     ->sortable()
                     ->badge()
-                    ->color(fn($state) => $state < now() ? 'danger' : 'success'),
+                    ->color(fn($state) => $state < now() ? 'danger' : 'warning'),
                 TextColumn::make('status')
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {

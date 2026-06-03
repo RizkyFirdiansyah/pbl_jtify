@@ -9,7 +9,9 @@ class TotalUser extends ChartWidget
 {
     protected ?string $heading = 'Total User';
 
-    protected int|string|array $columnSpan = 1;
+    protected static ?int $sort = 4;
+
+    protected int|string|array $columnSpan = 3;
 
     protected function getData(): array
     {
