@@ -9,11 +9,9 @@ class TopTreeBeasiswa extends ChartWidget
 {
     protected ?string $heading = 'Top 3 Beasiswa Peminat Terbanyak';
 
-    // protected int|string|array $columnSpan = 1;
-    protected int | string | array $columnSpan = [
-    'md' => 2,
-    'xl' => 1,
-];
+    protected static ?int $sort = 7;
+
+    protected int | string | array $columnSpan = 4;
 
     protected function getData(): array
     {
@@ -28,8 +26,8 @@ class TopTreeBeasiswa extends ChartWidget
                 [
                     'label' => 'Total Peminat',
                     'data' => $topInformations->pluck('interests_count')->toArray(),
-                    'backgroundColor' => 'rgba(34, 197, 94, 0.5)',
-                    'borderColor' => 'rgba(34, 197, 94, 1)',
+                    'backgroundColor' => 'rgba(245, 158, 11, 0.5)',
+                    'borderColor' => '#f59e0b',
                     'borderWidth' => 2,
                 ],
             ],
