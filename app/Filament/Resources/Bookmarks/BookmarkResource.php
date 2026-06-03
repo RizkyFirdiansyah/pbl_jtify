@@ -27,6 +27,7 @@ class BookmarkResource extends Resource
     protected static ?string $navigationLabel = 'Daftar Tersimpan';
     protected static ?string $pluralModelLabel = 'Daftar Tersimpan';
     protected static string|UnitEnum|null $navigationGroup = 'Konten JTI';
+    protected static ?int $navigationSort = 5;
 
 
     public static function form(Schema $schema): Schema

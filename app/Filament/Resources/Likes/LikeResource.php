@@ -26,6 +26,7 @@ class LikeResource extends Resource
     protected static ?string $navigationLabel = 'Daftar Disukai';
     protected static ?string $pluralModelLabel = 'Daftar Disukai';
     protected static string|UnitEnum|null $navigationGroup = 'Konten JTI';
+    protected static ?int $navigationSort = 6;
 
     public static function infolist(Schema $schema): Schema
     {

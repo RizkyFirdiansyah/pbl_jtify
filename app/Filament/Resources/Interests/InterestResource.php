@@ -21,11 +21,12 @@ class InterestResource extends Resource
 {
   protected static ?string $model = Interest::class;
 
-  protected static string|BackedEnum|null $navigationIcon = Heroicon::DocumentText;
+  protected static string|BackedEnum|null $navigationIcon = Heroicon::Sparkles;
   protected static ?string $recordTitleAttribute = 'id';
   protected static ?string $navigationLabel = 'Daftar Peminat';
   protected static ?string $pluralModelLabel = 'Daftar Peminat';
   protected static string|UnitEnum|null $navigationGroup = 'Konten JTI';
+  protected static ?int $navigationSort = 4;
 
   public static function infolist(Schema $schema): Schema
   {

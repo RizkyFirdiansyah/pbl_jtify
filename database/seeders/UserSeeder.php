@@ -22,7 +22,28 @@ class UserSeeder extends Seeder
             'phone' => '081234567890',
         ]);
 
-        // Atur Faker untuk dummy user tambahan jika diperlukan
-        // User::factory(10)->create(['role' => 'user']);
+        // Dummy User
+        for ($i = 1; $i <= 30; $i++) {
+
+            User::create([
+                'name' => 'User ' . $i,
+                'email' => 'user' . $i . '@gmail.com',
+                'password' => Hash::make('password'),
+                'role' => 'reguler',
+                'phone' => '08123' . rand(1000000, 9999999),
+            ]);
+        }
+
+        // Dummy User
+        for ($i = 1; $i <= 10; $i++) {
+
+            User::create([
+                'name' => 'Collaborator ' . $i,
+                'email' => 'collaborator' . $i . '@gmail.com',
+                'password' => Hash::make('password'),
+                'role' => 'collaborator',
+                'phone' => '08123' . rand(1000000, 9999999),
+            ]);
+        }
     }
 }
