@@ -5,17 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JTIFY - Beasiswa</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-    </style>
 </head>
-<body class="bg-white overflow-x-hidden">
+<body class="bg-white overflow-x-hidden font-sans">
 
     {{-- ================================
          NAVBAR
@@ -39,7 +33,7 @@
     <section class="relative z-10 pt-16 pb-24 px-4 md:px-8 lg:px-10">
         <div class="max-w-7xl mx-auto">
 
-            {{-- SECTION TITLE --}}
+            {{-- SECTION TITLE + INFO SEARCH --}}
             <div class="mb-10">
                 <p class="uppercase tracking-[0.25em] text-xs font-bold text-[#8FA9C0] mb-3">
                     Explore Beasiswa
@@ -51,6 +45,21 @@
                         <span class="absolute left-0 bottom-1 w-full h-3 bg-[#DDEBFF] -z-10 rounded-sm"></span>
                     </span>
                 </h2>
+
+                @if(!empty($q))
+                <div class="mt-4 flex items-center gap-3 flex-wrap">
+                    <p class="text-sm text-gray-500">
+                        Hasil pencarian untuk: <strong class="text-[#1A2E5A]">&ldquo;{{ $q }}&rdquo;</strong>
+                    </p>
+                    <a href="{{ route('beasiswa') }}"
+                       class="inline-flex items-center gap-1.5 bg-[#EEF1FF] text-[#3B4C7E] text-xs font-semibold px-3 py-1.5 rounded-full hover:bg-[#D8DCFF] transition-colors">
+                        Hapus filter
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </a>
+                </div>
+                @endif
             </div>
 
             {{-- GRID --}}
@@ -65,16 +74,24 @@
                     ['title' => 'Beasiswa Bank Indonesia Mahasiswa',     'deadline' => '26 Jul 2025'],
                     ['title' => 'Beasiswa XL Future Leaders 2025',       'deadline' => '02 Agu 2025'],
                 ];
+
+                // Filter berdasarkan query jika ada
+                if (!empty($q)) {
+                    $beasiswaData = array_filter($beasiswaData, function($item) use ($q) {
+                        return stripos($item['title'], $q) !== false;
+                    });
+                }
             @endphp
 
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            @if(count($beasiswaData) > 0)
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
 
                 @foreach ($beasiswaData as $i => $item)
                     <a href="{{ route('beasiswa.detail') }}"
                        class="group relative block rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_18px_45px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-500 cursor-pointer"
                        style="aspect-ratio: 2/3;"
                        data-aos="fade-up"
-                       data-aos-delay="{{ $i * 70 }}">
+                       data-aos-delay="{{ $loop->index * 70 }}">
 
                         {{-- Poster Placeholder --}}
                         <div class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#E8EEF8] to-[#D0DCEE] group-hover:from-[#D0DCEE] group-hover:to-[#BBC9E0] transition-colors duration-500">
@@ -82,7 +99,6 @@
                                 <path d="M21 19V5C21 3.9 20.1 3 19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19ZM8.5 13.5L11 16.51L14.5 12L19 18H5L8.5 13.5Z"/>
                             </svg>
                         </div>
-
 
                         {{-- Content Overlay --}}
                         <div class="absolute bottom-0 left-0 right-0 z-10 p-4"
@@ -115,6 +131,27 @@
                 @endforeach
 
             </div>
+            @else
+            {{-- EMPTY STATE --}}
+            <div class="flex flex-col items-center justify-center py-24 text-center">
+                <svg class="w-32 h-32 mb-6 text-[#D0DCEE]" viewBox="0 0 200 200" fill="none">
+                    <circle cx="100" cy="100" r="90" fill="#EEF1FF"/>
+                    <circle cx="88" cy="88" r="40" stroke="#B8CAEE" stroke-width="8"/>
+                    <path d="M118 118 L150 150" stroke="#B8CAEE" stroke-width="8" stroke-linecap="round"/>
+                    <path d="M74 88 Q88 75 102 88" stroke="#8FA9C0" stroke-width="4" stroke-linecap="round" fill="none"/>
+                    <circle cx="78" cy="82" r="4" fill="#8FA9C0"/>
+                    <circle cx="98" cy="82" r="4" fill="#8FA9C0"/>
+                </svg>
+                <h2 class="text-2xl font-bold text-[#1A2E5A] mb-3">Tidak Ditemukan</h2>
+                <p class="text-gray-400 text-sm max-w-sm leading-relaxed mb-8">
+                    Tidak ada beasiswa yang cocok dengan <strong>&ldquo;{{ $q }}&rdquo;</strong>. Coba kata kunci lain.
+                </p>
+                <a href="{{ route('beasiswa') }}"
+                   class="bg-[#3B4C7E] hover:bg-[#2D3A61] text-white px-6 py-3 rounded-full text-sm font-bold transition-all duration-300 hover:scale-105 shadow-[0_4px_15px_rgba(59,76,126,0.35)]">
+                    Lihat Semua Beasiswa
+                </a>
+            </div>
+            @endif
 
             {{-- ================================
                  PAGINATION
