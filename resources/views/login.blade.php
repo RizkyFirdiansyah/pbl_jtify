@@ -4,72 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JTIFY - Masuk</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Poppins', sans-serif; }
-
-        /* ── Background: ganti src di bawah dengan file SVG awan kamu ── */
-        .bg-login {
-            background-image: url('{{ asset("assets/bg-login.svg") }}');
-            background-size: cover;       /* 100% width & height */
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        /* Card glass */
-        .card-glass {
-            background: rgba(255, 255, 255, 0.72);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.85);
-        }
-
-        /* Input focus ring */
-        .input-field:focus {
-            outline: none;
-            border-color: #3B4C7E;
-            box-shadow: 0 0 0 3px rgba(59, 76, 126, 0.12);
-        }
-
-        /* Button hover */
-        .btn-login:hover { background: #2D3A61; }
-        .btn-login:active { transform: scale(0.98); }
-
-        /* Icon wrapper */
-        .icon-box {
-            width: 52px; height: 52px;
-            background: #fff;
-            border-radius: 14px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.10);
-            display: flex; align-items: center; justify-content: center;
-        }
-
-        /* Back button */
-        .btn-back {
-            width: 44px; height: 44px;
-            background: #486284;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 14px rgba(72,98,132,0.35);
-            transition: background 0.2s, transform 0.15s;
-        }
-        .btn-back:hover  { background: #3B4C7E; }
-        .btn-back:active { transform: scale(0.93); }
-
-        /* Fade-in card */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(24px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-        .anim-card { animation: fadeUp 0.55s cubic-bezier(0.34,1.2,0.64,1) forwards; }
-    </style>
 </head>
-<body class="bg-login min-h-screen flex flex-col py-8">
+<body class="min-h-screen flex flex-col py-8 bg-cover bg-center bg-no-repeat" style="background-image: url('{{ asset("assets/bg-login.svg") }}');">
 
     <!-- Tombol Back -->
     <div class="sticky top-5 z-50 px-8 mb-4">
-        <a href="{{ url()->previous() }}" class="btn-back inline-flex" title="Kembali">
+        <a href="{{ url()->previous() }}" class="w-11 h-11 bg-[#486284] rounded-full flex items-center justify-center shadow-[0_4px_14px_rgba(72,98,132,0.35)] transition-all duration-200 hover:bg-[#3B4C7E] active:scale-[0.93] inline-flex" title="Kembali">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                 <path d="M15 19l-7-7 7-7" stroke="white" stroke-width="2.5"
                       stroke-linecap="round" stroke-linejoin="round"/>
@@ -84,7 +26,7 @@
 
             <!-- Icon -->
             <div class="flex justify-center mb-5">
-                <div class="icon-box">
+                <div class="w-[52px] h-[52px] bg-white rounded-[14px] shadow-[0_2px_12px_rgba(0,0,0,0.10)] flex items-center justify-center">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                         <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"
                               stroke="#1A2E5A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -117,7 +59,7 @@
                         placeholder="Email"
                         required
                         value="{{ old('email') }}"
-                        class="input-field w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 bg-white/70 text-sm text-gray-700 placeholder-gray-400 transition-all duration-200"
+                        class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 bg-white/70 text-sm text-gray-700 placeholder-gray-400 transition-all duration-200 focus:outline-none focus:border-[#3B4C7E] focus:ring-3 focus:ring-[#3B4C7E]/12"
                     />
                 </div>
 
@@ -135,7 +77,7 @@
                         id="passwordInput"
                         placeholder="Kata Sandi"
                         required
-                        class="input-field w-full pl-10 pr-11 py-3 rounded-xl border border-gray-200 bg-white/70 text-sm text-gray-700 placeholder-gray-400 transition-all duration-200"
+                        class="w-full pl-10 pr-11 py-3 rounded-xl border border-gray-200 bg-white/70 text-sm text-gray-700 placeholder-gray-400 transition-all duration-200 focus:outline-none focus:border-[#3B4C7E] focus:ring-3 focus:ring-[#3B4C7E]/12"
                     />
                     <!-- Toggle show/hide password -->
                     <button type="button" onclick="togglePassword()"
@@ -162,7 +104,7 @@
                 
                 <!-- Tombol Masuk -->
                 <button type="submit"
-                    class="btn-login w-full bg-[#3B4C7E] text-white font-semibold text-sm py-3.5 rounded-xl shadow-[0_4px_16px_rgba(59,76,126,0.35)] transition-all duration-200 mt-2">
+                    class="w-full bg-[#3B4C7E] text-white font-semibold text-sm py-3.5 rounded-xl shadow-[0_4px_16px_rgba(59,76,126,0.35)] transition-all duration-200 mt-2 hover:bg-[#2D3A61] active:scale-98">
                     Masuk
                 </button>
             </form>

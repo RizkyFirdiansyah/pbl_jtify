@@ -11,15 +11,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Rubik:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background: rgba(255, 255, 255, 0.95);
-            min-height: 100vh;
-        }
-    </style>
 </head>
-<body class="antialiased relative overflow-x-hidden flex flex-col min-h-screen">
+<body class="antialiased relative overflow-x-hidden flex flex-col min-h-screen font-sans bg-white/95">
 
     <!-- NAVBAR COMPONENT -->
     @include('components.navbar')
@@ -51,12 +44,12 @@
             <!-- Text Area Container -->
             <div class="w-full bg-[#FFFFFF] shadow-[2px_4px_12px_rgba(0,0,0,0.1)] rounded-[10px] p-6 h-[157px]">
                 <textarea 
-                    class="w-full h-full resize-none border-none outline-none font-['Rubik',sans-serif] text-[15px] leading-[30px] text-[#6A7581] placeholder-[#6A7581] bg-transparent" 
+                    class="w-full h-full resize-none border-none outline-none font-['Poppins',poppins] text-[15px] leading-[30px] text-[#6A7581] placeholder-[#6A7581] bg-transparent" 
                     placeholder="Bagaimana pengalaman Anda menggunakan platform ini?"></textarea>
             </div>
             
             <!-- Submit Button -->
-            <button class="w-full h-[50px] bg-gradient-to-br from-[#7784C6] to-[#2A4BB6] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] rounded-[20px] font-['Plus_Jakarta_Sans',sans-serif] font-bold text-[23px] text-[#FFFFFF] tracking-[-0.02em] hover:scale-105 transition-transform duration-300 flex justify-center items-center">
+            <button class="w-full h-[50px] bg-gradient-to-br from-[#7784C6] to-[#2A4BB6] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] rounded-[20px] font-['poppins',poppins] font-bold text-[23px] text-[#FFFFFF] tracking-[-0.02em] hover:scale-105 transition-transform duration-300 flex justify-center items-center">
                 Kirim
             </button>
 

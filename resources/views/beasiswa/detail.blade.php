@@ -1,241 +1,23 @@
+@php
+    $information = \App\Models\Information::whereHas('category', fn($q) => $q->where('slug', 'beasiswa'))->first();
+    $informationId = $information ? $information->id : 1;
+    $informationTitle = $information ? $information->title : 'Beasiswa Prestasi Mahasiswa Unggulan';
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Beasiswa</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(179.9deg, #FFFFFF 73.43%, rgba(0, 125, 251, 0.05) 99.91%);
-            min-height: 100vh;
-        }
-
-        .bg-btn-gradient {
-            background: linear-gradient(123.03deg, #606EB2 11.1%, #313B6D 56.83%);
-        }
-
-        /* Custom Scrollbar untuk Box Deskripsi */
-        .scrollable-content::-webkit-scrollbar {
-            width: 6px;
-        }
-        .scrollable-content::-webkit-scrollbar-track {
-            background: #F4F6FF;
-            border-radius: 10px;
-        }
-        .scrollable-content::-webkit-scrollbar-thumb {
-            background: #CBD5E1;
-            border-radius: 10px;
-        }
-        .scrollable-content::-webkit-scrollbar-thumb:hover {
-            background: #94A3B8;
-        }
-
-        /* ── Slider ── */
-        .slider-track {
-            display: flex;
-            gap: 1.5rem;
-            padding: 0.5rem 0.5rem 1.5rem;
-            transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            will-change: transform;
-        }
-
-        .slider-wrapper {
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* Dot indicators */
-        .slider-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #DDE0E4;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: none;
-        }
-
-        .slider-dot.active {
-            background: #313B6D;
-            width: 24px;
-            border-radius: 4px;
-        }
-
-        /* ── Modal ── */
-        .modal-backdrop {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.55);
-            backdrop-filter: blur(4px);
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            padding: 1rem;
-        }
-
-        .modal-backdrop.open {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal-box {
-            background: white;
-            border-radius: 24px;
-            padding: 2.5rem 2rem;
-            max-width: 420px;
-            width: 100%;
-            transform: translateY(24px) scale(0.96);
-            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.18);
-            text-align: center;
-        }
-
-        .modal-backdrop.open .modal-box {
-            transform: translateY(0) scale(1);
-        }
-
-        .modal-icon {
-            width: 72px;
-            height: 72px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #EEF1FF 0%, #D8DCF5 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.25rem;
-        }
-
-        .modal-btn-confirm {
-            background: linear-gradient(123.03deg, #606EB2 11.1%, #313B6D 56.83%);
-            color: white;
-            border: none;
-            padding: 0.75rem 2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            box-shadow: 0 4px 15px rgba(49, 59, 109, 0.35);
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .modal-btn-confirm:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(49, 59, 109, 0.45);
-        }
-
-        .modal-btn-cancel {
-            background: transparent;
-            color: #898383;
-            border: 1.5px solid #DDE0E4;
-            padding: 0.75rem 2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .modal-btn-cancel:hover {
-            background: #f5f5f5;
-            border-color: #c0c0c0;
-        }
-
-        /* ── Action Buttons ── */
-        .btn-daftar {
-            background: linear-gradient(123.03deg, #606EB2 11.1%, #313B6D 56.83%);
-            color: white;
-            border: none;
-            padding: 0.85rem 2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-            box-shadow: 0 4px 18px rgba(49, 59, 109, 0.35);
-            font-family: 'Poppins', sans-serif;
-            text-decoration: none;
-        }
-
-        .btn-daftar:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 28px rgba(49, 59, 109, 0.45);
-        }
-
-        .btn-daftar:active {
-            transform: scale(0.97);
-        }
-
-        .btn-panduan {
-            background: white;
-            color: #313B6D;
-            border: 2px solid #606EB2;
-            padding: 0.85rem 1.75rem;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            transition: all 0.25s ease;
-            font-family: 'Poppins', sans-serif;
-            text-decoration: none;
-            box-shadow: 0 2px 10px rgba(96, 110, 178, 0.15);
-        }
-
-        .btn-panduan:hover {
-            background: #EEF1FF;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(96, 110, 178, 0.25);
-        }
-
-        .btn-panduan:active {
-            transform: scale(0.97);
-        }
-
-        /* icon action buttons */
-        .btn-icon {
-            width: 46px;
-            height: 46px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            border: none;
-        }
-
-        .btn-icon:hover {
-            transform: scale(1.12);
-        }
-
-        .btn-icon.gradient {
-            background: linear-gradient(123.03deg, #606EB2 11.1%, #313B6D 56.83%);
-            color: white;
-            box-shadow: 0 4px 12px rgba(49, 59, 109, 0.3);
-        }
-    </style>
 </head>
-<body class="antialiased text-[#898383] relative" style="overflow-x: clip;">
+<body class="antialiased text-[#898383] relative font-sans" style="background: linear-gradient(179.9deg, #FFFFFF 73.43%, rgba(0, 125, 251, 0.05) 99.91%); min-height: 100vh; overflow-x: clip;">
 
     @include('components.navbar')
 
@@ -246,6 +28,7 @@
         'showSearch' => false
     ])
 
+    <!-- Back Button -->
     <div class="fixed top-32 left-6 md:left-10 z-[999]">
         <button onclick="history.back()"
                 class="w-[50px] h-[50px] bg-[#313B6D]/90 backdrop-blur-md hover:bg-[#313B6D] text-white rounded-full flex items-center justify-center shadow-[0_8px_30px_rgba(49,59,109,0.4)] hover:shadow-[0_15px_35px_rgba(49,59,109,0.6)] hover:scale-110 transition-all duration-300 group"
@@ -257,13 +40,16 @@
         </button>
     </div>
 
+    <!-- Toast Container -->
+    <div id="toastContainer" class="fixed top-24 right-6 z-[9999] flex flex-col gap-3 pointer-events-none"></div>
+
     <main class="max-w-[1440px] mx-auto px-6 lg:px-20 pt-8 pb-32">
 
         {{-- ── Info Bar ── --}}
         <div class="w-full bg-white/90 border border-[#898383]/30 rounded-2xl p-6 shadow-sm flex flex-col md:flex-row justify-between items-center gap-6 relative z-10 backdrop-blur-sm" data-aos="fade-up">
-            <div class="flex flex-wrap md:flex-nowrap items-center w-full justify-between gap-6 md:gap-0">
+            <div class="flex flex-col md:flex-row items-start md:items-center w-full justify-between gap-6 md:gap-0">
 
-                <div class="flex-1 flex items-center gap-4">
+                <div class="w-full md:flex-1 flex items-center gap-4">
                     <div class="text-[#696262]">
                         <svg width="25" height="25" viewBox="0 0 24 24" fill="none">
                             <path d="M19 4H5C3.89543 4 3 4.89543 3 6V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V6C21 4.89543 20.1046 4 19 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -271,14 +57,14 @@
                         </svg>
                     </div>
                     <div>
-                        <div class="text-[19px] font-medium text-[#898383]">Tanggal</div>
-                        <div class="text-[19px] font-medium text-[#273266]">tgl-bln-thn</div>
+                        <div class="text-[16px] md:text-[19px] font-medium text-[#898383]">Tanggal</div>
+                        <div class="text-[16px] md:text-[19px] font-medium text-[#273266]">tgl-bln-thn</div>
                     </div>
                 </div>
 
                 <div class="hidden md:block w-[1px] h-12 bg-[#DDE0E4]"></div>
 
-                <div class="flex-1 flex items-center gap-4 md:pl-4 lg:pl-8">
+                <div class="w-full md:flex-1 flex items-center gap-4 md:pl-4 lg:pl-8">
                     <div class="text-[#555555]">
                         <svg width="25" height="25" viewBox="0 0 24 24" fill="none">
                             <path d="M12 4L2 9L12 14L22 9L12 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -287,14 +73,14 @@
                         </svg>
                     </div>
                     <div>
-                        <div class="text-[19px] font-medium text-[#898383]">Pendidikan</div>
-                        <div class="text-[19px] font-medium text-[#273266]">S1/D4/D3/S2</div>
+                        <div class="text-[16px] md:text-[19px] font-medium text-[#898383]">Pendidikan</div>
+                        <div class="text-[16px] md:text-[19px] font-medium text-[#273266]">S1/D4/D3/S2</div>
                     </div>
                 </div>
 
                 <div class="hidden md:block w-[1px] h-12 bg-[#DDE0E4]"></div>
 
-                <div class="flex-1 flex items-center gap-4 md:pl-4 lg:pl-8">
+                <div class="w-full md:flex-1 flex items-center gap-4 md:pl-4 lg:pl-8">
                     <div class="text-[#555555]">
                         <svg width="25" height="25" viewBox="0 0 24 24" fill="none">
                             <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -302,8 +88,8 @@
                         </svg>
                     </div>
                     <div>
-                        <div class="text-[19px] font-medium text-[#898383]">Syarat Utama</div>
-                        <div class="text-[19px] font-medium text-[#273266]">syarat utama</div>
+                        <div class="text-[16px] md:text-[19px] font-medium text-[#898383]">Syarat Utama</div>
+                        <div class="text-[16px] md:text-[19px] font-medium text-[#273266]">syarat utama</div>
                     </div>
                 </div>
             </div>
@@ -345,41 +131,42 @@
                     </div>
                 </div>
 
-                {{-- ── Bar Tombol Aksi (Melebar Pas Sejajar Sesuai Batas Atas) ── --}}
-                <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-6 pt-4 border-t border-gray-100">
+                {{-- ── Bar Tombol Aksi ── --}}
+                <div class="flex flex-col gap-2.5 pt-4 border-t border-gray-100 md:flex-row md:items-center">
 
-                    <div class="flex-1 flex flex-col sm:flex-row items-stretch gap-3">
-                        <button onclick="openModal()" class="btn-daftar flex-1">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                            Daftar Sekarang
-                        </button>
+                    {{-- Baris 1 (mobile): Daftar Sekarang full width --}}
+                    <button onclick="openModal()" class="btn-daftar w-full md:w-auto md:flex-1">
+                        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        Daftar Sekarang
+                    </button>
 
+                    {{-- Baris 2 (mobile): Unduh Panduan + icons sejajar --}}
+                    <div class="flex items-center gap-2.5 w-full md:flex-1">
                         <a href="#" class="btn-panduan flex-1">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                             </svg>
                             Unduh Buku Panduan
                         </a>
-                    </div>
-
-                    <div class="flex gap-2 justify-center sm:justify-end shrink-0">
-                        <button class="btn-icon gradient" title="Bookmark">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
-                            </svg>
-                        </button>
-                        <button class="btn-icon gradient" title="Suka">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                            </svg>
-                        </button>
-                        <button class="btn-icon gradient" title="Bagikan">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
-                            </svg>
-                        </button>
+                        <div class="flex gap-2 shrink-0">
+                            <button class="btn-icon gradient" title="Bookmark">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+                                </svg>
+                            </button>
+                            <button class="btn-icon gradient" title="Suka">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                </svg>
+                            </button>
+                            <button class="btn-icon gradient" title="Bagikan">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
 
                 </div>
@@ -447,42 +234,33 @@
 
     {{-- ── MODAL KONFIRMASI DAFTAR ── --}}
     <div id="modalBackdrop" class="modal-backdrop" onclick="handleBackdropClick(event)">
-        <div class="modal-box" id="modalBox">
+        <div class="modal-box max-w-[480px] w-full" id="modalBox">
             <div class="modal-icon">
                 <svg class="w-9 h-9 text-[#313B6D]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
             </div>
 
-            <h3 class="text-[#273266] font-bold text-xl mb-2">Yakin ingin mendaftar?</h3>
-            <p class="text-[#898383] text-sm leading-relaxed mb-8">
-                Pastikan kamu sudah membaca seluruh persyaratan dan siap untuk mengikuti proses pendaftaran beasiswa ini.
+            <h3 class="text-[#273266] font-bold text-xl mb-3">Konfirmasi Minat</h3>
+            <p class="text-[#486284] font-medium text-sm leading-relaxed mb-3">
+                Apakah Anda berminat mengikuti {{ $informationTitle }}?
+            </p>
+            <p class="text-[#898383] text-xs leading-relaxed mb-6">
+                Dengan mendaftar minat, Anda akan mendapatkan notifikasi pengingat menjelang deadline. Data Anda akan kami gunakan untuk keperluan pendataan minat mahasiswa.
             </p>
 
-            <div class="bg-[#F4F6FF] rounded-xl p-4 mb-8 text-left space-y-2">
-                <div class="flex items-center gap-2 text-sm text-[#486284]">
-                    <svg class="w-4 h-4 text-[#606EB2] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-                    </svg>
-                    Saya sudah membaca persyaratan
-                </div>
-                <div class="flex items-center gap-2 text-sm text-[#486284]">
-                    <svg class="w-4 h-4 text-[#606EB2] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-                    </svg>
-                    Saya memenuhi kriteria yang ditentukan
-                </div>
-                <div class="flex items-center gap-2 text-sm text-[#486284]">
-                    <svg class="w-4 h-4 text-[#606EB2] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-                    </svg>
-                    Saya siap melanjutkan proses pendaftaran
-                </div>
+            <div class="bg-[#F4F6FF] rounded-xl p-4 mb-6 text-left">
+                <label class="flex items-start gap-2.5 cursor-pointer select-none">
+                    <input type="checkbox" id="consentCheckbox" class="mt-1 rounded border-gray-300 text-[#313B6D] focus:ring-[#313B6D] focus:ring-opacity-50">
+                    <span class="text-xs text-[#486284] leading-relaxed">
+                        Saya menyetujui pengolahan data pribadi saya untuk keperluan pendataan minat.
+                    </span>
+                </label>
             </div>
 
             <div class="flex gap-3 justify-center">
                 <button class="modal-btn-cancel" onclick="closeModal()">Batal</button>
-                <button class="modal-btn-confirm" onclick="confirmDaftar()">Ya, Daftar Sekarang</button>
+                <button class="modal-btn-confirm" id="btnConfirmInterest" onclick="confirmDaftar()" disabled style="opacity: 0.5; cursor: not-allowed;">Ya, Saya Berminat</button>
             </div>
         </div>
     </div>
@@ -509,9 +287,103 @@
         /* ════════════════════════════════
            MODAL
         ════════════════════════════════ */
+        const isLoggedIn = {{ Auth::check() ? 'true' : 'false' }};
+        const informationId = {{ $informationId }};
+        let hasRegisteredInterest = false;
+
+        async function checkInterestStatus() {
+            if (!isLoggedIn) return;
+            try {
+                const response = await fetch(`/api/interests/check?information_id=${informationId}`, {
+                    headers: { 'Accept': 'application/json' }
+                });
+                const result = await response.json();
+                if (result.is_active) {
+                    hasRegisteredInterest = true;
+                }
+            } catch (err) {
+                console.error('Error checking interest status:', err);
+            }
+        }
+
+        // Show toast notification helper
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification pointer-events-auto bg-white border border-gray-150 shadow-[0_10px_40px_rgba(0,0,0,0.08)] rounded-2xl p-4 flex items-center gap-3.5 max-w-sm';
+            toast.style.transform = 'translateX(120%)';
+            toast.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease';
+            
+            let iconMarkup = '';
+            if (type === 'success') {
+                iconMarkup = `
+                    <div class="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-500 shrink-0">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>`;
+            } else if (type === 'warning') {
+                iconMarkup = `
+                    <div class="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center text-amber-500 shrink-0">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>`;
+            } else {
+                iconMarkup = `
+                    <div class="w-8 h-8 rounded-full bg-rose-50 flex items-center justify-center text-rose-500 shrink-0">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>`;
+            }
+
+            toast.innerHTML = `
+                ${iconMarkup}
+                <div class="flex-1">
+                    <p class="text-sm font-semibold text-gray-700">${message}</p>
+                </div>
+            `;
+
+            container.appendChild(toast);
+            
+            // Trigger animation
+            setTimeout(() => {
+                toast.style.transform = 'translateX(0)';
+            }, 50);
+            
+            // Auto dismiss
+            setTimeout(() => {
+                toast.style.transform = 'translateX(120%)';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 400);
+            }, 4000);
+        }
+
         function openModal() {
+            if (!isLoggedIn) {
+                showToast('Silakan login terlebih dahulu untuk menyatakan minat.', 'error');
+                return;
+            }
+
+            if (hasRegisteredInterest) {
+                showToast('Anda sudah menyatakan minat pada item ini', 'warning');
+                return;
+            }
+
             document.getElementById('modalBackdrop').classList.add('open');
             document.body.style.overflow = 'hidden';
+            
+            // Reset checkbox state
+            const consentCheckbox = document.getElementById('consentCheckbox');
+            const btnConfirmInterest = document.getElementById('btnConfirmInterest');
+            if (consentCheckbox && btnConfirmInterest) {
+                consentCheckbox.checked = false;
+                btnConfirmInterest.disabled = true;
+                btnConfirmInterest.style.opacity = '0.5';
+                btnConfirmInterest.style.cursor = 'not-allowed';
+            }
         }
 
         function closeModal() {
@@ -523,13 +395,71 @@
             if (e.target === document.getElementById('modalBackdrop')) closeModal();
         }
 
-        function confirmDaftar() {
-            closeModal();
-            window.open('#', '_blank');
+        async function confirmDaftar() {
+            const consentCheckbox = document.getElementById('consentCheckbox');
+            if (!consentCheckbox || !consentCheckbox.checked) return;
+
+            const btnConfirmInterest = document.getElementById('btnConfirmInterest');
+            btnConfirmInterest.disabled = true;
+            btnConfirmInterest.innerText = 'Mengirim...';
+
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            try {
+                const response = await fetch('/api/interests/toggle', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        information_id: informationId,
+                        consented: true
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.is_active) {
+                    hasRegisteredInterest = true;
+                    showToast('Minat Anda telah tercatat!', 'success');
+                } else {
+                    showToast(result.message || 'Terjadi kesalahan.', 'error');
+                }
+            } catch (err) {
+                showToast('Terjadi kesalahan koneksi.', 'error');
+                console.error(err);
+            } finally {
+                btnConfirmInterest.disabled = false;
+                btnConfirmInterest.innerText = 'Ya, Saya Berminat';
+                closeModal();
+            }
         }
 
         document.addEventListener('keydown', e => {
             if (e.key === 'Escape') closeModal();
+        });
+
+        // Checkbox event listener
+        document.addEventListener('DOMContentLoaded', () => {
+            checkInterestStatus();
+
+            const consentCheckbox = document.getElementById('consentCheckbox');
+            const btnConfirmInterest = document.getElementById('btnConfirmInterest');
+            if (consentCheckbox && btnConfirmInterest) {
+                consentCheckbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        btnConfirmInterest.disabled = false;
+                        btnConfirmInterest.style.opacity = '1';
+                        btnConfirmInterest.style.cursor = 'pointer';
+                    } else {
+                        btnConfirmInterest.disabled = true;
+                        btnConfirmInterest.style.opacity = '0.5';
+                        btnConfirmInterest.style.cursor = 'not-allowed';
+                    }
+                });
+            }
         });
 
         /* ════════════════════════════════

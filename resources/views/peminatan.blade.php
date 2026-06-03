@@ -11,15 +11,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Poppins', 'Plus Jakarta Sans', sans-serif;
-            background: linear-gradient(179.9deg, #FFFFFF 73.43%, rgba(0, 125, 251, 0.05) 99.91%);
-            min-height: 100vh;
-        }
-    </style>
 </head>
-<body class="antialiased text-[#898383] relative overflow-x-hidden">
+<body class="antialiased text-[#898383] relative overflow-x-hidden font-sans" style="background: linear-gradient(179.9deg, #FFFFFF 73.43%, rgba(0, 125, 251, 0.05) 99.91%); min-height: 100vh;">
 
     <!-- NAVBAR COMPONENT -->
     @include('components.navbar')
