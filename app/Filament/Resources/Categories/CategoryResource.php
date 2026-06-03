@@ -26,6 +26,7 @@ class CategoryResource extends Resource
     protected static ?string $navigationLabel = 'Kategori Konten';
     protected static ?string $pluralModelLabel = 'Kategori Konten';
     protected static string|UnitEnum|null $navigationGroup = 'Konten JTI';
+    protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema
     {

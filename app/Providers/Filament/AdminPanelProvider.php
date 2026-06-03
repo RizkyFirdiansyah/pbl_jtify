@@ -18,7 +18,14 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use App\Filament\Widgets\DashboardStats;
+use App\Filament\Widgets\TotalInformationByCategory;
+use App\Filament\Widgets\InformationByCategoryChart;
+use App\Filament\Widgets\TopRecruitmentsByInterestWidget;
+use App\Filament\Widgets\TopTreeLomba;
+use App\Filament\Widgets\TopTreeWorkshop;
+use App\Filament\Widgets\TopTreeBeasiswa;
+use App\Filament\Widgets\CategoriesInformationBarChart;
+use App\Filament\Widgets\TotalUser;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -41,9 +48,20 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
+            ->navigationGroups([
+                'Konten JTI',
+                'Manajemen Akses',
+                'Sistem',
+            ])
             ->widgets([
-                DashboardStats::class,
+                TotalInformationByCategory::class,
+                TotalUser::class,
+                TopTreeWorkshop::class,
+                TopTreeLomba::class,
+                TopTreeBeasiswa::class,
+                //CategoriesInformationBarChart::class,
+                //InformationByCategoryChart::class,
+                //TopRecruitmentsByInterestWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
