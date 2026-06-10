@@ -95,7 +95,7 @@ class PageContentSeeder extends Seeder
         ['key' => 'login_label', 'type' => 'text', 'value' => 'Login', 'order' => 5],
         ['key' => 'profile_setting_label', 'type' => 'text', 'value' => 'Setting Profile', 'order' => 6],
         ['key' => 'profile_bookmark_label', 'type' => 'text', 'value' => 'Bookmark', 'order' => 7],
-        ['key' => 'profile_notifikasi_label', 'type' => 'text', 'value' => 'Notifikasi', 'order' => 8],
+        ['key' => 'profile_diminati_label', 'type' => 'text', 'value' => 'Diminati', 'order' => 8],
         ['key' => 'logout_label', 'type' => 'text', 'value' => 'Log Out', 'order' => 9],
       ],
     ];
