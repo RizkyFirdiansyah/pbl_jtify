@@ -13,13 +13,30 @@ class Collaborator extends Model
     'reviewed_by',
   ];
 
-  public function user()
-  {
-    return $this->belongsTo(User::class);
-  }
+    protected static function booted()
+    {
+        static::updating(function (Collaborator $collaborator) {
+            if ($collaborator->isDirty('status') && in_array($collaborator->status, ['approved', 'rejected'])) {
+                $collaborator->reviewed_by = auth()->id();
+            }
+        });
 
-  public function reviewer()
-  {
-    return $this->belongsTo(User::class, 'reviewed_by');
-  }
+        static::updated(function (Collaborator $collaborator) {
+            if ($collaborator->isDirty('status') && $collaborator->status === 'approved') {
+                $collaborator->user()->update(['role' => 'collaborator']);
+            } elseif ($collaborator->isDirty('status') && $collaborator->status === 'rejected') {
+                $collaborator->user()->update(['role' => 'reguler']);
+            }
+        });
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function reviewer()
+    {
+        return $this->belongsTo(User::class, 'reviewed_by');
+    }
 }
