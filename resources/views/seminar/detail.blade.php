@@ -21,7 +21,7 @@
 
     @include('components.navbar')
 
-    @include('components.header-konten', [
+    @include('components.header-detail', [
         'title'      => 'DETAIL SEMINAR',
         'label'      => 'Explore Seminar',
         'subtitle'   => 'Pelajari detail materi, pembicara, dan jadwal pelaksanaan seminar terbaru',
@@ -122,11 +122,12 @@
             <div class="w-full lg:w-2/3 flex flex-col justify-between" data-aos="fade-left" data-aos-delay="100">
                 
                 <div class="flex flex-col flex-1">
-                    <h1 class="text-[30px] font-semibold text-[#486284] mb-6 text-center lg:text-left">Deskripsi Seminar/Workshop</h1>
+                    <h1 class="text-[30px] font-semibold text-[#486284] mb-6 text-center lg:text-left">Deskripsi Beasiswa</h1>
 
                     <div class="scrollable-content text-[15px] text-[#898383] text-justify space-y-6 leading-relaxed max-h-[260px] overflow-y-auto pr-3 mb-8">
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
                     </div>
                 </div>
 

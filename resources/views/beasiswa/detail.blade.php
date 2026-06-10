@@ -21,7 +21,7 @@
 
     @include('components.navbar')
 
-    @include('components.header-konten', [
+    @include('components.header-detail', [
         'title'      => 'DETAIL BEASISWA',
         'label'      => 'Explore Scholarship',
         'subtitle'   => 'Dapatkan info kriteria, persyaratan, dan cakupan beasiswa pilihan',

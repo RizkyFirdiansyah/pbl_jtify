@@ -18,7 +18,6 @@
     <!-- TENGAH: Nav pill -->
     <div id="navPill" class="flex items-center gap-1 backdrop-blur-md border rounded-full p-1 transition-all duration-400">
 
-        <!-- Beranda -->
         <a href="{{ route('home') }}"
            class="nav-link {{ request()->routeIs('home') ? 'nav-active' : '' }}
                   flex items-center justify-center px-3 sm:px-5 lg:px-8 py-2.5 rounded-full
@@ -30,7 +29,6 @@
             <span class="hidden sm:block">Beranda</span>
         </a>
 
-        <!-- Tips -->
         <a href="{{ route('tips') }}"
            class="nav-link {{ request()->routeIs('tips') ? 'nav-active' : '' }}
                   flex items-center justify-center px-3 sm:px-5 lg:px-8 py-2.5 rounded-full
@@ -42,7 +40,6 @@
             <span class="hidden sm:block">Tips</span>
         </a>
 
-        <!-- Tentang Kami -->
         <a href="{{ route('tentang') }}"
            class="nav-link {{ request()->routeIs('tentang') ? 'nav-active' : '' }}
                   flex items-center justify-center px-3 sm:px-5 lg:px-8 py-2.5 rounded-full
@@ -56,124 +53,158 @@
 
     </div>
 
-    <!-- KANAN: Guest → Login | Auth → Profile dropdown -->
+    <!-- KANAN: Guest → Login | Auth → Pill -->
     @guest
-        <a href="{{ route('login') }}"
-           id="navLogin"
-           class="px-4 sm:px-6 lg:px-10 py-2.5 sm:py-3 rounded-full font-semibold
-                  text-sm sm:text-base shadow-lg shrink-0
-                  hover:-translate-y-1 hover:shadow-2xl active:scale-95
-                  transition-all duration-400">
+        <a href="{{ route('login') }}" id="navLogin"
+           class="px-5 py-2 rounded-full font-semibold text-sm transition-all duration-300">
             Login
         </a>
     @endguest
 
     @auth
-        <!-- Profile Dropdown Wrapper -->
-        <div class="relative shrink-0" id="profileDropdownWrapper">
+    <div class="flex items-center shrink-0 relative">
 
-            <!-- Trigger Button -->
-            <button
-                id="profileBtn"
-                onclick="toggleProfileDropdown()"
-                class="profile-btn flex items-center gap-2 sm:gap-3
-                       px-2 sm:px-3 py-1.5 sm:py-2 rounded-full
-                       font-semibold text-sm sm:text-base
-                       shadow-lg transition-all duration-400
-                       hover:-translate-y-0.5 hover:shadow-xl active:scale-95">
+        {{-- Oval pill: Notif + Divider + Avatar + Nama + Chevron --}}
+        <div class="profile-pill flex items-center gap-2 px-2 py-1.5 rounded-full
+                    border font-semibold text-sm transition-all duration-300 cursor-pointer">
 
-                {{-- Avatar: inisial nama --}}
-                <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full
-                            flex items-center justify-center
-                            bg-white/30 text-inherit font-bold text-sm ring-2 ring-white/60">
+            {{-- Icon notif (klik = buka notif dropdown) --}}
+            <div class="relative" onclick="interceptNotif(event)">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center transition-colors">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+                        <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"
+                              stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <span id="notifDot" class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                </div>
+            </div>
+
+            {{-- Divider --}}
+            <span class="pill-divider w-px h-5 opacity-30"></span>
+
+            {{-- Avatar + Nama + Chevron (klik = buka profile dropdown) --}}
+            <div class="flex items-center gap-2" onclick="interceptProfile(event)">
+                <div class="profile-avatar w-7 h-7 rounded-full flex items-center justify-center
+                            font-bold text-xs shrink-0">
                     {{ strtoupper(substr(auth()->user()?->name ?? 'U', 0, 2)) }}
                 </div>
 
-                {{-- Nama (hidden di mobile sangat kecil) --}}
-                <span class="hidden sm:block max-w-[120px] truncate">
-                    {{ auth()->user()?->name ?? 'User' }}
-                </span>
-
-                {{-- Chevron --}}
-                <svg id="profileChevron"
-                     class="w-4 h-4 opacity-70 transition-transform duration-300"
-                     fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                <svg id="pillChevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                     class="mr-1 transition-transform duration-300 opacity-70">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
                 </svg>
-            </button>
-
-            <!-- Dropdown Menu -->
-            <div id="profileDropdown"
-                 class="profile-dropdown absolute right-0 mt-3 w-56
-                        rounded-2xl shadow-2xl border overflow-hidden
-                        opacity-0 invisible translate-y-2
-                        transition-all duration-300 ease-out z-50">
-
-                {{-- Header: nama & email --}}
-                <div class="dropdown-header px-4 py-3 border-b">
-                    <p class="font-bold text-sm truncate">{{ auth()->user()?->name ?? 'User' }}</p>
-                    <p class="text-xs opacity-60 truncate mt-0.5">{{ auth()->user()?->email ?? '' }}</p>
-                </div>
-
-                {{-- Menu items --}}
-                <div class="py-1.5">
-
-                    {{-- Setting Profile --}}
-                    <a href="{{ route('profile') }}"
-                       class="dropdown-item flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors duration-200">
-                        <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                        </svg>
-                        Setting Profile
-                    </a>
-
-                    {{-- Bookmark --}}
-                    <a href="{{ route('bookmark') }}"
-                       class="dropdown-item flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors duration-200">
-                        <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
-                        </svg>
-                        Bookmark
-                    </a>
-
-                    {{-- Notifikasi --}}
-                    <a href="{{ route('peminatan') }}"
-                       class="dropdown-item flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors duration-200">
-                        <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-                        </svg>
-                        Notifikasi
-                    </a>
-
-                </div>
-
-                {{-- Divider + Logout --}}
-                <div class="border-t py-1.5">
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit"
-                                class="dropdown-item dropdown-logout w-full flex items-center gap-3
-                                       px-4 py-2.5 text-sm font-medium transition-colors duration-200">
-                            <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/>
-                            </svg>
-                            Log Out
-                        </button>
-                    </form>
-                </div>
-
             </div>
         </div>
 
-        {{-- Overlay transparan untuk menutup dropdown saat klik luar --}}
-        <div id="profileOverlay"
-             class="fixed inset-0 z-40 hidden"
-             onclick="closeProfileDropdown()">
+        {{-- Dropdown notifikasi --}}
+        <div id="notifDropdown"
+             class="hidden absolute right-0 top-14 w-80 bg-white rounded-2xl
+                    shadow-[0_8px_40px_rgba(0,0,0,0.15)] border border-gray-100 z-50 overflow-hidden">
+
+            <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+                <span class="font-bold text-sm text-[#1A2E5A]">Notifikasi</span>
+                <button onclick="hapusSemuaNotif()"
+                        class="text-xs text-red-400 hover:text-red-600 font-medium transition-colors">
+                    Hapus semua
+                </button>
+            </div>
+
+            <div id="notifList" class="max-h-72 overflow-y-auto divide-y divide-gray-50
+                                       [&::-webkit-scrollbar]:w-1.5
+                                       [&::-webkit-scrollbar-track]:bg-gray-50
+                                       [&::-webkit-scrollbar-thumb]:bg-gray-200
+                                       [&::-webkit-scrollbar-thumb]:rounded-full">
+                @php
+                    $notifs = [
+                        ['title' => 'UI/UX Design Competition 2026', 'msg' => 'Tenggat waktu: 10 Jun 2025 — 3 hari lagi!', 'read' => false],
+                        ['title' => 'Beasiswa LPDP 2026',            'msg' => 'Tenggat waktu: 19 Jul 2025 — 42 hari lagi', 'read' => false],
+                        ['title' => 'Seminar AI & Technology',        'msg' => 'Tenggat waktu: 1 Jul 2025 — 24 hari lagi', 'read' => false],
+                        ['title' => 'Hackathon 2026',        'msg' => 'Tenggat waktu: 4 Jul 2025 — 27 hari lagi', 'read' => true],
+                        ['title' => 'Workshop Business 2026',        'msg' => 'Tenggat waktu: 1 Jul 2025 — 24 hari lagi', 'read' => true],
+                    ];
+                @endphp
+
+                @foreach($notifs as $i => $n)
+                <div id="notif-{{ $i }}"
+                     data-read="{{ $n['read'] ? 'true' : 'false' }}"
+                     class="flex items-start gap-3 px-4 py-3
+                            {{ $n['read'] ? 'bg-white' : 'bg-blue-50' }}
+                            transition-colors">
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-semibold text-[#1A2E5A] truncate">{{ $n['title'] }}</p>
+                        <p class="text-xs text-gray-400 mt-0.5">{{ $n['msg'] }}</p>
+                    </div>
+                    <button onclick="toggleNotifAction({{ $i }}, this)"
+                            class="flex-shrink-0 mt-0.5 transition-colors"
+                            title="{{ $n['read'] ? 'Hapus notifikasi' : 'Tandai dibaca' }}">
+                        @if($n['read'])
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-red-400">
+                                <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                            </svg>
+                        @else
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-green-500">
+                                <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                            </svg>
+                        @endif
+                    </button>
+                </div>
+                @endforeach
+            </div>
         </div>
+
+        {{-- Dropdown profil --}}
+        <div id="profileDropdown"
+             class="profile-dropdown absolute right-0 top-14 w-56
+                    rounded-2xl shadow-2xl border overflow-hidden
+                    opacity-0 invisible translate-y-2
+                    transition-all duration-300 ease-out z-50">
+
+            <div class="dropdown-header px-4 py-3 border-b">
+                <p class="font-bold text-sm truncate">{{ auth()->user()?->name ?? 'User' }}</p>
+                <p class="text-xs opacity-60 truncate mt-0.5">{{ auth()->user()?->email ?? '' }}</p>
+            </div>
+
+            <div class="py-1.5">
+                <a href="{{ route('profile') }}"
+                   class="dropdown-item flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors duration-200">
+                    <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                    Setting Profile
+                </a>
+
+                <a href="{{ route('bookmark') }}"
+                   class="dropdown-item flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors duration-200">
+                    <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+                    </svg>
+                    Bookmark
+                </a>
+            </div>
+
+            <div class="border-t py-1.5">
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit"
+                            class="dropdown-item dropdown-logout w-full flex items-center gap-3
+                                   px-4 py-2.5 text-sm font-medium transition-colors duration-200">
+                        <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/>
+                        </svg>
+                        Log Out
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        {{-- Overlay --}}
+        <div id="profileOverlay" class="fixed inset-0 z-40 hidden"
+             onclick="closeAllDropdowns()"></div>
+
+    </div>
     @endauth
 
 </nav>
@@ -195,22 +226,23 @@
         color: #1e3a5f;
         box-shadow: 0 1px 4px rgba(0,0,0,0.12);
     }
-
-    /* Login button – transparent mode */
     .nav-transparent #navLogin {
         background: #2D3A6B;
         color: white;
     }
-
-    /* Profile button – transparent mode */
-    .nav-transparent .profile-btn {
-        background: rgba(255,255,255,0.20);
+    .nav-transparent .profile-pill {
+        background: rgba(255,255,255,0.15);
+        border-color: rgba(255,255,255,0.35);
+        color: rgba(255,255,255,0.90);
+    }
+    .nav-transparent .profile-pill:hover {
+        background: rgba(255,255,255,0.25);
+    }
+    .nav-transparent .profile-avatar {
+        background: rgba(255,255,255,0.25);
         color: white;
-        border: 1px solid rgba(255,255,255,0.35);
     }
-    .nav-transparent .profile-btn:hover {
-        background: rgba(255,255,255,0.30);
-    }
+    .nav-transparent .pill-divider { background: white; }
 
     /* ══════════════════════════════════
        NAV SOLID (setelah scroll)
@@ -233,22 +265,24 @@
         color: white;
         box-shadow: 0 2px 8px rgba(26,46,90,0.30);
     }
-
-    /* Login button – solid mode */
     .nav-solid #navLogin {
         background: #1A2E5A;
         color: white;
     }
-
-    /* Profile button – solid mode */
-    .nav-solid .profile-btn {
-        background: #1A2E5A;
-        color: white;
-        border: 1px solid transparent;
-    }
-    .nav-solid .profile-btn:hover {
-        background: #162750;
-    }
+/* GANTI DENGAN ini: */
+.nav-solid .profile-pill {
+    background: rgba(26,46,90,0.08);
+    border-color: rgba(26,46,90,0.18);
+    color: #1A2E5A;
+}
+.nav-solid .profile-pill:hover {
+    background: rgba(26,46,90,0.14);
+}
+.nav-solid .profile-avatar {
+    background: #1A2E5A;
+    color: white;
+}
+    .nav-solid .pill-divider { background: white; }
 
     /* ══════════════════════════════════
        DROPDOWN STYLES
@@ -257,37 +291,25 @@
         background: white;
         border-color: rgba(26,46,90,0.10);
     }
-
-    .dropdown-header {
-        border-color: rgba(26,46,90,0.08);
-    }
-
-    .dropdown-item {
-        color: #1A2E5A;
-    }
-
+    .dropdown-header { border-color: rgba(26,46,90,0.08); }
+    .dropdown-item { color: #1A2E5A; }
     .dropdown-item:hover {
         background: rgba(26,46,90,0.06);
         color: #1A2E5A;
     }
-
-    .dropdown-logout {
-        color: #dc2626;
-    }
-
+    .dropdown-logout { color: #dc2626; }
     .dropdown-logout:hover {
         background: rgba(220,38,38,0.06);
         color: #dc2626;
     }
-
-    /* Dropdown open state */
     .profile-dropdown.open {
         opacity: 1;
         visibility: visible;
         transform: translateY(0);
     }
 
-    #profileChevron.rotated {
+    /* Chevron rotate saat dropdown terbuka */
+    .profile-pill.pill-open #pillChevron {
         transform: rotate(180deg);
     }
 </style>
@@ -296,18 +318,15 @@
 /* ── Scroll: transparent / solid ── */
 (function () {
     const nav = document.getElementById('mainNav');
-
     function hasHeroHeader() {
         return !!(
             document.querySelector('header[style*="background-image"]') ||
             document.querySelector('header[style*="header-konten"]')
         );
     }
-
     function applyNavState() {
         const scrolled = window.scrollY > 60;
         const hasHero  = hasHeroHeader();
-
         if (!hasHero || scrolled) {
             nav.classList.remove('nav-transparent');
             nav.classList.add('nav-solid');
@@ -316,41 +335,107 @@
             nav.classList.add('nav-transparent');
         }
     }
-
     applyNavState();
     window.addEventListener('scroll', applyNavState, { passive: true });
     document.addEventListener('DOMContentLoaded', applyNavState);
 })();
 
-/* ── Profile dropdown toggle ── */
-function toggleProfileDropdown() {
-    const dropdown = document.getElementById('profileDropdown');
-    const chevron  = document.getElementById('profileChevron');
-    const overlay  = document.getElementById('profileOverlay');
+/* ── Tutup semua dropdown ── */
+function closeAllDropdowns() {
+    document.getElementById('profileDropdown')?.classList.remove('open');
+    document.getElementById('profileOverlay')?.classList.add('hidden');
+    document.getElementById('notifDropdown')?.classList.add('hidden');
+    document.querySelector('.profile-pill')?.classList.remove('pill-open');
+}
 
-    const isOpen = dropdown.classList.contains('open');
-
-    if (isOpen) {
-        closeProfileDropdown();
-    } else {
-        dropdown.classList.add('open');
-        chevron.classList.add('rotated');
-        overlay.classList.remove('hidden');
+/* ── Klik icon notif → buka notif dropdown ── */
+function interceptNotif(e) {
+    e.stopPropagation();
+    const notifDD = document.getElementById('notifDropdown');
+    const isOpen  = !notifDD.classList.contains('hidden');
+    closeAllDropdowns();
+    if (!isOpen) {
+        notifDD.classList.remove('hidden');
+        document.getElementById('profileOverlay').classList.remove('hidden');
+        document.querySelector('.profile-pill').classList.add('pill-open');
     }
 }
 
-function closeProfileDropdown() {
-    const dropdown = document.getElementById('profileDropdown');
-    const chevron  = document.getElementById('profileChevron');
-    const overlay  = document.getElementById('profileOverlay');
-
-    if (dropdown) dropdown.classList.remove('open');
-    if (chevron)  chevron.classList.remove('rotated');
-    if (overlay)  overlay.classList.add('hidden');
+/* ── Klik avatar/nama/chevron → buka profile dropdown ── */
+function interceptProfile(e) {
+    e.stopPropagation();
+    const profileDD = document.getElementById('profileDropdown');
+    const isOpen    = profileDD.classList.contains('open');
+    closeAllDropdowns();
+    if (!isOpen) {
+        profileDD.classList.add('open');
+        document.getElementById('profileOverlay').classList.remove('hidden');
+        document.querySelector('.profile-pill').classList.add('pill-open');
+    }
 }
 
-/* Tutup dropdown saat tekan Escape */
-document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') closeProfileDropdown();
+/* ESC tutup semua */
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeAllDropdowns();
 });
+
+/* ── Notifikasi actions ── */
+function toggleNotifAction(index, btn) {
+    const item = document.getElementById('notif-' + index);
+    const isRead = item.dataset.read === 'true';
+
+    if (!isRead) {
+
+        // Tandai dibaca
+        item.dataset.read = 'true';
+
+        item.classList.remove('bg-blue-50');
+        item.classList.add('bg-white');
+
+        btn.title = 'Hapus notifikasi';
+
+        btn.innerHTML = `
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-red-400">
+                <path d="M18 6L6 18M6 6l12 12"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"/>
+            </svg>
+        `;
+
+        updateNotifDot();
+
+    } else {
+
+        // Hapus notif
+        item.style.transition = 'opacity .2s, transform .2s';
+        item.style.opacity = '0';
+        item.style.transform = 'translateX(8px)';
+
+        setTimeout(() => {
+            item.remove();
+            updateNotifDot();
+        }, 200);
+    }
+}
+
+function hapusSemuaNotif() {
+    document.getElementById('notifList').innerHTML = `
+        <p class="text-center text-xs text-gray-400 py-6">
+            Tidak ada notifikasi
+        </p>
+    `;
+    updateNotifDot();
+}
+
+function updateNotifDot() {
+    const notifDot = document.getElementById('notifDot');
+    const unreadNotif = document.querySelector('#notifList [data-read="false"]');
+
+    if (unreadNotif) {
+        notifDot?.classList.remove('hidden');
+    } else {
+        notifDot?.classList.add('hidden');
+    }
+}
 </script>

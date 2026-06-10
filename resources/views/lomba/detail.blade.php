@@ -21,7 +21,7 @@
 
     @include('components.navbar')
 
-    @include('components.header-konten', [
+    @include('components.header-detail', [
         'title'      => 'DETAIL LOMBA',
         'label'      => 'Explore Competition',
         'subtitle'   => 'Temukan detail informasi dan tata cara pendaftaran kompetisi terbaik',
