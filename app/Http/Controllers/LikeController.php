@@ -29,6 +29,7 @@ class LikeController extends Controller
         $likes = $query->latest()->get()->map(function (Like $like) {
             return (object) [
                 'id' => $like->id,
+                'information_id' => $like->information_id,
                 'title' => $like->information?->title ?? '-',
                 'category' => $like->information?->category?->name ?? '-',
                 'date' => $like->information?->deadline?->format('d M Y') ?? '-',
@@ -46,14 +47,14 @@ class LikeController extends Controller
             ['path' => $request->url(), 'query' => $request->query()]
         );
 
-        if ($request->expectsJson() || $request->is('api/*') || ! view()->exists('peminatan')) {
+        if ($request->expectsJson() || $request->is('api/*') || ! view()->exists('feature.peminatan')) {
             return response()->json([
                 'success' => true,
                 'data' => $paginated,
             ]);
         }
 
-        return view('peminatan', [
+        return view('feature.peminatan', [
             'bookmarks' => $paginated,
             'currentCategory' => $request->input('category', 'Semua Kategori'),
         ]);

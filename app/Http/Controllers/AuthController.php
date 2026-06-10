@@ -11,12 +11,12 @@ class AuthController extends Controller
 {
   public function showLogin()
   {
-    return view('login');
+    return view('auth.login');
   }
 
   public function showRegister()
   {
-    return view('register');
+    return view('auth.register');
   }
 
   public function login(Request $request): JsonResponse|\Illuminate\Http\RedirectResponse

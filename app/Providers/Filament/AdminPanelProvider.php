@@ -4,6 +4,8 @@ namespace App\Providers\Filament;
 
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
+use Filament\Navigation\NavigationItem;
+use Filament\Navigation\MenuItem;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use App\Filament\Pages\Dashboard;
@@ -37,6 +39,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->authGuard('admin')
+            ->authGuard('web')
             ->id('admin')
             ->path('admin')
             ->login()
@@ -45,6 +48,17 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('JTIFY Admin')
             ->colors([
                 'primary' => Color::Blue,
+            ])
+            ->navigationItems([
+                NavigationItem::make('Kembali ke Website')
+                    ->url('/')
+                    ->icon('heroicon-o-home')
+                    ->sort(100),
+            ])
+            ->userMenuItems([
+                'logout' => fn ($action) => $action
+                    ->label('Sign out')
+                    ->visible(fn (): bool => auth()->user() && !auth()->user()->isCollaborator()),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
@@ -78,7 +92,7 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->authMiddleware([
-                Authenticate::class,
+                \App\Http\Middleware\RedirectIfNotFilamentAdmin::class,
             ]);
     }
 }

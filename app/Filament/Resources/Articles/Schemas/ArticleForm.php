@@ -63,6 +63,7 @@ class ArticleForm
                         FileUpload::make('poster_path')
                             ->label('Poster / Gambar Sampul')
                             ->image()
+                            ->disk('public')
                             ->directory('articles/posters')
                             ->imageEditor(),
                     ])->columnSpanFull(),

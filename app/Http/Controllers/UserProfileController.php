@@ -137,4 +137,30 @@ class UserProfileController extends Controller
             'data' => $feedbacks,
         ]);
     }
+
+    public function updatePassword(Request $request): JsonResponse
+    {
+        $user = User::find(Auth::id());
+
+        $validated = $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        if (!\Illuminate\Support\Facades\Hash::check($request->current_password, $user->password)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Kata sandi lama tidak cocok.',
+            ], 422);
+        }
+
+        $user->update([
+            'password' => \Illuminate\Support\Facades\Hash::make($request->password)
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Kata sandi berhasil diperbarui!',
+        ]);
+    }
 }

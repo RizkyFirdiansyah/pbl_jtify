@@ -47,14 +47,14 @@ class InterestController extends Controller
             ['path' => $request->url(), 'query' => $request->query()]
         );
 
-        if ($request->expectsJson() || $request->is('api/*') || ! view()->exists('peminatan')) {
+        if ($request->expectsJson() || $request->is('api/*') || ! view()->exists('feature.peminatan')) {
             return response()->json([
                 'success' => true,
                 'data' => $paginated,
             ]);
         }
 
-        return view('peminatan', [
+        return view('feature.peminatan', [
             'bookmarks' => $paginated,
             'currentCategory' => $request->input('category', 'Semua Kategori'),
         ]);

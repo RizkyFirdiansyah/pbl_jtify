@@ -75,6 +75,7 @@ class InformationForm
                             ->placeholder('Opsional: URL panduan/petunjuk peserta'),
                         FileUpload::make('poster_path')
                             ->image()
+                            ->disk('public')
                             ->directory('posters')
                             ->imageEditor(),
                     ])->columnSpanFull(),

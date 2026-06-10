@@ -8,6 +8,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
@@ -23,8 +24,13 @@ class FeedbackTable
                     ->searchable(),
                 TextColumn::make('message')
                     ->label('Pesan'),
-                TextColumn::make('status')
+                SelectColumn::make('status')
                     ->label('Status')
+                    ->options([
+                        'draft' => 'Draft',
+                        'published' => 'Published',
+                        'archived' => 'Arsip',
+                    ])
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('created_at')
