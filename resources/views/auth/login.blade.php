@@ -40,6 +40,12 @@
                 Temukan peluang terbaik bersama JTIFY.<br>Gratis untuk semua mahasiswa.
             </p>
 
+            @if(session('error'))
+            <div class="bg-red-50 border border-red-200 text-red-600 rounded-xl p-3 text-xs font-semibold text-center mb-4">
+                {{ session('error') }}
+            </div>
+            @endif
+
             <!-- Form -->
             <form method="POST" action="{{ route('login') }}" class="space-y-4">
                 @csrf

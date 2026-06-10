@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JTIFY - Bookmark</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -54,6 +55,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 relative z-10">
             @foreach ($bookmarks as $item)
             <div class="bookmark-card h-[340px] w-full bg-[#E5E7EB] rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 relative group cursor-pointer overflow-hidden flex flex-col justify-end border border-gray-100"
+                 data-info-id="{{ $item->information_id }}"
                  data-aos="fade-up"
                  data-aos-delay="{{ $loop->index * 70 }}">
                 
@@ -83,34 +85,7 @@
             @endforeach
         </div>
 
-        <div class="mt-20 flex items-center justify-center gap-2">
-            {{-- PREV --}}
-            <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:bg-[#1A2E5A] hover:text-white transition-all duration-300">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path d="M15 19l-7-7 7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-            </button>
-
-            {{-- ACTIVE PAGE --}}
-            <button class="w-10 h-10 rounded-full bg-[#1A2E5A] text-white text-sm font-bold shadow-lg">1</button>
-
-            {{-- PAGE --}}
-            <button class="w-10 h-10 rounded-full text-[#1A2E5A] text-sm font-medium hover:bg-gray-100 transition-all duration-300">2</button>
-            <button class="w-10 h-10 rounded-full text-[#1A2E5A] text-sm font-medium hover:bg-gray-100 transition-all duration-300">3</button>
-
-            {{-- DOT --}}
-            <span class="px-1 text-gray-400">...</span>
-
-            {{-- LAST --}}
-            <button class="w-10 h-10 rounded-full text-[#1A2E5A] text-sm font-medium hover:bg-gray-100 transition-all duration-300">68</button>
-
-            {{-- NEXT --}}
-            <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:bg-[#1A2E5A] hover:text-white transition-all duration-300">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-            </button>
-        </div>
+        {{ $bookmarks->links('components.pagination') }}
 
     </main>
 
@@ -125,54 +100,6 @@
     @include('components.footer')
 
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-    <script>
-        AOS.init({
-            duration: 1000,
-            once: false,
-            mirror: true,
-            easing: 'ease-out-cubic'
-        });
-
-        function toggleBookmark(btn, event) {
-            event.preventDefault();
-            event.stopPropagation();
-            
-            const ribbon = btn.querySelector('.bookmark-ribbon');
-            const card = btn.closest('.bookmark-card');
-            const isBookmarked = ribbon.classList.contains('bg-[#486284]');
-            
-            if (isBookmarked) {
-                ribbon.classList.remove('bg-[#486284]', 'text-white');
-                ribbon.classList.add('bg-gray-300', 'text-gray-500');
-                card.classList.add('opacity-50', 'grayscale');
-                showToast("Dihapus dari item tersimpan!");
-            } else {
-                ribbon.classList.add('bg-[#486284]', 'text-white');
-                ribbon.classList.remove('bg-gray-300', 'text-gray-500');
-                card.classList.remove('opacity-50', 'grayscale');
-                showToast("Berhasil disimpan kembali!");
-            }
-        }
-
-        function showToast(message) {
-            const toast = document.createElement('div');
-            toast.className = 'fixed bottom-8 left-1/2 -translate-x-1/2 bg-white text-[#486284] px-6 py-3 rounded-xl shadow-[0px_4px_16px_rgba(0,0,0,0.1)] font-semibold border border-gray-100 flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-300 z-[100]';
-            toast.innerHTML = `
-                <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                \${message}
-            `;
-            
-            document.body.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.classList.remove('translate-y-20', 'opacity-0');
-            }, 10);
-            
-            setTimeout(() => {
-                toast.classList.add('translate-y-20', 'opacity-0');
-                setTimeout(() => toast.remove(), 300);
-            }, 2500);
-        }
-    </script>
+    <script src="{{ asset('js/bookmark-list-interaction.js') }}"></script>
 </body>
 </html>

@@ -16,7 +16,7 @@
     @include('components.navbar')
     @include('components.header-detail', [
         'label'      => 'Mengenal Lebih Dekat',
-        'titleWords' => ['TENTANG', 'KAMI'],
+        'titleWords' => ['TENTANG KAMI'],
         'subtitle1'  => 'Hubungkan',
         'highlight1' => 'Inspirasi,',
         'subtitle2'  => 'Wujudkan',

@@ -71,65 +71,7 @@
             </div>
 
             {{-- DATA --}}
-            @php
-                $tipsData = [
-                    [
-                        'slug'        => 'tips-1',
-                        'title'       => 'Cara Meningkatkan Peluang Lolos Seleksi Kompetisi',
-                        'description' => 'Pelajari strategi yang dapat membantu kamu mempersiapkan diri dengan lebih baik dan meningkatkan peluang keberhasilan dalam kompetisi.',
-                        'date'        => '12 Mei 2026',
-                    ],
-                    [
-                        'slug'        => 'tips-2',
-                        'title'       => 'Kesalahan Umum yang Sering Dilakukan Peserta Kompetisi',
-                        'description' => 'Hindari berbagai kesalahan yang sering terjadi saat mengikuti kompetisi agar performamu lebih maksimal.',
-                        'date'        => '10 Mei 2026',
-                    ],
-                    [
-                        'slug'        => 'tips-3',
-                        'title'       => 'Strategi Menyusun Tim yang Solid dan Efektif',
-                        'description' => 'Bangun kerja sama tim yang baik untuk mencapai hasil terbaik dalam berbagai kegiatan maupun perlombaan.',
-                        'date'        => '8 Mei 2026',
-                    ],
-                    [
-                        'slug'        => 'tips-4',
-                        'title'       => 'Tips Mengatur Waktu antara Kuliah dan Organisasi',
-                        'description' => 'Kelola waktu dengan lebih efektif agar aktivitas akademik dan non-akademik tetap berjalan seimbang.',
-                        'date'        => '5 Mei 2026',
-                    ],
-                    [
-                        'slug'        => 'tips-5',
-                        'title'       => 'Cara Membangun Portofolio yang Menarik',
-                        'description' => 'Pelajari langkah-langkah membuat portofolio yang profesional dan mampu menarik perhatian recruiter.',
-                        'date'        => '3 Mei 2026',
-                    ],
-                    [
-                        'slug'        => 'tips-6',
-                        'title'       => 'Meningkatkan Kemampuan Public Speaking Mahasiswa',
-                        'description' => 'Latihan sederhana yang dapat membantu meningkatkan rasa percaya diri saat berbicara di depan umum.',
-                        'date'        => '1 Mei 2026',
-                    ],
-                    [
-                        'slug'        => 'tips-7',
-                        'title'       => 'Tips Menulis CV yang ATS Friendly',
-                        'description' => 'Pelajari cara membuat CV yang mudah dibaca sistem ATS dan menarik perhatian recruiter.',
-                        'date'        => '28 Apr 2026',
-                    ],
-                    [
-                        'slug'        => 'tips-8',
-                        'title'       => 'Rahasia Produktif Saat Deadline Menumpuk',
-                        'description' => 'Teknik sederhana yang dapat membantu kamu tetap fokus dan menyelesaikan pekerjaan tepat waktu.',
-                        'date'        => '25 Apr 2026',
-                    ],
-                ];
 
-                // Filter berdasarkan query jika ada
-                if (!empty($q)) {
-                    $tipsData = array_filter($tipsData, function($item) use ($q) {
-                        return stripos($item['title'], $q) !== false || stripos($item['description'], $q) !== false;
-                    });
-                }
-            @endphp
 
             {{-- ===========================
                  ARTICLE GRID
@@ -209,52 +151,7 @@
             {{-- ===========================
                  PAGINATION
             ============================ --}}
-            <nav class="mt-16 sm:mt-20 flex items-center justify-center gap-1.5 sm:gap-2"
-                 aria-label="Navigasi halaman">
-
-                {{-- Prev --}}
-                <button
-                    class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:bg-[#1A2E5A] hover:text-white transition-all duration-300"
-                    aria-label="Halaman sebelumnya"
-                >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M15 19l-7-7 7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-
-                {{-- Page 1 (active) --}}
-                <button class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#1A2E5A] text-white text-sm font-bold shadow-lg" aria-current="page">
-                    1
-                </button>
-
-                {{-- Page 2 --}}
-                <button class="w-9 h-9 sm:w-10 sm:h-10 rounded-full text-[#1A2E5A] text-sm font-medium hover:bg-gray-100 transition-all duration-300">
-                    2
-                </button>
-
-                {{-- Page 3 --}}
-                <button class="w-9 h-9 sm:w-10 sm:h-10 rounded-full text-[#1A2E5A] text-sm font-medium hover:bg-gray-100 transition-all duration-300">
-                    3
-                </button>
-
-                <span class="text-gray-400 text-sm select-none px-1">…</span>
-
-                {{-- Page 10 --}}
-                <button class="w-9 h-9 sm:w-10 sm:h-10 rounded-full text-[#1A2E5A] text-sm font-medium hover:bg-gray-100 transition-all duration-300">
-                    10
-                </button>
-
-                {{-- Next --}}
-                <button
-                    class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:bg-[#1A2E5A] hover:text-white transition-all duration-300"
-                    aria-label="Halaman berikutnya"
-                >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-
-            </nav>
+            {{ $tipsData->links('components.pagination') }}
 
         </div>
 

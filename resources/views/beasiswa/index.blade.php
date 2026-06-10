@@ -63,31 +63,13 @@
             </div>
 
             {{-- GRID --}}
-            @php
-                $beasiswaData = [
-                    ['title' => 'Beasiswa Prestasi Mahasiswa Unggulan',  'deadline' => '14 Jun 2025'],
-                    ['title' => 'Beasiswa Polinema Unggulan 2025',       'deadline' => '21 Jun 2025'],
-                    ['title' => 'Beasiswa Kemendikbud Ristek 2025',      'deadline' => '28 Jun 2025'],
-                    ['title' => 'Beasiswa BCA Finance Peduli Negeri',    'deadline' => '05 Jul 2025'],
-                    ['title' => 'Beasiswa Djarum Plus 2025',             'deadline' => '12 Jul 2025'],
-                    ['title' => 'Beasiswa LPDP Program S1 2025',         'deadline' => '19 Jul 2025'],
-                    ['title' => 'Beasiswa Bank Indonesia Mahasiswa',     'deadline' => '26 Jul 2025'],
-                    ['title' => 'Beasiswa XL Future Leaders 2025',       'deadline' => '02 Agu 2025'],
-                ];
 
-                // Filter berdasarkan query jika ada
-                if (!empty($q)) {
-                    $beasiswaData = array_filter($beasiswaData, function($item) use ($q) {
-                        return stripos($item['title'], $q) !== false;
-                    });
-                }
-            @endphp
 
             @if(count($beasiswaData) > 0)
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
 
                 @foreach ($beasiswaData as $i => $item)
-                    <a href="{{ route('beasiswa.detail') }}"
+                    <a href="{{ route('beasiswa.detail', ['id' => $item['id']]) }}"
                        class="group relative block rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_18px_45px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-500 cursor-pointer"
                        style="aspect-ratio: 2/3;"
                        data-aos="fade-up"
@@ -153,49 +135,7 @@
             </div>
             @endif
 
-            {{-- ================================
-                 PAGINATION
-            ================================= --}}
-            <div class="mt-20 flex items-center justify-center gap-2">
-
-                {{-- PREV --}}
-                <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:bg-[#1A2E5A] hover:text-white transition-all duration-300">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path d="M15 19l-7-7 7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </button>
-
-                {{-- ACTIVE PAGE --}}
-                <button class="w-10 h-10 rounded-full bg-[#1A2E5A] text-white text-sm font-bold shadow-lg">
-                    1
-                </button>
-
-                {{-- PAGE --}}
-                <button class="w-10 h-10 rounded-full text-[#1A2E5A] text-sm font-medium hover:bg-gray-100 transition-all duration-300">
-                    2
-                </button>
-                <button class="w-10 h-10 rounded-full text-[#1A2E5A] text-sm font-medium hover:bg-gray-100 transition-all duration-300">
-                    3
-                </button>
-
-                {{-- DOT --}}
-                <span class="px-1 text-gray-400">
-                    ...
-                </span>
-
-                {{-- LAST --}}
-                <button class="w-10 h-10 rounded-full text-[#1A2E5A] text-sm font-medium hover:bg-gray-100 transition-all duration-300">
-                    68
-                </button>
-
-                {{-- NEXT --}}
-                <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:bg-[#1A2E5A] hover:text-white transition-all duration-300">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </button>
-
-            </div>
+            {{ $beasiswaData->links('components.pagination') }}
 
         </div>
     </section>
