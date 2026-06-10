@@ -39,7 +39,7 @@
     </div>
 
     <!-- Main Content -->
-    <main class="w-full flex-grow flex flex-col items-center pt-20 px-6 pb-20 relative z-10">
+    <main class="w-full flex-grow flex flex-col items-center pt-20 px-6 pb-0 relative z-10">
 
         @guest
         <!-- Lock Feedback for Guests -->
@@ -110,7 +110,7 @@
     <!-- ================================
          FOOTER TRANSITION
     ================================= -->
-    <section class="relative z-0 h-40 mt-auto" style="background: linear-gradient(180deg, #ffffff 0%, #c8dff0 100%);"></section>
+    <section class="relative z-0 h-40" style="background: linear-gradient(180deg, #ffffff 0%, #c8dff0 100%);"></section>
 
     <!-- ================================
          FOOTER

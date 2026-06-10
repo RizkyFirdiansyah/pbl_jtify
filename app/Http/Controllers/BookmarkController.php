@@ -32,6 +32,7 @@ class BookmarkController extends Controller
                 'category' => $bookmark->information?->category?->name ?? '-',
                 'date' => $bookmark->information?->deadline?->format('d M Y') ?? '-',
                 'reminder_enabled' => (bool) $bookmark->reminder_enabled,
+                'poster_path' => $bookmark->information?->poster_path,
             ];
         });
 

@@ -34,6 +34,7 @@ class LikeController extends Controller
                 'category' => $like->information?->category?->name ?? '-',
                 'date' => $like->information?->deadline?->format('d M Y') ?? '-',
                 'status' => $like->status,
+                'poster_path' => $like->information?->poster_path,
             ];
         });
 
