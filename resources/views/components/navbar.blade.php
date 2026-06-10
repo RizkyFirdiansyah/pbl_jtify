@@ -11,7 +11,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
         </svg>
         <a href="{{ route('home') }}" class="nav-logo font-bold text-xl sm:text-2xl transition-colors duration-400">
-            JTIFY
+            {{ $pageContents['navbar']['brand_name'] ?? ($siteSettings['logo_text'] ?? 'JTIFY') }}
         </a>
     </div>
 
@@ -26,7 +26,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round"
                       d="M3 10.5L12 3l9 7.5V21a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1v-10.5z"/>
             </svg>
-            <span class="hidden sm:block">Beranda</span>
+            <span class="hidden sm:block">{{ $pageContents['navbar']['menu_home'] ?? 'Beranda' }}</span>
         </a>
 
         <a href="{{ route('tips') }}"
@@ -37,7 +37,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round"
                       d="M5 3h14a1 1 0 011 1v17l-8-4-8 4V4a1 1 0 011-1z"/>
             </svg>
-            <span class="hidden sm:block">Tips</span>
+            <span class="hidden sm:block">{{ $pageContents['navbar']['menu_tips'] ?? 'Tips' }}</span>
         </a>
 
         <a href="{{ route('tentang') }}"
@@ -48,16 +48,20 @@
                 <path stroke-linecap="round" stroke-linejoin="round"
                       d="M17 20h5V18a4 4 0 00-5-3.87M17 20H7m10 0v-2c0-.653-.084-1.287-.24-1.89M7 20H2V18a4 4 0 015-3.87M7 20v-2c0-.653.084-1.287.24-1.89m0 0a5.002 5.002 0 019.52 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
             </svg>
-            <span class="hidden sm:block">Tentang Kami</span>
+            <span class="hidden sm:block">{{ $pageContents['navbar']['menu_tentang'] ?? 'Tentang Kami' }}</span>
         </a>
 
     </div>
 
     <!-- KANAN: Guest → Login | Auth → Pill -->
     @guest
-        <a href="{{ route('login') }}" id="navLogin"
-           class="px-5 py-2 rounded-full font-semibold text-sm transition-all duration-300">
-            Login
+        <a href="{{ route('login') }}"
+           id="navLogin"
+           class="px-4 sm:px-6 lg:px-10 py-2.5 sm:py-3 rounded-full font-semibold
+                  text-sm sm:text-base shadow-lg shrink-0
+                  hover:-translate-y-1 hover:shadow-2xl active:scale-95
+                  transition-all duration-400">
+            {{ $pageContents['navbar']['login_label'] ?? 'Login' }}
         </a>
     @endguest
 
@@ -65,7 +69,7 @@
     <div class="flex items-center shrink-0 relative">
 
         {{-- Oval pill: Notif + Divider + Avatar + Nama + Chevron --}}
-        <div class="profile-pill flex items-center gap-2 px-2 py-1.5 rounded-full
+        <div class="profile-pill flex items-center gap-2 px-2 apy-1.5 rounded-full
                     border font-semibold text-sm transition-all duration-300 cursor-pointer">
 
             {{-- Icon notif (klik = buka notif dropdown) --}}
@@ -93,6 +97,86 @@
                      class="mr-1 transition-transform duration-300 opacity-70">
                     <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
                 </svg>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div id="profileDropdown"
+                 class="profile-dropdown absolute right-0 mt-3 w-56
+                        rounded-2xl shadow-2xl border overflow-hidden
+                        opacity-0 invisible translate-y-2
+                        transition-all duration-300 ease-out z-50">
+
+                {{-- Header: nama & email --}}
+                <div class="dropdown-header px-4 py-3 border-b">
+                    <p class="font-bold text-sm truncate">{{ auth()->user()?->name ?? 'User' }}</p>
+                    <p class="text-xs opacity-60 truncate mt-0.5">{{ auth()->user()?->email ?? '' }}</p>
+                </div>
+
+                {{-- Menu items --}}
+                <div class="py-1.5">
+
+                    {{-- Setting Profile --}}
+                    <a href="{{ route('profile') }}"
+                       class="dropdown-item flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors duration-200">
+                        <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                        {{ $pageContents['navbar']['profile_setting_label'] ?? 'Setting Profile' }}
+                    </a>
+
+                    {{-- Bookmark --}}
+                    <a href="{{ route('bookmark') }}"
+                       class="dropdown-item flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors duration-200">
+                        <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+                        </svg>
+                        {{ $pageContents['navbar']['profile_bookmark_label'] ?? 'Bookmark' }}
+                    </a>
+
+                    {{-- Disukai --}}
+                    <a href="{{ route('peminatan') }}"
+                       class="dropdown-item flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors duration-200">
+                        <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                        </svg>
+                        {{ $pageContents['navbar']['profile_disukai_label'] ?? 'Disukai' }}
+                    </a>
+
+                    @if(auth()->user()?->isAdmin() || auth()->user()?->isCollaborator())
+                    {{-- Admin Dashboard --}}
+                    <a href="/admin"
+                       class="dropdown-item flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors duration-200" style="color: #3b82f6;">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="9"></rect>
+                            <rect x="14" y="3" width="7" height="5"></rect>
+                            <rect x="14" y="12" width="7" height="9"></rect>
+                            <rect x="3" y="16" width="7" height="5"></rect>
+                        </svg>
+                        Admin Dashboard
+                    </a>
+                    @endif
+
+                </div>
+
+                {{-- Divider + Logout --}}
+                <div class="border-t py-1.5">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit"
+                                class="dropdown-item dropdown-logout w-full flex items-center gap-3
+                                       px-4 py-2.5 text-sm font-medium transition-colors duration-200">
+                            <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/>
+                            </svg>
+                            {{ $pageContents['navbar']['logout_label'] ?? 'Log Out' }}
+                        </button>
+                    </form>
+                </div>
+
             </div>
         </div>
 
