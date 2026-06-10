@@ -12,6 +12,10 @@ class Bookmark extends Model
         'reminder_enabled',
     ];
 
+    protected $casts = [
+        'reminder_enabled' => 'boolean',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

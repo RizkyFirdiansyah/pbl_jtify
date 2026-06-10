@@ -30,14 +30,12 @@ class BookmarksTable
                     ->label('Kategori')
                     ->sortable()
                     ->searchable(),
-                SelectColumn::make('Status Pengingat')
+                TextColumn::make('reminder_enabled')
                     ->label('Status Pengingat')
-                    ->options([
-                        'active' => 'Active',
-                        'none' => 'None',
-                    ])
-                    ->sortable()
-                    ->searchable(),
+                    ->formatStateUsing(fn (bool $state): string => $state ? 'Active' : 'None')
+                    ->badge()
+                    ->color(fn (bool $state): string => $state ? 'success' : 'gray')
+                    ->sortable(),
                 TextColumn::make('created_at')
                     ->label('Tanggal Tertarik')
                     ->dateTime()
@@ -55,12 +53,19 @@ class BookmarksTable
                     ->relationship('information', 'title'),
 
                 // Filter berdasarkan status
-                SelectFilter::make('status')
-                    ->label('Status')
+                SelectFilter::make('reminder_enabled')
+                    ->label('Status Pengingat')
                     ->options([
                         'active' => 'Active',
                         'none' => 'None',
-                    ]),
+                    ])
+                    ->query(function ($query, array $data) {
+                        if ($data['value'] === 'active') {
+                            $query->where('reminder_enabled', true);
+                        } elseif ($data['value'] === 'none') {
+                            $query->where('reminder_enabled', false);
+                        }
+                    }),
             ])
             ->recordActions([
                 // ViewAction::make(),
