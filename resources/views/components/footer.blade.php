@@ -138,16 +138,16 @@
                             </a>
                         </li>
 
-                        <!-- Diminati -->
+                        <!-- Disukai -->
                         <li>
                             <a href="/peminatan"
                                 class="flex items-center gap-3 text-[#3B4C7E] hover:text-blue-900 hover:translate-x-1 transition-all duration-300 text-sm font-medium">
 
                                 <img src="https://img.icons8.com/ios-glyphs/30/1A2E5A/like--v1.png"
-                                    alt="Diminati"
+                                    alt="Disukai"
                                     class="w-5 h-5"/>
 
-                                {{ $pageContents['footer']['footer_diminati_label'] ?? 'Diminati' }}
+                                {{ $pageContents['footer']['footer_disukai_label'] ?? 'Disukai' }}
                             </a>
                         </li>
 
