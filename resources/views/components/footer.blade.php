@@ -18,29 +18,28 @@
                     <!-- Logo -->
                     <div class="flex items-center gap-3">
                         <div class="w-8 h-8 bg-blue-900 rounded-sm flex items-center justify-center">
-                            <span class="text-white font-bold text-xs">P</span>
+                            <span class="text-white font-bold text-xs">{{ $pageContents['footer']['footer_logo_mark'] ?? ($siteSettings['logo_mark'] ?? 'P') }}</span>
                         </div>
 
                         <h3 class="text-2xl font-bold text-[#1A2E5A]">
-                            Logo
+                            {{ $pageContents['footer']['footer_brand_label'] ?? ($siteSettings['footer_logo_text'] ?? 'Logo') }}
                         </h3>
                     </div>
 
                     <!-- Description -->
                     <p class="text-gray-500 text-sm leading-relaxed max-w-sm">
-                        Cari peluang baru, upgrade skill, 
-                        dan raih pengalaman terbaik bersama JTIFY.
+                        {{ $pageContents['footer']['footer_description'] ?? ($siteSettings['footer_description'] ?? 'Cari peluang baru, upgrade skill, dan raih pengalaman terbaik bersama JTIFY.') }}
                     </p>
 
                     <!-- Social -->
                     <div>
                         <p class="font-bold text-[#1A2E5A] mb-4 text-sm">
-                            Follow Us:
+                            {{ $pageContents['footer']['footer_social_label'] ?? 'Follow Us:' }}
                         </p>
                         <div class="flex gap-4">
 
                             <!-- Instagram -->
-                            <a href="https://www.instagram.com/jtipolinema?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+                            <a href="{{ $pageContents['footer']['footer_instagram_url'] ?? ($siteSettings['social_instagram_url'] ?? 'https://www.instagram.com/jtipolinema') }}"
                                 target="_blank"
                                 class="w-10 h-10 border border-gray-200 rounded-lg flex items-center justify-center hover:bg-gray-50 hover:-translate-y-1 transition-all duration-300 shadow-sm">
 
@@ -49,7 +48,7 @@
                             </a>
 
                             <!-- X -->
-                            <a href="https://x.com/polinema_campus?s=20"
+                            <a href="{{ $pageContents['footer']['footer_x_url'] ?? ($siteSettings['social_x_url'] ?? 'https://x.com/polinema_campus') }}"
                                 target="_blank"
                                 class="w-10 h-10 border border-gray-200 rounded-lg flex items-center justify-center hover:bg-gray-50 hover:-translate-y-1 transition-all duration-300 shadow-sm">
 
@@ -58,7 +57,7 @@
                             </a>
 
                             <!-- YouTube -->
-                            <a href="https://www.youtube.com/@jtipolinema367"
+                            <a href="{{ $pageContents['footer']['footer_youtube_url'] ?? ($siteSettings['social_youtube_url'] ?? 'https://www.youtube.com/@jtipolinema367') }}"
                                 target="_blank"
                                 class="w-10 h-10 border border-gray-200 rounded-lg flex items-center justify-center hover:bg-gray-50 hover:-translate-y-1 transition-all duration-300 shadow-sm">
 
@@ -73,7 +72,7 @@
                 <div class="w-full md:w-auto">
 
                     <h4 class="font-bold text-[#1A2E5A] mb-8 text-lg">
-                        Beranda
+                        {{ $pageContents['footer']['footer_home_title'] ?? 'Beranda' }}
                     </h4>
 
                     <ul class="space-y-5">
@@ -87,7 +86,7 @@
                                     alt="Lomba"
                                     class="w-5 h-5"/>
 
-                                Informasi Lomba
+                                {{ $pageContents['footer']['footer_lomba_label'] ?? 'Informasi Lomba' }}
                             </a>
                         </li>
 
@@ -100,7 +99,7 @@
                                     alt="Seminar"
                                     class="w-5 h-5"/>
 
-                                Informasi Seminar
+                                {{ $pageContents['footer']['footer_seminar_label'] ?? 'Informasi Seminar' }}
                             </a>
                         </li>
 
@@ -113,7 +112,7 @@
                                     alt="Beasiswa"
                                     class="w-5 h-5"/>
 
-                                Informasi Beasiswa
+                                {{ $pageContents['footer']['footer_beasiswa_label'] ?? 'Informasi Beasiswa' }}
                             </a>
                         </li>
                     </ul>
@@ -122,7 +121,7 @@
                 <!-- Kolom 3 -->
                 <div class="w-full md:w-auto">
                     <h4 class="font-bold text-[#1A2E5A] mb-8 text-lg">
-                        Feature
+                        {{ $pageContents['footer']['footer_feature_title'] ?? 'Feature' }}
                     </h4>
                     <ul class="space-y-5">
 
@@ -135,20 +134,20 @@
                                     alt="Bookmark"
                                     class="w-5 h-5"/>
 
-                                Bookmark
+                                {{ $pageContents['footer']['footer_bookmark_label'] ?? 'Bookmark' }}
                             </a>
                         </li>
 
-                        <!-- Diminati -->
+                        <!-- Disukai -->
                         <li>
                             <a href="/peminatan"
                                 class="flex items-center gap-3 text-[#3B4C7E] hover:text-blue-900 hover:translate-x-1 transition-all duration-300 text-sm font-medium">
 
                                 <img src="https://img.icons8.com/ios-glyphs/30/1A2E5A/like--v1.png"
-                                    alt="Diminati"
+                                    alt="Disukai"
                                     class="w-5 h-5"/>
 
-                                Diminati
+                                {{ $pageContents['footer']['footer_disukai_label'] ?? 'Disukai' }}
                             </a>
                         </li>
 
@@ -161,7 +160,7 @@
                                     alt="Feedback"
                                     class="w-5 h-5"/>
 
-                                Feedback
+                                {{ $pageContents['footer']['footer_feedback_label'] ?? 'Feedback' }}
                             </a>
                         </li>
 

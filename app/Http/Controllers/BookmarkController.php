@@ -84,12 +84,14 @@ class BookmarkController extends Controller
             // Jika bookmark sudah ada, update reminder_enabled jika disediakan, atau toggle bookmark jika tidak
             if ($request->has('reminder_enabled')) {
                 $bookmark->update(['reminder_enabled' => $request->reminder_enabled]);
+                $isBookmarked = true;
+                $reminderEnabled = $bookmark->reminder_enabled ?? false;
             } else {
                 // Kalau tidak, toggle bookmark
                 $bookmark->delete();
+                $isBookmarked = false;
+                $reminderEnabled = false;
             }
-            $isBookmarked = $bookmark->exists();
-            $reminderEnabled = $bookmark->reminder_enabled ?? false;
         } else {
             // Buat bookmark baru
             $reminderEnabled = $request->reminder_enabled ?? false;

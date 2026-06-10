@@ -4,7 +4,7 @@
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JTIFY - Homepage</title>
+    <title>{{ $siteSettings['site_name'] ?? 'JTIFY' }} - Homepage</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -22,18 +22,28 @@
             <div class="relative inline-block mb-4 anim-jtify">
                 <div class="absolute inset-0 bg-[#E8F19A] rounded-sm"></div>
                 <h1 class="relative font-black text-[#1A2E5A] uppercase leading-none px-4 py-2 tracking-wider drop-shadow-xl"
-                    style="font-size: clamp(4rem, 7vw, 6rem);">JTIFY</h1>
+                    style="font-size: clamp(4rem, 7vw, 6rem);">{{ $pageContents['home']['hero_brand'] ?? ($siteSettings['logo_text'] ?? 'JTIFY') }}</h1>
             </div>
 
             <!-- Subtitle -->
             <div class="mb-14">
                 <h2 class="anim-line1 font-extrabold text-[#1A2E5A] leading-snug"
                     style="font-size: clamp(1.5rem, 3vw, 2.2rem);">
-                    Temukan <span class="bg-[#4C75F2] text-white px-2 py-0.5 rounded-sm">Peluang,</span>
+                    @php
+                        $line1 = $pageContents['home']['hero_title_line_1'] ?? 'Temukan Peluang,';
+                        $highlight1 = $pageContents['home']['hero_highlight_1'] ?? 'Peluang,';
+                        $parts1 = explode($highlight1, $line1);
+                    @endphp
+                    {!! count($parts1) > 1 ? e($parts1[0]) . '<span class="bg-[#4C75F2] text-white px-2 py-0.5 rounded-sm">' . e($highlight1) . '</span>' . e($parts1[1]) : e($line1) !!}
                 </h2>
                 <h2 class="anim-line2 font-extrabold text-[#1A2E5A] leading-snug"
                     style="font-size: clamp(1.5rem, 3vw, 2.2rem);">
-                    Tingkatkan <span class="bg-[#E0A6F2] text-[#1A2E5A] px-2 py-0.5 rounded-sm">Kompetensi</span>
+                    @php
+                        $line2 = $pageContents['home']['hero_title_line_2'] ?? 'Tingkatkan Kompetensi';
+                        $highlight2 = $pageContents['home']['hero_highlight_2'] ?? 'Kompetensi';
+                        $parts2 = explode($highlight2, $line2);
+                    @endphp
+                    {!! count($parts2) > 1 ? e($parts2[0]) . '<span class="bg-[#E0A6F2] text-[#1A2E5A] px-2 py-0.5 rounded-sm">' . e($highlight2) . '</span>' . e($parts2[1]) : e($line2) !!}
                 </h2>
             </div>
 
@@ -46,7 +56,7 @@
                             <!-- Kategori: hidden di mobile -->
                             <div class="hidden sm:flex items-center px-4 border-r border-gray-200 shrink-0">
                                 <select name="category" id="categorySelect" class="bg-transparent text-sm text-gray-600 outline-none cursor-pointer font-medium">
-                                    <option value="">Kategori</option>
+                                    <option value="">{{ $pageContents['home']['category_default'] ?? 'Kategori' }}</option>
                                     <option value="lomba">Lomba</option>
                                     <option value="seminar">Seminar</option>
                                     <option value="beasiswa">Beasiswa</option>
@@ -59,7 +69,7 @@
                                 <svg class="w-4 h-4 text-gray-400 mr-2 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
-                                <input type="text" name="q" placeholder="Cari informasi"
+                                <input type="text" name="q" placeholder="{{ $pageContents['home']['search_placeholder'] ?? 'Cari informasi' }}"
                                     class="w-full bg-transparent outline-none text-sm text-gray-700 placeholder-gray-400 min-w-0">
                             </div>
 
@@ -84,14 +94,19 @@
                 <div id="tabsWrapper" class="border-b border-gray-100 overflow-x-auto [&::-webkit-scrollbar]:hidden"
                     style="scrollbar-width: none; -ms-overflow-style: none;">
                     <div class="flex w-full">
-                        <button data-tab="0" data-category="popular"
-                            class="tab-link pb-4 text-[#1A2E5A] font-bold text-sm md:text-base flex-1 text-center transition whitespace-nowrap capitalize">Popular</button>
-                        <button data-tab="1" data-category="lomba"
-                            class="tab-link pb-4 text-gray-400 hover:text-[#3B4C7E] font-medium text-sm md:text-base flex-1 text-center transition whitespace-nowrap capitalize">Lomba</button>
-                        <button data-tab="2" data-category="seminar"
-                            class="tab-link pb-4 text-gray-400 hover:text-[#3B4C7E] font-medium text-sm md:text-base flex-1 text-center transition whitespace-nowrap capitalize">Seminar</button>
-                        <button data-tab="3" data-category="beasiswa"
-                            class="tab-link pb-4 text-gray-400 hover:text-[#3B4C7E] font-medium text-sm md:text-base flex-1 text-center transition whitespace-nowrap capitalize">Beasiswa</button>
+                        @php
+                            $tabs = json_decode($pageContents['home']['section_tabs'] ?? '[]', true);
+                            if (empty($tabs)) {
+                                $tabs = ['Popular', 'Lomba', 'Seminar', 'Beasiswa'];
+                            }
+                            $tabCategories = ['popular', 'lomba', 'seminar', 'beasiswa'];
+                        @endphp
+                        @foreach($tabs as $idx => $tabName)
+                            @if(isset($tabCategories[$idx]))
+                                <button data-tab="{{ $idx }}" data-category="{{ $tabCategories[$idx] }}"
+                                    class="tab-link pb-4 {{ $idx === 0 ? 'text-[#1A2E5A] font-bold' : 'text-gray-400 hover:text-[#3B4C7E] font-medium' }} text-sm md:text-base flex-1 text-center transition whitespace-nowrap capitalize">{{ $tabName }}</button>
+                            @endif
+                        @endforeach
                     </div>
                 </div>
                 <div id="tabIndicator" class="absolute bottom-0 h-1 bg-[#1A2E5A] rounded-full transition-all duration-300"

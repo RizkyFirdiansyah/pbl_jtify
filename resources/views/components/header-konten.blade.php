@@ -100,7 +100,6 @@
         if (!form) return;
 
         form.addEventListener('submit', function(e) {
-            e.preventDefault();
             const q = this.querySelector('input[name="q"]').value.trim();
             const categorySelect = document.getElementById('headerCategorySelect');
             const selectedCategoryUrl = categorySelect ? categorySelect.value : '';
@@ -131,9 +130,18 @@
                 }
             }
 
-            // Arahkan ke URL kategori target dengan parameter pencarian ?q=
-            const url = q ? base + '?q=' + encodeURIComponent(q) : base;
-            window.location.href = url;
+            const currentBase = window.location.origin + window.location.pathname;
+            const baseClean = base.replace(/\/$/, "");
+            const currentBaseClean = currentBase.replace(/\/$/, "");
+            const url = q ? baseClean + '?q=' + encodeURIComponent(q) : baseClean;
+
+            if (baseClean === currentBaseClean && document.getElementById('cardGrid')) {
+                // Biarkan handler AJAX di listing-ajax.js yang memproses
+                e.preventDefault();
+            } else {
+                e.preventDefault();
+                window.location.href = url;
+            }
         });
     });
 </script>

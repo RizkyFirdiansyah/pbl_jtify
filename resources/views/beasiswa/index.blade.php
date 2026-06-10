@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JTIFY - Beasiswa</title>
+    <title>{{ $siteSettings['site_name'] ?? 'JTIFY' }} - Beasiswa</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
@@ -65,77 +65,81 @@
             {{-- GRID --}}
 
 
-            @if(count($beasiswaData) > 0)
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+            <div id="cardGrid" class="transition-opacity duration-300">
+                @if(count($beasiswaData) > 0)
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
 
-                @foreach ($beasiswaData as $i => $item)
-                    <a href="{{ route('beasiswa.detail', ['id' => $item['id']]) }}"
-                       class="group relative block rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_18px_45px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-500 cursor-pointer"
-                       style="aspect-ratio: 2/3;"
-                       data-aos="fade-up"
-                       data-aos-delay="{{ $loop->index * 70 }}">
+                    @foreach ($beasiswaData as $i => $item)
+                        <a href="{{ route('beasiswa.detail', ['id' => $item['id']]) }}"
+                           class="group relative block rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_18px_45px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-500 cursor-pointer"
+                           style="aspect-ratio: 2/3;"
+                           data-aos="fade-up"
+                           data-aos-delay="{{ $loop->index * 70 }}">
 
-                        {{-- Poster Placeholder --}}
-                        <div class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#E8EEF8] to-[#D0DCEE] group-hover:from-[#D0DCEE] group-hover:to-[#BBC9E0] transition-colors duration-500">
-                            <svg class="w-16 h-16 text-[#486284]/30 group-hover:scale-110 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M21 19V5C21 3.9 20.1 3 19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19ZM8.5 13.5L11 16.51L14.5 12L19 18H5L8.5 13.5Z"/>
-                            </svg>
-                        </div>
-
-                        {{-- Content Overlay --}}
-                        <div class="absolute bottom-0 left-0 right-0 z-10 p-4"
-                             style="background: linear-gradient(to top, rgba(26,46,90,0.95) 0%, rgba(26,46,90,0.5) 70%, transparent 100%);">
-
-                            {{-- Judul --}}
-                            <h3 class="text-white font-bold text-sm leading-snug line-clamp-2 mb-2 drop-shadow-sm">
-                                {{ $item['title'] }}
-                            </h3>
-
-                            {{-- Deadline --}}
-                            <div class="flex items-center gap-1.5 mb-3">
-                                <svg class="w-3.5 h-3.5 text-white/70 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            {{-- Poster Placeholder --}}
+                            <div class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#E8EEF8] to-[#D0DCEE] group-hover:from-[#D0DCEE] group-hover:to-[#BBC9E0] transition-colors duration-500">
+                                <svg class="w-16 h-16 text-[#486284]/30 group-hover:scale-110 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M21 19V5C21 3.9 20.1 3 19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19ZM8.5 13.5L11 16.51L14.5 12L19 18H5L8.5 13.5Z"/>
                                 </svg>
-                                <span class="text-white/70 text-[11px]">Deadline: {{ $item['deadline'] }}</span>
                             </div>
 
-                            {{-- Tombol Lihat Detail --}}
-                            <span class="inline-flex items-center gap-2 w-full justify-center bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 text-white text-xs font-bold py-2 rounded-xl transition-all duration-300 group-hover:bg-[#3B4C7E] group-hover:border-[#3B4C7E]">
-                                Lihat Detail
-                                <svg class="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
-                                </svg>
-                            </span>
+                            {{-- Content Overlay --}}
+                            <div class="absolute bottom-0 left-0 right-0 z-10 p-4"
+                                 style="background: linear-gradient(to top, rgba(26,46,90,0.95) 0%, rgba(26,46,90,0.5) 70%, transparent 100%);">
 
-                        </div>
+                                {{-- Judul --}}
+                                <h3 class="text-white font-bold text-sm leading-snug line-clamp-2 mb-2 drop-shadow-sm">
+                                    {{ $item['title'] }}
+                                </h3>
 
+                                {{-- Deadline --}}
+                                <div class="flex items-center gap-1.5 mb-3">
+                                    <svg class="w-3.5 h-3.5 text-white/70 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                    <span class="text-white/70 text-[11px]">Deadline: {{ $item['deadline'] }}</span>
+                                </div>
+
+                                {{-- Tombol Lihat Detail --}}
+                                <span class="inline-flex items-center gap-2 w-full justify-center bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 text-white text-xs font-bold py-2 rounded-xl transition-all duration-300 group-hover:bg-[#3B4C7E] group-hover:border-[#3B4C7E]">
+                                    Lihat Detail
+                                    <svg class="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                                    </svg>
+                                </span>
+
+                            </div>
+
+                        </a>
+                    @endforeach
+
+                </div>
+                @else
+                {{-- EMPTY STATE --}}
+                <div class="flex flex-col items-center justify-center py-24 text-center">
+                    <svg class="w-32 h-32 mb-6 text-[#D0DCEE]" viewBox="0 0 200 200" fill="none">
+                        <circle cx="100" cy="100" r="90" fill="#EEF1FF"/>
+                        <circle cx="88" cy="88" r="40" stroke="#B8CAEE" stroke-width="8"/>
+                        <path d="M118 118 L150 150" stroke="#B8CAEE" stroke-width="8" stroke-linecap="round"/>
+                        <path d="M74 88 Q88 75 102 88" stroke="#8FA9C0" stroke-width="4" stroke-linecap="round" fill="none"/>
+                        <circle cx="78" cy="82" r="4" fill="#8FA9C0"/>
+                        <circle cx="98" cy="82" r="4" fill="#8FA9C0"/>
+                    </svg>
+                    <h2 class="text-2xl font-bold text-[#1A2E5A] mb-3">Tidak Ditemukan</h2>
+                    <p class="text-gray-400 text-sm max-w-sm leading-relaxed mb-8">
+                        Tidak ada beasiswa yang cocok dengan <strong>&ldquo;{{ $q }}&rdquo;</strong>. Coba kata kunci lain.
+                    </p>
+                    <a href="{{ route('beasiswa') }}"
+                       class="bg-[#3B4C7E] hover:bg-[#2D3A61] text-white px-6 py-3 rounded-full text-sm font-bold transition-all duration-300 hover:scale-105 shadow-[0_4px_15px_rgba(59,76,126,0.35)]">
+                        Lihat Semua Beasiswa
                     </a>
-                @endforeach
-
+                </div>
+                @endif
             </div>
-            @else
-            {{-- EMPTY STATE --}}
-            <div class="flex flex-col items-center justify-center py-24 text-center">
-                <svg class="w-32 h-32 mb-6 text-[#D0DCEE]" viewBox="0 0 200 200" fill="none">
-                    <circle cx="100" cy="100" r="90" fill="#EEF1FF"/>
-                    <circle cx="88" cy="88" r="40" stroke="#B8CAEE" stroke-width="8"/>
-                    <path d="M118 118 L150 150" stroke="#B8CAEE" stroke-width="8" stroke-linecap="round"/>
-                    <path d="M74 88 Q88 75 102 88" stroke="#8FA9C0" stroke-width="4" stroke-linecap="round" fill="none"/>
-                    <circle cx="78" cy="82" r="4" fill="#8FA9C0"/>
-                    <circle cx="98" cy="82" r="4" fill="#8FA9C0"/>
-                </svg>
-                <h2 class="text-2xl font-bold text-[#1A2E5A] mb-3">Tidak Ditemukan</h2>
-                <p class="text-gray-400 text-sm max-w-sm leading-relaxed mb-8">
-                    Tidak ada beasiswa yang cocok dengan <strong>&ldquo;{{ $q }}&rdquo;</strong>. Coba kata kunci lain.
-                </p>
-                <a href="{{ route('beasiswa') }}"
-                   class="bg-[#3B4C7E] hover:bg-[#2D3A61] text-white px-6 py-3 rounded-full text-sm font-bold transition-all duration-300 hover:scale-105 shadow-[0_4px_15px_rgba(59,76,126,0.35)]">
-                    Lihat Semua Beasiswa
-                </a>
-            </div>
-            @endif
 
-            {{ $beasiswaData->links('components.pagination') }}
+            <div id="paginationContainer">
+                {{ $beasiswaData->links('components.pagination') }}
+            </div>
 
         </div>
     </section>
@@ -159,6 +163,7 @@
             easing: 'ease-out-cubic'
         });
     </script>
+    <script src="{{ asset('js/listing-ajax.js') }}"></script>
 
 </body>
 </html>

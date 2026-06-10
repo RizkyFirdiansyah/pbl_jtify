@@ -80,7 +80,7 @@ class PageContentSeeder extends Seeder
         ['key' => 'footer_seminar_label', 'type' => 'text', 'value' => 'Informasi Seminar', 'order' => 7],
         ['key' => 'footer_beasiswa_label', 'type' => 'text', 'value' => 'Informasi Beasiswa', 'order' => 8],
         ['key' => 'footer_bookmark_label', 'type' => 'text', 'value' => 'Bookmark', 'order' => 9],
-        ['key' => 'footer_diminati_label', 'type' => 'text', 'value' => 'Diminati', 'order' => 10],
+        ['key' => 'footer_disukai_label', 'type' => 'text', 'value' => 'Disukai', 'order' => 10],
         ['key' => 'footer_feedback_label', 'type' => 'text', 'value' => 'Feedback', 'order' => 11],
         ['key' => 'footer_instagram_url', 'type' => 'url', 'value' => 'https://www.instagram.com/jtipolinema?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==', 'order' => 12],
         ['key' => 'footer_x_url', 'type' => 'url', 'value' => 'https://x.com/polinema_campus?s=20', 'order' => 13],
@@ -95,7 +95,7 @@ class PageContentSeeder extends Seeder
         ['key' => 'login_label', 'type' => 'text', 'value' => 'Login', 'order' => 5],
         ['key' => 'profile_setting_label', 'type' => 'text', 'value' => 'Setting Profile', 'order' => 6],
         ['key' => 'profile_bookmark_label', 'type' => 'text', 'value' => 'Bookmark', 'order' => 7],
-        ['key' => 'profile_notifikasi_label', 'type' => 'text', 'value' => 'Notifikasi', 'order' => 8],
+        ['key' => 'profile_disukai_label', 'type' => 'text', 'value' => 'Disukai', 'order' => 8],
         ['key' => 'logout_label', 'type' => 'text', 'value' => 'Log Out', 'order' => 9],
       ],
     ];

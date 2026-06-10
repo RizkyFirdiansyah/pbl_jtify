@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JTIFY - Diminati</title>
+    <title>JTIFY - Disukai</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Tailwind CSS (via Vite) -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -20,8 +20,8 @@
 
     <!-- HEADER COMPONENT -->
     @include('components.header-konten', [
-        'title' => 'DIMINATI',
-        'subtitle' => 'Item Diminati'
+        'title' => 'DISUKAI',
+        'subtitle' => 'Item Disukai'
     ])
 
     <!-- MAIN CONTENT -->
@@ -36,7 +36,7 @@
                 <h2 class="text-3xl md:text-5xl font-extrabold text-[#1A2E5A] leading-tight">
                     Item
                     <span class="relative inline-block">
-                        Diminati
+                        Disukai
                         <span class="absolute left-0 bottom-1 w-full h-3 bg-[#DDEBFF] -z-10 rounded-sm"></span>
                     </span>
                 </h2>
