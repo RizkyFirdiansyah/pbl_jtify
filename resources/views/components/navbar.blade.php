@@ -11,7 +11,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
         </svg>
         <a href="{{ route('home') }}" class="nav-logo font-bold text-xl sm:text-2xl transition-colors duration-400">
-            JTIFY
+            {{ $pageContents['navbar']['brand_name'] ?? ($siteSettings['logo_text'] ?? 'JTIFY') }}
         </a>
     </div>
 
@@ -27,7 +27,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round"
                       d="M3 10.5L12 3l9 7.5V21a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1v-10.5z"/>
             </svg>
-            <span class="hidden sm:block">Beranda</span>
+            <span class="hidden sm:block">{{ $pageContents['navbar']['menu_home'] ?? 'Beranda' }}</span>
         </a>
 
         <!-- Tips -->
@@ -39,7 +39,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round"
                       d="M5 3h14a1 1 0 011 1v17l-8-4-8 4V4a1 1 0 011-1z"/>
             </svg>
-            <span class="hidden sm:block">Tips</span>
+            <span class="hidden sm:block">{{ $pageContents['navbar']['menu_tips'] ?? 'Tips' }}</span>
         </a>
 
         <!-- Tentang Kami -->
@@ -51,7 +51,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round"
                       d="M17 20h5V18a4 4 0 00-5-3.87M17 20H7m10 0v-2c0-.653-.084-1.287-.24-1.89M7 20H2V18a4 4 0 015-3.87M7 20v-2c0-.653.084-1.287.24-1.89m0 0a5.002 5.002 0 019.52 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
             </svg>
-            <span class="hidden sm:block">Tentang Kami</span>
+            <span class="hidden sm:block">{{ $pageContents['navbar']['menu_tentang'] ?? 'Tentang Kami' }}</span>
         </a>
 
     </div>
@@ -64,7 +64,7 @@
                   text-sm sm:text-base shadow-lg shrink-0
                   hover:-translate-y-1 hover:shadow-2xl active:scale-95
                   transition-all duration-400">
-            Login
+            {{ $pageContents['navbar']['login_label'] ?? 'Login' }}
         </a>
     @endguest
 
@@ -125,7 +125,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                   d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                         </svg>
-                        Setting Profile
+                        {{ $pageContents['navbar']['profile_setting_label'] ?? 'Setting Profile' }}
                     </a>
 
                     {{-- Bookmark --}}
@@ -135,7 +135,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                   d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
                         </svg>
-                        Bookmark
+                        {{ $pageContents['navbar']['profile_bookmark_label'] ?? 'Bookmark' }}
                     </a>
 
                     {{-- Notifikasi --}}
@@ -145,7 +145,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                   d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
                         </svg>
-                        Notifikasi
+                        {{ $pageContents['navbar']['profile_notifikasi_label'] ?? 'Notifikasi' }}
                     </a>
 
                     @if(auth()->user()?->isAdmin() || auth()->user()?->isCollaborator())
@@ -175,7 +175,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                       d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/>
                             </svg>
-                            Log Out
+                            {{ $pageContents['navbar']['logout_label'] ?? 'Log Out' }}
                         </button>
                     </form>
                 </div>
