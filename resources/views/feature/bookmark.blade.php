@@ -24,7 +24,7 @@
         'highlight2' => 'Kembali'
     ])
 
-    <main class="max-w-[1440px] mx-auto px-6 lg:px-20 pt-16 pb-32">
+    <main class="max-w-[1440px] mx-auto px-6 lg:px-20 pt-16 pb-0">
 
         <div class="mb-10 flex flex-col md:flex-row justify-between items-end gap-6 relative z-10">
             <div data-aos="fade-right">
@@ -43,19 +43,20 @@
             
             <div class="flex items-center gap-3" data-aos="fade-left">
                 <span class="text-sm font-medium text-[#696262]">Kategori:</span>
-                <select onchange="window.location.href='?category=' + this.value" class="px-5 py-2.5 rounded-full border border-gray-200 bg-white text-[#486284] font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-[#85A8F8] transition-all hover:border-[#85A8F8] cursor-pointer">
-                    <option value="Semua Kategori" {{ (isset($currentCategory) && $currentCategory == 'Semua Kategori') ? 'selected' : '' }}>Semua Kategori</option>
-                    <option value="Lomba" {{ (isset($currentCategory) && $currentCategory == 'Lomba') ? 'selected' : '' }}>Lomba</option>
-                    <option value="Seminar" {{ (isset($currentCategory) && $currentCategory == 'Seminar') ? 'selected' : '' }}>Seminar</option>
-                    <option value="Beasiswa" {{ (isset($currentCategory) && $currentCategory == 'Beasiswa') ? 'selected' : '' }}>Beasiswa</option>
+                <select id="bookmark-category-filter" class="px-5 py-2.5 rounded-full border border-gray-200 bg-white text-[#486284] font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-[#85A8F8] transition-all hover:border-[#85A8F8] cursor-pointer">
+                    <option value="Semua Kategori">Semua Kategori</option>
+                    <option value="Lomba">Lomba</option>
+                    <option value="Seminar">Seminar</option>
+                    <option value="Beasiswa">Beasiswa</option>
                 </select>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 relative z-10">
+        <div id="bookmark-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 relative z-10">
             @foreach ($bookmarks as $item)
             <div class="bookmark-card h-[340px] w-full bg-[#E5E7EB] rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 relative group cursor-pointer overflow-hidden flex flex-col justify-end border border-gray-100"
                  data-info-id="{{ $item->information_id }}"
+                 data-category="{{ $item->category }}"
                  data-aos="fade-up"
                  data-aos-delay="{{ $loop->index * 70 }}">
                 
@@ -67,10 +68,17 @@
                     </div>
                 </button>
 
-                <div class="absolute inset-0 flex justify-center items-center bg-[#E5E7EB] group-hover:bg-[#D1D5DB] transition-colors duration-500 z-0">
-                    <svg class="w-16 h-16 text-[#486284]/40 group-hover:scale-110 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M21 19V5C21 3.9 20.1 3 19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19ZM8.5 13.5L11 16.51L14.5 12L19 18H5L8.5 13.5Z"/>
-                    </svg>
+                <div class="absolute inset-0 z-0">
+                    @if(!empty($item->poster_path) && (\Illuminate\Support\Facades\Storage::disk('public')->exists($item->poster_path) || file_exists(public_path('storage/' . $item->poster_path))))
+                        <img src="{{ asset('storage/' . $item->poster_path) }}" alt="{{ $item->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#273266]/60 via-transparent to-transparent"></div>
+                    @else
+                        <div class="flex justify-center items-center bg-[#E5E7EB] group-hover:bg-[#D1D5DB] transition-colors duration-500 w-full h-full">
+                            <svg class="w-16 h-16 text-[#486284]/40 group-hover:scale-110 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M21 19V5C21 3.9 20.1 3 19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19ZM8.5 13.5L11 16.51L14.5 12L19 18H5L8.5 13.5Z"/>
+                            </svg>
+                        </div>
+                    @endif
                 </div>
                 
                 <div class="bg-gradient-to-t from-[#273266] via-[#273266]/80 to-transparent p-6 pt-16 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 relative">

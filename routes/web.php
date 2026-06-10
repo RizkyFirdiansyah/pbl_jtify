@@ -135,6 +135,7 @@ Route::get('/lomba',           function (Request $request) {
             'id' => $item->id,
             'title' => $item->title,
             'deadline' => $item->deadline->format('d M Y'),
+            'poster_path' => $item->poster_path,
         ]);
     } else {
         $lombaData = collect([
@@ -204,6 +205,7 @@ Route::get('/beasiswa',         function (Request $request) {
             'id' => $item->id,
             'title' => $item->title,
             'deadline' => $item->deadline->format('d M Y'),
+            'poster_path' => $item->poster_path,
         ]);
     } else {
         $beasiswaData = collect([
@@ -273,6 +275,7 @@ Route::get('/seminar',         function (Request $request) {
             'id' => $item->id,
             'title' => $item->title,
             'deadline' => $item->deadline->format('d M Y'),
+            'poster_path' => $item->poster_path,
         ]);
     } else {
         $seminarData = collect([
@@ -362,6 +365,7 @@ Route::get('/tips', function (Request $request) {
             'title'       => $item->title,
             'description' => \Illuminate\Support\Str::limit(strip_tags($item->content), 120),
             'date'        => $item->approved_at ? $item->approved_at->format('d M Y') : $item->created_at->format('d M Y'),
+            'poster_path' => $item->poster_path,
         ]);
     } else {
         $tipsData = collect([
@@ -472,6 +476,7 @@ Route::get('/tips/{slug}', function ($slug) {
             'author'      => $item->user?->name ?? 'Admin',
             'author_role' => $item->user?->role ?? 'Penulis',
             'description' => \Illuminate\Support\Str::limit(strip_tags($item->content), 150),
+            'poster_path' => $item->poster_path,
         ])->toArray();
     } else {
         $tipsDatabase = [

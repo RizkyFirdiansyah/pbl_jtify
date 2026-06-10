@@ -161,8 +161,10 @@
                         {{-- Seluruh card bisa di-klik --}}
                         <a href="#" class="card-link block group relative rounded-[10px] overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.06)] bg-gradient-to-br from-[#E8EEF8] to-[#D0DCEE] hover:shadow-[0_18px_45px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-500 cursor-pointer" style="aspect-ratio: 3/4;">
 
-                            {{-- Poster Placeholder --}}
-                            <div class="absolute inset-0 flex items-center justify-center transition-colors duration-500 ">
+                            {{-- Poster Placeholder / Dynamic Image --}}
+                            <img src="" alt="" class="card-image absolute inset-0 w-full h-full object-cover hidden group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#1A2E5A]/60 via-transparent to-transparent hidden card-image-overlay"></div>
+                            <div class="card-placeholder absolute inset-0 flex items-center justify-center transition-colors duration-500 ">
                                 <svg class="w-16 h-16 text-[#486284]/30 group-hover:scale-110 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M21 19V5C21 3.9 20.1 3 19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19ZM8.5 13.5L11 16.51L14.5 12L19 18H5L8.5 13.5Z"/>
                                 </svg>

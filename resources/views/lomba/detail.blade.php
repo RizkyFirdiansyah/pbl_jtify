@@ -43,7 +43,7 @@
     <!-- Toast Container -->
     <div id="toastContainer" class="fixed top-24 right-6 z-[9999] flex flex-col gap-3 pointer-events-none"></div>
 
-    <main class="max-w-[1440px] mx-auto px-6 lg:px-20 pt-8 pb-32">
+    <main class="max-w-[1440px] mx-auto px-6 lg:px-20 pt-8 pb-0">
 
         {{-- ── Info Bar ── --}}
         <div class="w-full bg-white/90 border border-[#898383]/30 rounded-2xl p-6 shadow-sm flex flex-col md:flex-row justify-between items-center gap-6 relative z-10 backdrop-blur-sm" data-aos="fade-up">
@@ -277,7 +277,7 @@
     {{-- ===========================
          FOOTER GRADIENT TRANSITION
     ============================ --}}
-    <div class="h-32 sm:h-40" style="background: linear-gradient(180deg, #ffffff 0%, #c8dff0 100%);"></div>
+    <section class="relative z-0 h-40" style="background: linear-gradient(180deg, #ffffff 0%, #c8dff0 100%);"></section>
 
     {{-- ===========================
          FOOTER
