@@ -69,7 +69,7 @@
     <div class="flex items-center shrink-0 relative">
 
         {{-- Oval pill: Notif + Divider + Avatar + Nama + Chevron --}}
-        <div class="profile-pill flex items-center gap-2 px-2 apy-1.5 rounded-full
+        <div class="profile-pill flex items-center gap-2 px-2 py-1.5 rounded-full
                     border font-semibold text-sm transition-all duration-300 cursor-pointer">
 
             {{-- Icon notif (klik = buka notif dropdown) --}}
@@ -97,86 +97,6 @@
                      class="mr-1 transition-transform duration-300 opacity-70">
                     <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
                 </svg>
-            </button>
-
-            <!-- Dropdown Menu -->
-            <div id="profileDropdown"
-                 class="profile-dropdown absolute right-0 mt-3 w-56
-                        rounded-2xl shadow-2xl border overflow-hidden
-                        opacity-0 invisible translate-y-2
-                        transition-all duration-300 ease-out z-50">
-
-                {{-- Header: nama & email --}}
-                <div class="dropdown-header px-4 py-3 border-b">
-                    <p class="font-bold text-sm truncate">{{ auth()->user()?->name ?? 'User' }}</p>
-                    <p class="text-xs opacity-60 truncate mt-0.5">{{ auth()->user()?->email ?? '' }}</p>
-                </div>
-
-                {{-- Menu items --}}
-                <div class="py-1.5">
-
-                    {{-- Setting Profile --}}
-                    <a href="{{ route('profile') }}"
-                       class="dropdown-item flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors duration-200">
-                        <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                        </svg>
-                        {{ $pageContents['navbar']['profile_setting_label'] ?? 'Setting Profile' }}
-                    </a>
-
-                    {{-- Bookmark --}}
-                    <a href="{{ route('bookmark') }}"
-                       class="dropdown-item flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors duration-200">
-                        <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
-                        </svg>
-                        {{ $pageContents['navbar']['profile_bookmark_label'] ?? 'Bookmark' }}
-                    </a>
-
-                    {{-- Disukai --}}
-                    <a href="{{ route('peminatan') }}"
-                       class="dropdown-item flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors duration-200">
-                        <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                        </svg>
-                        {{ $pageContents['navbar']['profile_disukai_label'] ?? 'Disukai' }}
-                    </a>
-
-                    @if(auth()->user()?->isAdmin() || auth()->user()?->isCollaborator())
-                    {{-- Admin Dashboard --}}
-                    <a href="/admin"
-                       class="dropdown-item flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors duration-200" style="color: #3b82f6;">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="3" width="7" height="9"></rect>
-                            <rect x="14" y="3" width="7" height="5"></rect>
-                            <rect x="14" y="12" width="7" height="9"></rect>
-                            <rect x="3" y="16" width="7" height="5"></rect>
-                        </svg>
-                        Admin Dashboard
-                    </a>
-                    @endif
-
-                </div>
-
-                {{-- Divider + Logout --}}
-                <div class="border-t py-1.5">
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit"
-                                class="dropdown-item dropdown-logout w-full flex items-center gap-3
-                                       px-4 py-2.5 text-sm font-medium transition-colors duration-200">
-                            <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/>
-                            </svg>
-                            {{ $pageContents['navbar']['logout_label'] ?? 'Log Out' }}
-                        </button>
-                    </form>
-                </div>
-
             </div>
         </div>
 
@@ -203,8 +123,8 @@
                         ['title' => 'UI/UX Design Competition 2026', 'msg' => 'Tenggat waktu: 10 Jun 2025 — 3 hari lagi!', 'read' => false],
                         ['title' => 'Beasiswa LPDP 2026',            'msg' => 'Tenggat waktu: 19 Jul 2025 — 42 hari lagi', 'read' => false],
                         ['title' => 'Seminar AI & Technology',        'msg' => 'Tenggat waktu: 1 Jul 2025 — 24 hari lagi', 'read' => false],
-                        ['title' => 'Hackathon 2026',        'msg' => 'Tenggat waktu: 4 Jul 2025 — 27 hari lagi', 'read' => true],
-                        ['title' => 'Workshop Business 2026',        'msg' => 'Tenggat waktu: 1 Jul 2025 — 24 hari lagi', 'read' => true],
+                        ['title' => 'Hackathon 2026',                 'msg' => 'Tenggat waktu: 4 Jul 2025 — 27 hari lagi', 'read' => true],
+                        ['title' => 'Workshop Business 2026',         'msg' => 'Tenggat waktu: 1 Jul 2025 — 24 hari lagi', 'read' => true],
                     ];
                 @endphp
 
@@ -236,38 +156,69 @@
             </div>
         </div>
 
-        {{-- Dropdown profil --}}
+        {{-- Dropdown profil (Diposisikan sejajar di sini) --}}
         <div id="profileDropdown"
-             class="profile-dropdown absolute right-0 top-14 w-56
+             class="profile-dropdown absolute right-0 top-14 w-56 bg-white
                     rounded-2xl shadow-2xl border overflow-hidden
                     opacity-0 invisible translate-y-2
                     transition-all duration-300 ease-out z-50">
 
+            {{-- Header: nama & email --}}
             <div class="dropdown-header px-4 py-3 border-b">
                 <p class="font-bold text-sm truncate">{{ auth()->user()?->name ?? 'User' }}</p>
                 <p class="text-xs opacity-60 truncate mt-0.5">{{ auth()->user()?->email ?? '' }}</p>
             </div>
 
+            {{-- Menu items --}}
             <div class="py-1.5">
+
+                {{-- Setting Profile --}}
                 <a href="{{ route('profile') }}"
                    class="dropdown-item flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors duration-200">
                     <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round"
                               d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                     </svg>
-                    Setting Profile
+                    {{ $pageContents['navbar']['profile_setting_label'] ?? 'Setting Profile' }}
                 </a>
 
+                {{-- Bookmark --}}
                 <a href="{{ route('bookmark') }}"
                    class="dropdown-item flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors duration-200">
                     <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round"
                               d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
                     </svg>
-                    Bookmark
+                    {{ $pageContents['navbar']['profile_bookmark_label'] ?? 'Bookmark' }}
                 </a>
+
+                {{-- Disukai --}}
+                <a href="{{ route('peminatan') }}"
+                   class="dropdown-item flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors duration-200">
+                    <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                    </svg>
+                    {{ $pageContents['navbar']['profile_disukai_label'] ?? 'Disukai' }}
+                </a>
+
+                @if(auth()->user()?->isAdmin() || auth()->user()?->isCollaborator())
+                {{-- Admin Dashboard --}}
+                <a href="/admin"
+                   class="dropdown-item flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors duration-200" style="color: #3b82f6;">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="9"></rect>
+                        <rect x="14" y="3" width="7" height="5"></rect>
+                        <rect x="14" y="12" width="7" height="9"></rect>
+                        <rect x="3" y="16" width="7" height="5"></rect>
+                    </svg>
+                    Admin Dashboard
+                </a>
+                @endif
+
             </div>
 
+            {{-- Divider + Logout --}}
             <div class="border-t py-1.5">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
@@ -278,10 +229,11 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                   d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/>
                         </svg>
-                        Log Out
+                        {{ $pageContents['navbar']['logout_label'] ?? 'Log Out' }}
                     </button>
                 </form>
             </div>
+
         </div>
 
         {{-- Overlay --}}
@@ -295,7 +247,7 @@
 
 <style>
     /* ══════════════════════════════════
-       NAV TRANSPARENT (di atas hero)
+        NAV TRANSPARENT (di atas hero)
     ══════════════════════════════════ */
     .nav-transparent #navPill {
         background: rgba(255,255,255,0.18);
@@ -329,7 +281,7 @@
     .nav-transparent .pill-divider { background: white; }
 
     /* ══════════════════════════════════
-       NAV SOLID (setelah scroll)
+        NAV SOLID (setelah scroll)
     ══════════════════════════════════ */
     .nav-solid {
         background: rgba(255,255,255,0.96);
@@ -353,23 +305,22 @@
         background: #1A2E5A;
         color: white;
     }
-/* GANTI DENGAN ini: */
-.nav-solid .profile-pill {
-    background: rgba(26,46,90,0.08);
-    border-color: rgba(26,46,90,0.18);
-    color: #1A2E5A;
-}
-.nav-solid .profile-pill:hover {
-    background: rgba(26,46,90,0.14);
-}
-.nav-solid .profile-avatar {
-    background: #1A2E5A;
-    color: white;
-}
+    .nav-solid .profile-pill {
+        background: rgba(26,46,90,0.08);
+        border-color: rgba(26,46,90,0.18);
+        color: #1A2E5A;
+    }
+    .nav-solid .profile-pill:hover {
+        background: rgba(26,46,90,0.14);
+    }
+    .nav-solid .profile-avatar {
+        background: #1A2E5A;
+        color: white;
+    }
     .nav-solid .pill-divider { background: white; }
 
     /* ══════════════════════════════════
-       DROPDOWN STYLES
+        DROPDOWN STYLES
     ══════════════════════════════════ */
     .profile-dropdown {
         background: white;
@@ -469,15 +420,11 @@ function toggleNotifAction(index, btn) {
     const isRead = item.dataset.read === 'true';
 
     if (!isRead) {
-
         // Tandai dibaca
         item.dataset.read = 'true';
-
         item.classList.remove('bg-blue-50');
         item.classList.add('bg-white');
-
         btn.title = 'Hapus notifikasi';
-
         btn.innerHTML = `
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-red-400">
                 <path d="M18 6L6 18M6 6l12 12"
@@ -486,11 +433,8 @@ function toggleNotifAction(index, btn) {
                       stroke-linecap="round"/>
             </svg>
         `;
-
         updateNotifDot();
-
     } else {
-
         // Hapus notif
         item.style.transition = 'opacity .2s, transform .2s';
         item.style.opacity = '0';
@@ -503,6 +447,7 @@ function toggleNotifAction(index, btn) {
     }
 }
 
+// Tambahan sinkronisasi notif dot
 function hapusSemuaNotif() {
     document.getElementById('notifList').innerHTML = `
         <p class="text-center text-xs text-gray-400 py-6">
