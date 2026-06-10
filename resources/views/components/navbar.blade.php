@@ -148,6 +148,20 @@
                         Notifikasi
                     </a>
 
+                    @if(auth()->user()?->isAdmin() || auth()->user()?->isCollaborator())
+                    {{-- Admin Dashboard --}}
+                    <a href="/admin"
+                       class="dropdown-item flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors duration-200" style="color: #3b82f6;">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="9"></rect>
+                            <rect x="14" y="3" width="7" height="5"></rect>
+                            <rect x="14" y="12" width="7" height="9"></rect>
+                            <rect x="3" y="16" width="7" height="5"></rect>
+                        </svg>
+                        Admin Dashboard
+                    </a>
+                    @endif
+
                 </div>
 
                 {{-- Divider + Logout --}}

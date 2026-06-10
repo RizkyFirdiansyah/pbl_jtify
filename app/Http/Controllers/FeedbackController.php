@@ -13,7 +13,7 @@ class FeedbackController extends Controller
 {
     public function index(Request $request): JsonResponse|View
     {
-        if ($request->expectsJson() || $request->is('api/*') || ! view()->exists('feedback')) {
+        if ($request->expectsJson() || $request->is('api/*')) {
             if (! Auth::check()) {
                 return response()->json([
                     'success' => false,
@@ -32,7 +32,14 @@ class FeedbackController extends Controller
             ]);
         }
 
-        return view('feedback');
+        if (! view()->exists('feature.feedback')) {
+            return response()->json([
+                'success' => true,
+                'data' => [],
+            ]);
+        }
+
+        return view('feature.feedback');
     }
 
     public function store(Request $request): JsonResponse|\Illuminate\Http\RedirectResponse
@@ -47,7 +54,7 @@ class FeedbackController extends Controller
                 ], 401);
             }
 
-            return back()->withErrors(['email' => 'Silakan login terlebih dahulu']);
+            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu untuk mengisi feedback.');
         }
 
         $validated = $request->validate([

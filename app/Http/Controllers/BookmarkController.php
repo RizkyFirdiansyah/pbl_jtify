@@ -27,6 +27,7 @@ class BookmarkController extends Controller
         $bookmarks = $query->latest()->get()->map(function (Bookmark $bookmark) {
             return (object) [
                 'id' => $bookmark->id,
+                'information_id' => $bookmark->information_id,
                 'title' => $bookmark->information?->title ?? '-',
                 'category' => $bookmark->information?->category?->name ?? '-',
                 'date' => $bookmark->information?->deadline?->format('d M Y') ?? '-',
@@ -44,14 +45,14 @@ class BookmarkController extends Controller
             ['path' => $request->url(), 'query' => $request->query()]
         );
 
-        if ($request->expectsJson() || $request->is('api/*') || ! view()->exists('bookmark')) {
+        if ($request->expectsJson() || $request->is('api/*') || ! view()->exists('feature.bookmark')) {
             return response()->json([
                 'success' => true,
                 'data' => $paginated,
             ]);
         }
 
-        return view('bookmark', [
+        return view('feature.bookmark', [
             'bookmarks' => $paginated,
             'currentCategory' => $request->input('category', 'Semua Kategori'),
         ]);

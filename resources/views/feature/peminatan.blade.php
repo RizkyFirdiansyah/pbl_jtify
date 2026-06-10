@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JTIFY - Diminati</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Tailwind CSS (via Vite) -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <!-- Google Fonts: Poppins & Plus Jakarta Sans -->
@@ -59,6 +60,7 @@
             @foreach ($bookmarks as $item)
             <!-- Card -->
             <div class="like-card h-[340px] w-full bg-[#E5E7EB] rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 relative group cursor-pointer overflow-hidden flex flex-col justify-end border border-gray-100"
+                 data-info-id="{{ $item->information_id }}"
                  data-aos="fade-up"
                  data-aos-delay="{{ $loop->index * 70 }}">
                 
@@ -92,49 +94,7 @@
             @endforeach
         </div>
 
-            {{-- ================================
-                 PAGINATION
-            ================================= --}}
-            <div class="mt-20 flex items-center justify-center gap-2">
-
-                {{-- PREV --}}
-                <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:bg-[#1A2E5A] hover:text-white transition-all duration-300">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path d="M15 19l-7-7 7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </button>
-
-                {{-- ACTIVE PAGE --}}
-                <button class="w-10 h-10 rounded-full bg-[#1A2E5A] text-white text-sm font-bold shadow-lg">
-                    1
-                </button>
-
-                {{-- PAGE --}}
-                <button class="w-10 h-10 rounded-full text-[#1A2E5A] text-sm font-medium hover:bg-gray-100 transition-all duration-300">
-                    2
-                </button>
-                <button class="w-10 h-10 rounded-full text-[#1A2E5A] text-sm font-medium hover:bg-gray-100 transition-all duration-300">
-                    3
-                </button>
-
-                {{-- DOT --}}
-                <span class="px-1 text-gray-400">
-                    ...
-                </span>
-
-                {{-- LAST --}}
-                <button class="w-10 h-10 rounded-full text-[#1A2E5A] text-sm font-medium hover:bg-gray-100 transition-all duration-300">
-                    68
-                </button>
-
-                {{-- NEXT --}}
-                <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:bg-[#1A2E5A] hover:text-white transition-all duration-300">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </button>
-
-            </div>
+            {{ $bookmarks->links('components.pagination') }}
 
         </div>
     </section>
@@ -152,64 +112,6 @@
     @include('components.footer')
 
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-    <script>
-        AOS.init({
-            duration: 1000,
-            once: false,
-            mirror: true,
-            easing: 'ease-out-cubic'
-        });
-
-        function toggleLike(btn, event) {
-            // Mencegah navigasi ke halaman detail jika card diklik
-            event.preventDefault();
-            event.stopPropagation();
-            
-            const likeBtn = btn.querySelector('.like-btn');
-            const heartIcon = likeBtn.querySelector('svg');
-            const card = btn.closest('.like-card');
-            
-            // Check if it's currently liked (has solid red color)
-            const isLiked = heartIcon.classList.contains('text-red-500');
-            
-            if (isLiked) {
-                // Proses Batal Suka
-                heartIcon.classList.remove('text-red-500', 'fill-current');
-                heartIcon.classList.add('text-gray-400', 'fill-none', 'stroke-current', 'stroke-2');
-                
-                card.classList.add('opacity-50', 'grayscale');
-                showToast("Batal disukai!");
-            } else {
-                // Proses Sukai Kembali
-                heartIcon.classList.add('text-red-500', 'fill-current');
-                heartIcon.classList.remove('text-gray-400', 'fill-none', 'stroke-current', 'stroke-2');
-                
-                card.classList.remove('opacity-50', 'grayscale');
-                showToast("Berhasil disukai kembali!");
-            }
-        }
-
-        function showToast(message) {
-            const toast = document.createElement('div');
-            toast.className = 'fixed bottom-8 left-1/2 -translate-x-1/2 bg-white text-[#486284] px-6 py-3 rounded-xl shadow-[0px_4px_16px_rgba(0,0,0,0.1)] font-semibold border border-gray-100 flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-300 z-[100]';
-            toast.innerHTML = `
-                <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                </svg>
-                ${message}
-            `;
-            
-            document.body.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.classList.remove('translate-y-20', 'opacity-0');
-            }, 10);
-            
-            setTimeout(() => {
-                toast.classList.add('translate-y-20', 'opacity-0');
-                setTimeout(() => toast.remove(), 300);
-            }, 2500);
-        }
-    </script>
+    <script src="{{ asset('js/peminatan-list-interaction.js') }}"></script>
 </body>
 </html>

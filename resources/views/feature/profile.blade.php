@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JTIFY - Pengaturan Akun</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body class="font-sans" style="background: linear-gradient(135deg, #c5e8f7 0%, #eef6fc 50%, #daeef8 100%); min-height: 100vh;">
+
+<div id="toastContainer" class="fixed top-24 right-6 z-[9999] flex flex-col gap-3 pointer-events-none"></div>
 
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
@@ -32,11 +35,10 @@
         <div class="user-mini">
             <div class="user-avatar" id="sidebarAvatar">
                 <img id="sidebarAvatarImg" src="" alt="" style="display:none;"/>
-                <span id="sidebarAvatarLetter">J</span>
+                <span id="sidebarAvatarLetter">{{ Auth::check() ? strtoupper(substr(Auth::user()->name, 0, 1)) : 'J' }}</span>
             </div>
             <div>
-                <div class="user-name" id="sidebarName">Nama Mahasiswa</div>
-                <div class="user-nim" id="sidebarNim">NIM belum diisi</div>
+                <div class="user-name" id="sidebarName">{{ Auth::check() ? Auth::user()->name : 'Nama Mahasiswa' }}</div>
             </div>
         </div>
 
@@ -66,8 +68,25 @@
             Dokumen & CV
         </a>
 
+        @if(Auth::check() && Auth::user()->isCollaborator())
+        <a href="/admin" class="nav-item" style="color: #2563a8;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="9"></rect>
+                <rect x="14" y="3" width="7" height="5"></rect>
+                <rect x="14" y="12" width="7" height="9"></rect>
+                <rect x="3" y="16" width="7" height="5"></rect>
+            </svg>
+            Dashboard Admin
+        </a>
+        @endif
+
+
+
         <div class="nav-bottom">
-            <a href="{{ route('home') }}" class="nav-item" style="color:#EF4444;">
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                @csrf
+            </form>
+            <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-item" style="color:#EF4444;">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
                     <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"
                           stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -105,43 +124,7 @@
             <!-- SECTION: PROFIL -->
             <div id="section-profil">
 
-                <div class="section-card">
-                    <div class="section-card-header">
-                        <div>
-                            <div class="section-card-title">Foto Profil</div>
-                            <div class="section-card-desc">Foto akan ditampilkan di profil publik kamu</div>
-                        </div>
-                    </div>
-                    <div class="section-card-body" style="padding-top:20px;">
-                        <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
-                            <div class="photo-circle" onclick="document.getElementById('photoInput').click()">
-                                <img id="profileImg" src="" alt="" style="display:none;"/>
-                                <svg id="profileDefault" width="30" height="30" viewBox="0 0 24 24" fill="none">
-                                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                                    <circle cx="12" cy="7" r="4" stroke="white" stroke-width="2"/>
-                                </svg>
-                                <div class="photo-overlay">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                                        <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" stroke="white" stroke-width="2"/>
-                                        <circle cx="12" cy="13" r="4" stroke="white" stroke-width="2"/>
-                                    </svg>
-                                </div>
-                            </div>
-                            <input type="file" id="photoInput" accept="image/*" style="display:none;" onchange="previewPhoto(this)"/>
-                            <div>
-                                <button onclick="document.getElementById('photoInput').click()"
-                                    style="font-size:13px;color:#2563a8;font-weight:700;background:#EBF4FC;border:none;cursor:pointer;padding:8px 18px;border-radius:8px;font-family:'Poppins',sans-serif;display:block;margin-bottom:8px;">
-                                    Unggah Foto Baru
-                                </button>
-                                <button onclick="removePhoto()"
-                                    style="font-size:12px;color:#EF4444;background:none;border:none;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600;">
-                                    Hapus Foto
-                                </button>
-                                <p style="font-size:11px;color:#9CA3AF;margin-top:6px;">JPG, PNG — Maks. 2 MB</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
 
                 <div class="section-card">
                     <div class="section-card-header">
@@ -153,29 +136,25 @@
                     <div class="section-card-body">
                         <div class="field-row">
                             <div class="field-label">Nama Lengkap</div>
-                            <input class="field-input" id="inputNama" type="text" placeholder="Nama lengkap" oninput="syncSidebar()" value=""/>
-                        </div>
-                        <div class="field-row">
-                            <div class="field-label">NIM</div>
-                            <input class="field-input" id="inputNim" type="text" placeholder="Nomor Induk Mahasiswa" oninput="syncSidebar()" value=""/>
+                            <input class="field-input" id="inputNama" type="text" placeholder="Nama lengkap" oninput="syncSidebar()" value="{{ Auth::check() ? Auth::user()->name : '' }}"/>
                         </div>
                         <div class="field-row">
                             <div class="field-label">Nomor Telepon</div>
-                            <input class="field-input" type="tel" placeholder="08xx-xxxx-xxxx" value=""/>
+                            <input class="field-input" id="inputPhone" type="tel" placeholder="08xx-xxxx-xxxx" value="{{ Auth::check() ? Auth::user()->phone : '' }}"/>
                         </div>
                         <div class="field-row">
                             <div class="field-label">Email</div>
-                            <input class="field-input" type="email" placeholder="email@mahasiswa.ac.id" value=""/>
+                            <input class="field-input" id="inputEmail" type="email" placeholder="email@mahasiswa.ac.id" value="{{ Auth::check() ? Auth::user()->email : '' }}"/>
                         </div>
                         <div class="field-row">
                             <div class="field-label">LinkedIn</div>
-                            <input class="field-input" type="url" placeholder="linkedin.com/in/username" value=""/>
+                            <input class="field-input" id="inputLinkedin" type="url" placeholder="linkedin.com/in/username" value="{{ Auth::check() ? Auth::user()->linkedin_url : '' }}"/>
                         </div>
                     </div>
                 </div>
 
                 <div class="action-row">
-                    <button class="btn-save">Simpan Perubahan</button>
+                    <button class="btn-save" id="btnSaveProfile">Simpan Perubahan</button>
                     <button class="btn-cancel" onclick="resetProfil()">Batalkan</button>
                 </div>
 
@@ -247,7 +226,7 @@
                 </div>
 
                 <div class="action-row">
-                    <button class="btn-save">Simpan Kata Sandi</button>
+                    <button class="btn-save" id="btnSavePassword">Simpan Kata Sandi</button>
                     <button class="btn-cancel" onclick="clearPwd()">Batalkan</button>
                 </div>
 
@@ -300,7 +279,7 @@
                 </div>
 
                 <div class="action-row">
-                    <button class="btn-save">Simpan Dokumen</button>
+                    <button class="btn-save" id="btnSaveDocument">Simpan Dokumen</button>
                     <button class="btn-danger" onclick="removeCV()">Hapus CV</button>
                 </div>
 
@@ -311,120 +290,17 @@
 </div>
 
 <script>
-    const sectionTitles = {
-        profil: 'Profil Saya',
-        keamanan: 'Keamanan',
-        dokumen: 'Dokumen & CV'
+    window.profileConfig = {
+        userData: {
+            name: "{{ Auth::check() ? Auth::user()->name : '' }}",
+            phone: "{{ Auth::check() ? Auth::user()->phone : '' }}",
+            email: "{{ Auth::check() ? Auth::user()->email : '' }}",
+            linkedin: "{{ Auth::check() ? Auth::user()->linkedin_url : '' }}",
+            cvPath: "{{ Auth::check() ? Auth::user()->cv_path : '' }}"
+        }
     };
-
-    function showSection(name, el) {
-        ['profil','keamanan','dokumen'].forEach(s => {
-            const sec = document.getElementById('section-' + s);
-            if (sec) sec.style.display = 'none';
-        });
-        const target = document.getElementById('section-' + name);
-        if (target) target.style.display = 'block';
-        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-        el.classList.add('active');
-        document.getElementById('topbarTitle').textContent = sectionTitles[name] || name;
-    }
-
-    function openSidebar() {
-        document.getElementById('sidebar').classList.add('open');
-        document.getElementById('sidebarOverlay').classList.add('show');
-    }
-    function closeSidebar() {
-        document.getElementById('sidebar').classList.remove('open');
-        document.getElementById('sidebarOverlay').classList.remove('show');
-    }
-
-    function syncSidebar() {
-        const nama = document.getElementById('inputNama').value;
-        const nim  = document.getElementById('inputNim').value;
-        document.getElementById('sidebarName').textContent = nama || 'Nama Mahasiswa';
-        document.getElementById('sidebarNim').textContent  = nim  || 'NIM belum diisi';
-        if (nama) {
-            document.getElementById('sidebarAvatarLetter').textContent = nama.charAt(0).toUpperCase();
-        }
-    }
-
-    function previewPhoto(input) {
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = e => {
-                const img = document.getElementById('profileImg');
-                const def = document.getElementById('profileDefault');
-                img.src = e.target.result;
-                img.style.display = 'block';
-                def.style.display = 'none';
-                const sbImg = document.getElementById('sidebarAvatarImg');
-                const sbLetter = document.getElementById('sidebarAvatarLetter');
-                sbImg.src = e.target.result;
-                sbImg.style.display = 'block';
-                sbLetter.style.display = 'none';
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    function removePhoto() {
-        document.getElementById('profileImg').style.display = 'none';
-        document.getElementById('profileDefault').style.display = 'block';
-        document.getElementById('photoInput').value = '';
-        document.getElementById('sidebarAvatarImg').style.display = 'none';
-        document.getElementById('sidebarAvatarLetter').style.display = 'block';
-    }
-
-    function previewCV(input) {
-        if (input.files && input.files[0]) {
-            const file   = input.files[0];
-            const sizeKB = (file.size / 1024).toFixed(0);
-            const sizeMB = (file.size / 1024 / 1024).toFixed(2);
-            document.getElementById('cvFileName').textContent = file.name;
-            document.getElementById('cvFileSize').textContent = sizeKB > 1024 ? sizeMB + ' MB' : sizeKB + ' KB';
-            document.getElementById('cvUploaded').style.display = 'flex';
-            document.getElementById('cvDropzone').style.display = 'none';
-        }
-    }
-
-    function removeCV() {
-        document.getElementById('cvUploaded').style.display = 'none';
-        document.getElementById('cvDropzone').style.display = 'flex';
-        document.getElementById('cvInput').value = '';
-    }
-
-    function togglePwd(inputId, iconId) {
-        const input = document.getElementById(inputId);
-        const icon  = document.getElementById(iconId);
-        if (input.type === 'password') {
-            input.type = 'text';
-            icon.innerHTML = `
-                <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            `;
-        } else {
-            input.type = 'password';
-            icon.innerHTML = `
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
-            `;
-        }
-    }
-
-    function resetProfil() {
-        document.getElementById('inputNama').value = '';
-        document.getElementById('inputNim').value  = '';
-        syncSidebar();
-    }
-
-    function clearPwd() {
-        ['pwdOld','pwdNew','pwdConfirm'].forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.value = '';
-        });
-    }
 </script>
+<script src="{{ asset('js/profile-interaction.js') }}"></script>
 
 </body>
 </html>

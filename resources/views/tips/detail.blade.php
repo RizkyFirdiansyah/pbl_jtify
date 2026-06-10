@@ -7,15 +7,12 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body class="bg-[#F8FAFC] text-slate-700 overflow-x-hidden scroll-smooth font-sans">
 
     {{-- NAVBAR --}}
     @include('components.navbar')
-
-    {{-- TOAST NOTIFICATION --}}
-    <div id="toastContainer" class="fixed bottom-6 right-6 z-[9999] flex flex-col gap-3 pointer-events-none"></div>
 
     {{-- BACK FLOATING BUTTON --}}
     <div class="fixed top-28 left-4 sm:left-8 z-40">
@@ -32,15 +29,9 @@
     {{-- HERO HEADER --}}
     <header class="relative w-full pt-32 pb-16 bg-gradient-to-b from-[#EEF4FF] via-[#F1F5F9] to-[#F8FAFC]">
         <div class="max-w-5xl mx-auto px-4 text-center">
-            
-            {{-- Category tag with HSL gradient border --}}
-            <span class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-black tracking-widest uppercase bg-gradient-to-r from-[#4C75F2]/10 to-[#E0A6F2]/10 text-[#3B4C7E] border border-[#4C75F2]/20 mb-6" data-aos="fade-down">
-                <span class="w-1.5 h-1.5 rounded-full bg-[#4C75F2] animate-pulse"></span>
-                {{ $tip['category'] }}
-            </span>
 
             {{-- Main Title --}}
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-editorial font-extrabold text-[#1A2E5A] leading-tight max-w-4xl mx-auto mb-6" data-aos="fade-up" data-aos-delay="100">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-sans font-extrabold text-[#1A2E5A] leading-tight max-w-4xl mx-auto mb-6" data-aos="fade-up" data-aos-delay="100">
                 {{ $tip['title'] }}
             </h1>
 
@@ -52,14 +43,6 @@
                         <path d="M16 2V6M8 2V6M3 10H21" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                     {{ $tip['date'] }}
-                </span>
-                <span class="w-1 h-1 rounded-full bg-slate-300"></span>
-                <span class="flex items-center gap-1.5">
-                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="10" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M12 6v6l4 2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    {{ $tip['read_time'] }}
                 </span>
             </div>
 
@@ -78,63 +61,12 @@
     </header>
 
     {{-- MAIN CONTAINER --}}
-    <main class="max-w-6xl mx-auto px-4 pb-24">
+    <main class="max-w-4xl mx-auto px-4 pb-24">
         
-        <div class="flex flex-col lg:flex-row gap-12 items-start">
+        <div>
             
-            {{-- SIDEBAR LEFT (Sticky) --}}
-            <aside class="w-full lg:w-1/4 sticky top-[100px] hidden lg:block">
-                
-                {{-- Table of Contents --}}
-                <div class="bg-white/70 backdrop-blur-md border border-slate-200/80 rounded-2xl p-6 mb-6 shadow-[0_4px_30px_rgba(0,0,0,0.02)]">
-                    <h3 class="text-xs font-black uppercase text-[#1A2E5A] tracking-wider mb-4 border-b border-slate-200/50 pb-2">Daftar Isi</h3>
-                    <nav class="flex flex-col gap-3">
-                        <a href="#pendahuluan" class="text-xs font-semibold text-slate-400 hover:text-[#4C75F2] transition-colors flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
-                            Pendahuluan
-                        </a>
-                        <a href="#ringkasan" class="text-xs font-semibold text-slate-400 hover:text-[#4C75F2] transition-colors flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
-                            Poin Kunci
-                        </a>
-                        <a href="#isi-artikel" class="text-xs font-semibold text-slate-400 hover:text-[#4C75F2] transition-colors flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
-                            Pembahasan
-                        </a>
-                        <a href="#kesimpulan" class="text-xs font-semibold text-slate-400 hover:text-[#4C75F2] transition-colors flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
-                            Kesimpulan
-                        </a>
-                    </nav>
-                </div>
-
-                {{-- Action Bar --}}
-                <div class="bg-white/70 backdrop-blur-md border border-slate-200/80 rounded-2xl p-6 shadow-[0_4px_30px_rgba(0,0,0,0.02)] flex flex-col gap-4">
-                    <h3 class="text-xs font-black uppercase text-[#1A2E5A] tracking-wider border-b border-slate-200/50 pb-2 mb-1">Aksi Artikel</h3>
-                    
-                    {{-- Bookmark Button --}}
-                    <button onclick="toggleBookmark()" id="btnBookmark" class="w-full flex items-center justify-center gap-2 bg-[#F1F5F9] hover:bg-[#DDEBFF] text-slate-600 hover:text-[#4C75F2] py-2.5 rounded-xl text-xs font-bold transition-all duration-300">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" id="bookmarkIcon">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
-                        </svg>
-                        <span id="bookmarkText">Simpan Tips</span>
-                    </button>
-
-                    {{-- Share Buttons --}}
-                    <div class="flex gap-2">
-                        <button onclick="copyLink()" class="flex-1 flex items-center justify-center gap-1.5 bg-[#EEF1FF] hover:bg-[#D8DCFF] text-[#3B4C7E] py-2 rounded-lg text-[11px] font-bold transition-colors">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
-                            </svg>
-                            Bagikan
-                        </button>
-                    </div>
-                </div>
-
-            </aside>
-
             {{-- ARTICLE WRAPPER --}}
-            <article class="w-full lg:w-3/4 bg-white rounded-3xl p-6 sm:p-10 md:p-14 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-slate-100" data-aos="fade-up">
+            <article class="w-full bg-white rounded-3xl p-6 sm:p-10 md:p-14 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-slate-100" data-aos="fade-up">
                 
                 {{-- FEATURED IMAGE MOCKUP --}}
                 <div class="relative w-full aspect-video rounded-2xl overflow-hidden mb-12 shadow-sm" id="pendahuluan">
@@ -149,69 +81,14 @@
                     </div>
                 </div>
 
-                {{-- KEY TAKEAWAYS (Ringkasan) --}}
-                <div class="bg-gradient-to-br from-[#F0F5FF] to-[#F5FAFF] border border-blue-100 rounded-2xl p-6 sm:p-8 mb-12 shadow-sm" id="ringkasan">
-                    <div class="flex items-center gap-2 mb-4">
-                        <span class="bg-[#2F6FED] text-white text-[9px] font-black tracking-widest uppercase px-2.5 py-1 rounded">POIN KUNCI</span>
-                        <h3 class="text-[#1A2E5A] font-black text-sm uppercase tracking-wider">Ringkasan Utama</h3>
-                    </div>
-                    <ul class="space-y-3.5">
-                        @foreach($tip['key_takeaways'] as $takeaway)
-                            <li class="flex items-start gap-3">
-                                <span class="bg-blue-100 text-blue-600 rounded-full p-1 mt-0.5 flex-shrink-0">
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-                                        <polyline points="20 6 9 17 4 12"/>
-                                    </svg>
-                                </span>
-                                <span class="text-xs sm:text-sm text-[#3B4C7E] font-medium leading-relaxed">{{ $takeaway }}</span>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-
                 {{-- ARTICLE BODY --}}
                 <div class="article-body article-dropcap text-slate-600 text-sm sm:text-base leading-relaxed space-y-6 text-justify" id="isi-artikel">
                     
                     {{-- Loop paragraphs --}}
                     @foreach($tip['content'] as $p)
-                        @if($loop->index == 2)
-                            {{-- PULL-QUOTE IN THE MIDDLE --}}
-                            <blockquote class="my-10 border-l-4 border-[#2F6FED] bg-slate-50 p-6 italic rounded-r-2xl shadow-sm text-center lg:text-left">
-                                <p class="text-[#1A2E5A] font-editorial font-medium text-base sm:text-lg leading-relaxed mb-2">
-                                    "{{ $tip['description'] }}"
-                                </p>
-                                <cite class="text-xs font-bold text-slate-400 not-italic">— {{ $tip['author'] }}, {{ $tip['category'] }} Expert</cite>
-                            </blockquote>
-                        @endif
                         <p class="leading-[1.8]">{{ $p }}</p>
                     @endforeach
 
-                </div>
-
-                {{-- TAGS --}}
-                <div class="mt-12 pt-8 border-t border-slate-100 flex flex-wrap gap-2" id="kesimpulan">
-                    @foreach($tip['tags'] as $tag)
-                        <span class="bg-slate-100 text-slate-500 text-xs px-3.5 py-1.5 rounded-full font-medium">#{{ $tag }}</span>
-                    @endforeach
-                </div>
-
-                {{-- WAS THIS HELPFUL FEEDBACK --}}
-                <div class="mt-12 bg-slate-50 border border-slate-100 rounded-2xl p-6 text-center">
-                    <h4 class="text-sm font-bold text-[#1A2E5A] mb-4">Apakah artikel ini bermanfaat bagi Anda?</h4>
-                    <div class="flex justify-center gap-4">
-                        <button onclick="submitFeedback('yes')" class="group flex items-center gap-2 bg-white hover:bg-emerald-50 text-slate-600 hover:text-emerald-600 border border-slate-200 hover:border-emerald-200 px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 hover:scale-105">
-                            <svg class="w-4 h-4 transition-transform group-hover:-translate-y-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/>
-                            </svg>
-                            Ya, Membantu
-                        </button>
-                        <button onclick="submitFeedback('no')" class="group flex items-center gap-2 bg-white hover:bg-rose-50 text-slate-600 hover:text-rose-600 border border-slate-200 hover:border-rose-200 px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 hover:scale-105">
-                            <svg class="w-4 h-4 transition-transform group-hover:translate-y-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M10 15v4a3 3 0 003 3l4-9V2H5.72a2 2 0 00-2 1.7l-1.38 9a2 2 0 002 2.3zm10-13h3a2 2 0 012 2v7a2 2 0 01-2 2h-3"/>
-                            </svg>
-                            Tidak
-                        </button>
-                    </div>
                 </div>
 
             </article>
@@ -226,7 +103,7 @@
             
             <div class="text-center mb-16">
                 <p class="uppercase tracking-[0.25em] text-[10px] font-black text-slate-400 mb-3">Rekomendasi Bacaan</p>
-                <h3 class="text-2xl md:text-3xl font-editorial font-bold text-[#1A2E5A]">Tips Menarik Lainnya</h3>
+                <h3 class="text-2xl md:text-3xl font-sans font-bold text-[#1A2E5A]">Tips Menarik Lainnya</h3>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -284,70 +161,6 @@
             mirror: true,
             easing: 'ease-out-cubic',
         });
-
-        // TOAST CREATOR
-        function showToast(message) {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = "toast-notification bg-[#1A2E5A] text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-2 pointer-events-auto border border-white/10 text-xs font-bold";
-            toast.innerHTML = `
-                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-                    <polyline points="20 6 9 17 4 12"/>
-                </svg>
-                <span>${message}</span>
-            `;
-            container.appendChild(toast);
-
-            // Reflow for transition
-            toast.offsetHeight;
-            toast.classList.add('show');
-
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 400);
-            }, 3000);
-        }
-
-        // BOOKMARK
-        let isBookmarked = false;
-        function toggleBookmark() {
-            isBookmarked = !isBookmarked;
-            const btn = document.getElementById('btnBookmark');
-            const icon = document.getElementById('bookmarkIcon');
-            const text = document.getElementById('bookmarkText');
-
-            if (isBookmarked) {
-                btn.className = "w-full flex items-center justify-center gap-2 bg-[#2F6FED] hover:bg-[#1C52C2] text-white py-2.5 rounded-xl text-xs font-bold transition-all duration-300";
-                icon.setAttribute('fill', 'currentColor');
-                text.textContent = "Tersimpan";
-                showToast("Tips berhasil disimpan ke Bookmark Anda!");
-            } else {
-                btn.className = "w-full flex items-center justify-center gap-2 bg-[#F1F5F9] hover:bg-[#DDEBFF] text-slate-600 hover:text-[#4C75F2] py-2.5 rounded-xl text-xs font-bold transition-all duration-300";
-                icon.removeAttribute('fill');
-                text.textContent = "Simpan Tips";
-                showToast("Tips dihapus dari Bookmark.");
-            }
-        }
-
-        // COPY LINK
-        function copyLink() {
-            const dummy = document.createElement('input');
-            dummy.value = window.location.href;
-            document.body.appendChild(dummy);
-            dummy.select();
-            document.execCommand('copy');
-            document.body.removeChild(dummy);
-            showToast("Tautan berhasil disalin!");
-        }
-
-        // FEEDBACK
-        function submitFeedback(val) {
-            if (val === 'yes') {
-                showToast("Terima kasih atas feedback positif Anda!");
-            } else {
-                showToast("Terima kasih atas masukannya, kami akan terus meningkatkan kualitas.");
-            }
-        }
     </script>
 
 </body>

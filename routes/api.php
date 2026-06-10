@@ -60,6 +60,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile', [UserProfileController::class, 'show']);
     Route::get('/profile/edit', [UserProfileController::class, 'edit']);
     Route::put('/profile', [UserProfileController::class, 'update']);
+    Route::put('/profile/password', [UserProfileController::class, 'updatePassword']);
     Route::delete('/profile/cv', [UserProfileController::class, 'deleteCv']);
     Route::get('/profile/feedbacks', [UserProfileController::class, 'feedbacks']);
 });
