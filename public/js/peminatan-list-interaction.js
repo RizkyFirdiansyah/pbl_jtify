@@ -33,12 +33,12 @@ async function toggleLike(btn, event) {
                 heartIcon.classList.add('text-red-500', 'fill-current');
                 heartIcon.classList.remove('text-gray-400', 'fill-none', 'stroke-current', 'stroke-2');
                 card.classList.remove('opacity-50', 'grayscale');
-                showToast(result.message || "Berhasil disukai kembali!");
+                showToast(result.message || "Disukai");
             } else {
                 heartIcon.classList.remove('text-red-500', 'fill-current');
                 heartIcon.classList.add('text-gray-400', 'fill-none', 'stroke-current', 'stroke-2');
                 card.classList.add('opacity-50', 'grayscale');
-                showToast(result.message || "Batal disukai!");
+                showToast(result.message || "Batal disukai");
                 
                 // Premium micro-animation to remove card from layout
                 card.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';

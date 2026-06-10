@@ -104,7 +104,7 @@ class BookmarkController extends Controller
         }
 
         return response()->json([
-            'message' => $isBookmarked ? 'Disimpan ke bookmark' : 'Dihapus dari bookmark',
+            'message' => $isBookmarked ? 'Disimpan' : 'Batal disimpan',
             'is_bookmarked' => $isBookmarked,
             'reminder_enabled' => $reminderEnabled ?? false,
         ]);

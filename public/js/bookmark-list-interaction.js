@@ -32,12 +32,12 @@ async function toggleBookmark(btn, event) {
                 ribbon.classList.add('bg-[#486284]', 'text-white');
                 ribbon.classList.remove('bg-gray-300', 'text-gray-500');
                 card.classList.remove('opacity-50', 'grayscale');
-                showToast(result.message || "Berhasil disimpan kembali!");
+                showToast(result.message || "Disimpan");
             } else {
                 ribbon.classList.remove('bg-[#486284]', 'text-white');
                 ribbon.classList.add('bg-gray-300', 'text-gray-500');
                 card.classList.add('opacity-50', 'grayscale');
-                showToast(result.message || "Dihapus dari item tersimpan!");
+                showToast(result.message || "Batal disimpan");
                 
                 // Premium micro-animation to remove card from layout
                 card.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
