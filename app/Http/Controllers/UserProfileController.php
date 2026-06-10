@@ -155,7 +155,7 @@ class UserProfileController extends Controller
         }
 
         $user->update([
-            'password' => \Illuminate\Support\Facades\Hash::make($request->password)
+            'password' => $validated['password']
         ]);
 
         return response()->json([

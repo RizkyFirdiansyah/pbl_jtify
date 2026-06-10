@@ -83,32 +83,36 @@ Route::get('/', function () {
 // AUTH (Penulisan Bersih & Fungsional Tanpa Duplikat)
 // ============================================================
 
-Route::get('/login', fn () => view('auth.login'))->name('login');
-Route::get('/register', fn () => view('auth.register'))->name('register');
-Route::post('/register', [AuthController::class, 'register']);
+Route::middleware('guest')->group(function () {
+    Route::get('/login', fn () => view('auth.login'))->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+    Route::get('/register', fn () => view('auth.register'))->name('register');
+    Route::post('/register', [AuthController::class, 'register']);
+});
 
-Route::post('/login', function (Request $request) {
-    $credentials = $request->validate([
-        'email' => 'required|email',
-        'password' => 'required|min:6',
-    ]);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
-    if (Auth::attempt($credentials, $request->boolean('remember'))) {
-        $request->session()->regenerate();
-        return redirect()->intended('/');
-    }
-
-    return back()->withErrors([
-        'email' => 'Email atau password salah.',
-    ]);
-})->name('login.post');
-
-Route::post('/logout', function (Request $request) {
-    Auth::logout();
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
-    return redirect('/');
-})->name('logout');
+// ============================================================
+// NOTIFIKASI AJAX ENDPOINTS
+// ============================================================
+Route::middleware('auth')->group(function () {
+    Route::post('/notifications/{id}/read', function ($id) {
+        $notif = auth()->user()->userNotifications()->findOrFail($id);
+        $notif->update(['is_read' => true]);
+        return response()->json(['success' => true]);
+    });
+    
+    Route::delete('/notifications/{id}', function ($id) {
+        $notif = auth()->user()->userNotifications()->findOrFail($id);
+        $notif->delete();
+        return response()->json(['success' => true]);
+    });
+    
+    Route::post('/notifications/clear', function () {
+        auth()->user()->userNotifications()->delete();
+        return response()->json(['success' => true]);
+    });
+});
 
 // ============================================================
 // LOMBA, BEASISWA, SEMINAR

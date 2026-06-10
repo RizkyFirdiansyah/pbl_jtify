@@ -38,11 +38,9 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
-            ->authGuard('admin')
             ->authGuard('web')
             ->id('admin')
             ->path('admin')
-            ->login()
             ->globalSearch(false)
             ->font('poppins')
             ->brandName('JTIFY Admin')

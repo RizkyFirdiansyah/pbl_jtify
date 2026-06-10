@@ -32,7 +32,7 @@ class UserForm
                             ->password()
                             ->required(fn ($operation) => $operation === 'create') // wajib hanya saat create
                             ->minLength(6)
-                            ->dehydrateStateUsing(fn ($state) => !empty($state) ? Hash::make($state) : null)
+                            ->dehydrateStateUsing(fn ($state) => !empty($state) ? $state : null)
                             ->dehydrated(fn ($state) => !empty($state)) 
                             ->label('Password')
                             ->helperText('Minimal 6 karakter. Kosongkan jika tidak ingin mengubah password saat edit.'),
