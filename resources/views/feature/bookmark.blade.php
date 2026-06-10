@@ -54,7 +54,7 @@
 
         <div id="bookmark-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 relative z-10">
             @foreach ($bookmarks as $item)
-            <div class="bookmark-card h-[340px] w-full bg-[#E5E7EB] rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 relative group cursor-pointer overflow-hidden flex flex-col justify-end border border-gray-100"
+            <div class="bookmark-card h-[340px] w-full bg-[#E5E7EB] rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500 relative group cursor-pointer overflow-hidden flex flex-col justify-end border border-gray-100"
                  data-info-id="{{ $item->information_id }}"
                  data-category="{{ $item->category }}"
                  data-aos="fade-up"
@@ -100,7 +100,7 @@
     {{-- ================================
          FOOTER TRANSITION
     ================================= --}}
-    <section class="relative z-0 h-40" style="background: linear-gradient(180deg, #ffffff 0%, #c8dff0 100%);"></section>
+    <section class="relative z-0 h-24" style="background: linear-gradient(180deg, #ffffff 0%, #c8dff0 100%);"></section>
 
     {{-- ================================
          FOOTER

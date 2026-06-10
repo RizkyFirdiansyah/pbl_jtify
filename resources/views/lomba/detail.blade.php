@@ -109,9 +109,9 @@
         <div class="mt-20 flex flex-col lg:flex-row gap-16 lg:gap-24 items-stretch">
 
             <div class="w-full lg:w-1/3 flex justify-center lg:justify-start pl-0 lg:pl-12" data-aos="fade-right">
-                <div class="w-[300px] h-[400px] bg-[#DDE0E4] rounded-xl shadow-xl relative overflow-hidden group hover:-translate-y-2 transition-transform duration-300 flex-shrink-0">
+                <div class="w-[300px] h-[400px] bg-[#DDE0E4] rounded-xl shadow-xl relative overflow-hidden group hover:-translate-y-2 transition-all duration-500 flex-shrink-0">
                     @if($information && $information->poster_path && (Storage::disk('public')->exists($information->poster_path) || file_exists(public_path('storage/' . $information->poster_path)) || file_exists(public_path($information->poster_path))))
-                        <img src="{{ asset(strpos($information->poster_path, 'storage/') !== false ? $information->poster_path : 'storage/' . $information->poster_path) }}" alt="{{ $information->title }}" class="w-full h-full object-cover">
+                        <img src="{{ asset(strpos($information->poster_path, 'storage/') !== false ? $information->poster_path : 'storage/' . $information->poster_path) }}" alt="{{ $information->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                     @else
                         <div class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#E8EEF8] to-[#D0DCEE]">
                             <svg class="w-[60px] h-[60px] text-[#486284]/40 group-hover:scale-110 transition-transform duration-300" viewBox="0 0 24 24" fill="currentColor">
@@ -162,11 +162,6 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                                 </svg>
                             </button>
-                            <button class="btn-icon gradient" title="Bagikan">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
-                                </svg>
-                            </button>
                         </div>
                     </div>
 
@@ -181,10 +176,10 @@
                     <h2 class="text-2xl md:text-3xl font-bold text-[#486284]">Lomba Menarik Lainnya</h2>
                     <p class="text-sm md:text-base text-gray-500 mt-1">Temukan kompetisi lain yang mungkin Anda minati</p>
                 </div>
-                <a href="{{ route('lomba') }}" class="hidden md:flex text-[#007DFB] font-medium hover:underline items-center gap-1 text-sm">
-                    Lihat Semua
+                <a href="{{ route('lomba') }}" class="hidden md:flex text-sm text-gray-400 font-bold hover:text-[#3B4C7E] transition items-center gap-1">
+                    Lihat semua
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        <path d="M9 5l7 7-7 7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </a>
             </div>
@@ -201,7 +196,7 @@
                            data-aos-delay="{{ $loop->index * 80 }}">
 
                             @if($rec->poster_path && (Storage::disk('public')->exists($rec->poster_path) || file_exists(public_path('storage/' . $rec->poster_path)) || file_exists(public_path($rec->poster_path))))
-                                <img src="{{ asset(strpos($rec->poster_path, 'storage/') !== false ? $rec->poster_path : 'storage/' . $rec->poster_path) }}" alt="{{ $rec->title }}" class="w-full h-full object-cover">
+                                <img src="{{ asset(strpos($rec->poster_path, 'storage/') !== false ? $rec->poster_path : 'storage/' . $rec->poster_path) }}" alt="{{ $rec->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                             @else
                                 <div class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#E8EEF8] to-[#D0DCEE] group-hover:from-[#D0DCEE] group-hover:to-[#BBC9E0] transition-colors duration-500">
                                     <svg class="w-16 h-16 text-[#486284]/30 group-hover:scale-110 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor">
@@ -277,7 +272,7 @@
     {{-- ===========================
          FOOTER GRADIENT TRANSITION
     ============================ --}}
-    <section class="relative z-0 h-40" style="background: linear-gradient(180deg, #ffffff 0%, #c8dff0 100%);"></section>
+    <section class="relative z-0 h-24" style="background: linear-gradient(180deg, #ffffff 0%, #c8dff0 100%);"></section>
 
     {{-- ===========================
          FOOTER
