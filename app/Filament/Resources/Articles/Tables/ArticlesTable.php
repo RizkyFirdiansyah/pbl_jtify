@@ -23,6 +23,7 @@ class ArticlesTable
             ->columns([
                 ImageColumn::make('poster_path')
                     ->label('Poster')
+                    ->disk('public')
                     ->circular(),
                 TextColumn::make('title')
                     ->searchable()
