@@ -21,7 +21,6 @@ class FeedbackForm
                     ->disabled(),
                 Select::make('status')
                     ->label('Status')
-                    ->disabled()
                     ->options([
                         'draft' => 'Draft',
                         'published' => 'Published',
