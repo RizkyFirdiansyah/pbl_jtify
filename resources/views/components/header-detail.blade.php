@@ -1,5 +1,5 @@
 
-<header class="relative w-full min-h-[430px] md:min-h-[520px] bg-no-repeat bg-center flex flex-col items-center justify-center pt-24 pb-24 overflow-hidden"
+<header class="relative w-full  bg-no-repeat bg-center flex flex-col items-center justify-center pt-24 pb-24 overflow-hidden"
         style="background-image: url('{{ asset('assets/header-konten.svg') }}'); background-size: cover;">
 
     <div class="absolute inset-0 bg-white/5"></div>
@@ -11,19 +11,16 @@
         </p>
 
         <div class="mb-5 anim-title">
-            @php
-                $words = isset($titleWords) && is_array($titleWords) ? $titleWords : explode(' ', $title ?? 'JTIFY');
-            @endphp
-            <div class="flex flex-wrap justify-center gap-3 px-2">
-                @foreach($words as $word)
-                    <div class="relative inline-block">
-                        <div class="absolute inset-0 bg-[#E8F19A] rounded-sm"></div>
-                        <h1 class="relative font-black text-[#1A2E5A] uppercase leading-none px-4 py-2.5 sm:px-6 sm:py-3 tracking-wider drop-shadow-xl"
-                            style="font-size: clamp(1.6rem, 5vw, 3.8rem);">
-                            {{ $word }}
-                        </h1>
-                    </div>
-                @endforeach
+            <div class="flex flex-wrap justify-center px-2">
+            <div class="relative inline-block">
+                <div class="absolute inset-0 bg-[#E8F19A] rounded-sm"></div>
+
+                <h1 class="relative font-black text-[#1A2E5A] uppercase leading-none
+                        px-4 py-2.5 sm:px-6 sm:py-3 tracking-wider drop-shadow-xl"
+                    style="font-size: clamp(1.6rem, 5vw, 3.8rem);">
+                    {{ $title }}
+                </h1>
+            </div>                
             </div>
         </div>
 

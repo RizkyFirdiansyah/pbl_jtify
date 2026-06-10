@@ -21,7 +21,7 @@
 
     @include('components.navbar')
 
-    @include('components.header-konten', [
+    @include('components.header-detail', [
         'title'      => 'DETAIL SEMINAR',
         'label'      => 'Explore Seminar',
         'subtitle'   => 'Pelajari detail materi, pembicara, dan jadwal pelaksanaan seminar terbaru',
