@@ -33,11 +33,6 @@ class AuthController extends Controller
     /** @var User|null $user */
     $user = Auth::guard('web')->user();
 
-    if (! $user || $user->role !== 'reguler') {
-      Auth::guard('web')->logout();
-      return $this->failedLoginResponse($request, 'Akun bukan user reguler');
-    }
-
     $request->session()->regenerate();
 
     if ($request->expectsJson() || $request->is('api/*')) {
@@ -66,13 +61,35 @@ class AuthController extends Controller
       'password' => ['required', 'string', 'min:6', 'confirmed'],
     ]);
 
-    $user = User::create([
-      'name' => $validated['name'],
-      'email' => $validated['email'],
-      'phone' => $validated['phone'],
-      'password' => $validated['password'],
-      'role' => 'reguler',
-    ]);
+    $user = \Illuminate\Support\Facades\DB::transaction(function () use ($validated) {
+      $createdUser = User::create([
+        'name' => $validated['name'],
+        'email' => $validated['email'],
+        'phone' => $validated['phone'],
+        'password' => $validated['password'],
+        'role' => 'reguler',
+      ]);
+
+      // Dispatch Registered event
+      event(new \Illuminate\Auth\Events\Registered($createdUser));
+
+      // Create welcome notification if there's any information posting available
+      try {
+        $firstInfo = \App\Models\Information::first();
+        if ($firstInfo) {
+          $createdUser->userNotifications()->create([
+            'information_id' => $firstInfo->id,
+            'title' => 'Selamat Datang!',
+            'message' => 'Registrasi berhasil. Selamat bergabung di JTIFY.',
+            'is_read' => false,
+          ]);
+        }
+      } catch (\Throwable $e) {
+        \Illuminate\Support\Facades\Log::warning('Welcome notification not created: ' . $e->getMessage());
+      }
+
+      return $createdUser;
+    });
 
     Auth::guard('web')->login($user);
     $request->session()->regenerate();
@@ -98,8 +115,12 @@ class AuthController extends Controller
   {
     $user = $request->user();
 
-    if ($user && $user->currentAccessToken()) {
-      $user->currentAccessToken()->delete();
+    // Hanya hapus token Sanctum jika request dari API (bukan web session biasa)
+    if ($user && ($request->expectsJson() || $request->is('api/*'))) {
+      $token = $user->currentAccessToken();
+      if ($token) {
+        $token->delete();
+      }
     }
 
     Auth::guard('web')->logout();

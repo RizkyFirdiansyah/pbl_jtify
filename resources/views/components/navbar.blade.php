@@ -77,9 +77,9 @@
                 <div class="w-8 h-8 rounded-full flex items-center justify-center transition-colors">
                     <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
                         <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"
-                              stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                               stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                     </svg>
-                    <span id="notifDot" class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                    <span id="notifDot" class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full {{ (auth()->check() && auth()->user()->userNotifications()->where('is_read', false)->exists()) ? '' : 'hidden' }}"></span>
                 </div>
             </div>
 
@@ -107,10 +107,12 @@
 
             <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100">
                 <span class="font-bold text-sm text-[#1A2E5A]">Notifikasi</span>
+                @if(auth()->check() && auth()->user()->userNotifications()->exists())
                 <button onclick="hapusSemuaNotif()"
                         class="text-xs text-red-400 hover:text-red-600 font-medium transition-colors">
                     Hapus semua
                 </button>
+                @endif
             </div>
 
             <div id="notifList" class="max-h-72 overflow-y-auto divide-y divide-gray-50
@@ -119,29 +121,24 @@
                                        [&::-webkit-scrollbar-thumb]:bg-gray-200
                                        [&::-webkit-scrollbar-thumb]:rounded-full">
                 @php
-                    $notifs = [
-                        ['title' => 'UI/UX Design Competition 2026', 'msg' => 'Tenggat waktu: 10 Jun 2025 — 3 hari lagi!', 'read' => false],
-                        ['title' => 'Beasiswa LPDP 2026',            'msg' => 'Tenggat waktu: 19 Jul 2025 — 42 hari lagi', 'read' => false],
-                        ['title' => 'Seminar AI & Technology',        'msg' => 'Tenggat waktu: 1 Jul 2025 — 24 hari lagi', 'read' => false],
-                        ['title' => 'Hackathon 2026',                 'msg' => 'Tenggat waktu: 4 Jul 2025 — 27 hari lagi', 'read' => true],
-                        ['title' => 'Workshop Business 2026',         'msg' => 'Tenggat waktu: 1 Jul 2025 — 24 hari lagi', 'read' => true],
-                    ];
+                    $notifs = auth()->check() ? auth()->user()->userNotifications()->latest()->take(10)->get() : collect();
                 @endphp
 
-                @foreach($notifs as $i => $n)
+                @forelse($notifs as $i => $n)
                 <div id="notif-{{ $i }}"
-                     data-read="{{ $n['read'] ? 'true' : 'false' }}"
+                     data-id="{{ $n->id }}"
+                     data-read="{{ $n->is_read ? 'true' : 'false' }}"
                      class="flex items-start gap-3 px-4 py-3
-                            {{ $n['read'] ? 'bg-white' : 'bg-blue-50' }}
+                            {{ $n->is_read ? 'bg-white' : 'bg-blue-50' }}
                             transition-colors">
                     <div class="flex-1 min-w-0">
-                        <p class="text-sm font-semibold text-[#1A2E5A] truncate">{{ $n['title'] }}</p>
-                        <p class="text-xs text-gray-400 mt-0.5">{{ $n['msg'] }}</p>
+                        <p class="text-sm font-semibold text-[#1A2E5A] truncate">{{ $n->title }}</p>
+                        <p class="text-xs text-gray-400 mt-0.5">{{ $n->message }}</p>
                     </div>
-                    <button onclick="toggleNotifAction({{ $i }}, this)"
+                    <button onclick="toggleNotifAction({{ $n->id }}, this, {{ $i }})"
                             class="flex-shrink-0 mt-0.5 transition-colors"
-                            title="{{ $n['read'] ? 'Hapus notifikasi' : 'Tandai dibaca' }}">
-                        @if($n['read'])
+                            title="{{ $n->is_read ? 'Hapus notifikasi' : 'Tandai dibaca' }}">
+                        @if($n->is_read)
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-red-400">
                                 <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
                             </svg>
@@ -152,7 +149,11 @@
                         @endif
                     </button>
                 </div>
-                @endforeach
+                @empty
+                <p class="text-center text-xs text-gray-400 py-6">
+                    Tidak ada notifikasi
+                </p>
+                @endforelse
             </div>
         </div>
 
@@ -415,46 +416,97 @@ document.addEventListener('keydown', e => {
 });
 
 /* ── Notifikasi actions ── */
-function toggleNotifAction(index, btn) {
+function toggleNotifAction(id, btn, index) {
     const item = document.getElementById('notif-' + index);
     const isRead = item.dataset.read === 'true';
 
     if (!isRead) {
-        // Tandai dibaca
-        item.dataset.read = 'true';
-        item.classList.remove('bg-blue-50');
-        item.classList.add('bg-white');
-        btn.title = 'Hapus notifikasi';
-        btn.innerHTML = `
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-red-400">
-                <path d="M18 6L6 18M6 6l12 12"
-                      stroke="currentColor"
-                      stroke-width="2.5"
-                      stroke-linecap="round"/>
-            </svg>
-        `;
-        updateNotifDot();
+        // Tandai dibaca via AJAX
+        fetch(`/notifications/${id}/read`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                item.dataset.read = 'true';
+                item.classList.remove('bg-blue-50');
+                item.classList.add('bg-white');
+                btn.title = 'Hapus notifikasi';
+                btn.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-red-400">
+                        <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                    </svg>
+                `;
+                updateNotifDot();
+            }
+        })
+        .catch(err => console.error('Error marking notification as read:', err));
     } else {
-        // Hapus notif
-        item.style.transition = 'opacity .2s, transform .2s';
-        item.style.opacity = '0';
-        item.style.transform = 'translateX(8px)';
+        // Hapus via AJAX
+        fetch(`/notifications/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                item.style.transition = 'opacity .2s, transform .2s';
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(8px)';
 
-        setTimeout(() => {
-            item.remove();
-            updateNotifDot();
-        }, 200);
+                setTimeout(() => {
+                    item.remove();
+                    updateNotifDot();
+                    // If no notifications left in list, show empty state
+                    const remainingItems = document.querySelectorAll('#notifList [id^="notif-"]');
+                    if (remainingItems.length === 0) {
+                        document.getElementById('notifList').innerHTML = `
+                            <p class="text-center text-xs text-gray-400 py-6">
+                                Tidak ada notifikasi
+                            </p>
+                        `;
+                        // Hide Hapus Semua button
+                        const clearBtn = document.querySelector('button[onclick="hapusSemuaNotif()"]');
+                        if (clearBtn) clearBtn.remove();
+                    }
+                }, 200);
+            }
+        })
+        .catch(err => console.error('Error deleting notification:', err));
     }
 }
 
 // Tambahan sinkronisasi notif dot
 function hapusSemuaNotif() {
-    document.getElementById('notifList').innerHTML = `
-        <p class="text-center text-xs text-gray-400 py-6">
-            Tidak ada notifikasi
-        </p>
-    `;
-    updateNotifDot();
+    fetch('/notifications/clear', {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Accept': 'application/json'
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById('notifList').innerHTML = `
+                <p class="text-center text-xs text-gray-400 py-6">
+                    Tidak ada notifikasi
+                </p>
+            `;
+            // Remove Hapus Semua button
+            const clearBtn = document.querySelector('button[onclick="hapusSemuaNotif()"]');
+            if (clearBtn) clearBtn.remove();
+            updateNotifDot();
+        }
+    })
+    .catch(err => console.error('Error clearing notifications:', err));
 }
 
 function updateNotifDot() {
