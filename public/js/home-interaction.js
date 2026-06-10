@@ -156,6 +156,9 @@ function updateCardContent(category) {
         const badge  = card.querySelector('.card-badge');
         const title  = card.querySelector('.card-title');
         const dl     = card.querySelector('.card-deadline');
+        const img    = card.querySelector('.card-image');
+        const overlay = card.querySelector('.card-image-overlay');
+        const placeholder = card.querySelector('.card-placeholder');
 
         if (badge) {
             badge.textContent       = data.label;
@@ -164,6 +167,33 @@ function updateCardContent(category) {
         }
         if (title)  title.textContent  = data.title;
         if (dl)     dl.textContent     = 'Deadline: ' + data.deadline;
+
+        // Update dynamic poster image
+        if (img && placeholder) {
+            if (data.poster_path) {
+                const srcPath = data.poster_path.startsWith('http')
+                    ? data.poster_path
+                    : '/' + (data.poster_path.startsWith('storage/')
+                        ? data.poster_path
+                        : 'storage/' + data.poster_path);
+                img.src = srcPath;
+                img.alt = data.title;
+                img.classList.remove('hidden');
+                placeholder.classList.add('hidden');
+                if (overlay) overlay.classList.remove('hidden');
+
+                img.onerror = () => {
+                    img.classList.add('hidden');
+                    placeholder.classList.remove('hidden');
+                    if (overlay) overlay.classList.add('hidden');
+                };
+            } else {
+                img.classList.add('hidden');
+                img.src = '';
+                placeholder.classList.remove('hidden');
+                if (overlay) overlay.classList.add('hidden');
+            }
+        }
     });
 }
 
@@ -261,7 +291,8 @@ async function loadDynamicCardSets() {
             bg: bg,
             color: color,
             title: item.title,
-            deadline: dateStr
+            deadline: dateStr,
+            poster_path: item.poster_path || null
         };
     };
 

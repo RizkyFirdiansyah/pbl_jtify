@@ -61,24 +61,29 @@
     </header>
 
     {{-- MAIN CONTAINER --}}
-    <main class="max-w-4xl mx-auto px-4 pb-24">
+    <main class="max-w-4xl mx-auto px-4 pb-0">
         
         <div>
             
             {{-- ARTICLE WRAPPER --}}
             <article class="w-full bg-white rounded-3xl p-6 sm:p-10 md:p-14 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-slate-100" data-aos="fade-up">
                 
-                {{-- FEATURED IMAGE MOCKUP --}}
+                {{-- FEATURED IMAGE --}}
                 <div class="relative w-full aspect-video rounded-2xl overflow-hidden mb-12 shadow-sm" id="pendahuluan">
-                    <div class="absolute inset-0 bg-gradient-to-br from-[#DDEBFF] via-[#E8EEF8] to-[#F1F5F9] flex items-center justify-center">
-                        <div class="text-center p-6">
-                            <svg class="w-16 h-16 text-[#4C75F2]/20 mx-auto mb-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/>
-                            </svg>
-                            <h4 class="text-[#1A2E5A] font-bold text-sm sm:text-base leading-tight">{{ $tip['title'] }}</h4>
-                            <p class="text-slate-400 text-xs mt-1">Edisi Tips &amp; Trik JTIFY Mahasiswa Berprestasi</p>
+                    @if(!empty($tip['poster_path']) && (\Illuminate\Support\Facades\Storage::disk('public')->exists($tip['poster_path']) || file_exists(public_path('storage/' . $tip['poster_path']))))
+                        <img src="{{ asset('storage/' . $tip['poster_path']) }}" alt="{{ $tip['title'] }}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#1A2E5A]/40 via-transparent to-transparent"></div>
+                    @else
+                        <div class="absolute inset-0 bg-gradient-to-br from-[#DDEBFF] via-[#E8EEF8] to-[#F1F5F9] flex items-center justify-center">
+                            <div class="text-center p-6">
+                                <svg class="w-16 h-16 text-[#4C75F2]/20 mx-auto mb-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/>
+                                </svg>
+                                <h4 class="text-[#1A2E5A] font-bold text-sm sm:text-base leading-tight">{{ $tip['title'] }}</h4>
+                                <p class="text-slate-400 text-xs mt-1">Edisi Tips &amp; Trik JTIFY Mahasiswa Berprestasi</p>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
 
                 {{-- ARTICLE BODY --}}
@@ -115,11 +120,16 @@
                        data-aos-delay="{{ $loop->index * 100 }}">
 
                         {{-- Poster/Gradient Background --}}
-                        <div class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#E8EEF8] to-[#D0DCEE] group-hover:from-[#D0DCEE] group-hover:to-[#BBC9E0] transition-colors duration-500">
-                            <svg class="w-16 h-16 text-[#486284]/30 group-hover:scale-110 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M21 19V5C21 3.9 20.1 3 19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19ZM8.5 13.5L11 16.51L14.5 12L19 18H5L8.5 13.5Z"/>
-                            </svg>
-                        </div>
+                        @if(!empty($rec['poster_path']) && (\Illuminate\Support\Facades\Storage::disk('public')->exists($rec['poster_path']) || file_exists(public_path('storage/' . $rec['poster_path']))))
+                            <img src="{{ asset('storage/' . $rec['poster_path']) }}" alt="{{ $rec['title'] }}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#1A2E5A]/60 via-transparent to-transparent"></div>
+                        @else
+                            <div class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#E8EEF8] to-[#D0DCEE] group-hover:from-[#D0DCEE] group-hover:to-[#BBC9E0] transition-colors duration-500">
+                                <svg class="w-16 h-16 text-[#486284]/30 group-hover:scale-110 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M21 19V5C21 3.9 20.1 3 19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19ZM8.5 13.5L11 16.51L14.5 12L19 18H5L8.5 13.5Z"/>
+                                </svg>
+                            </div>
+                        @endif
 
                         {{-- Content Overlay --}}
                         <div class="absolute bottom-0 left-0 right-0 z-10 p-4" style="background: linear-gradient(to top, rgba(26,46,90,0.95) 0%, rgba(26,46,90,0.5) 70%, transparent 100%);">
@@ -147,7 +157,7 @@
     </section>
 
     {{-- FOOTER GRADIENT TRANSITION --}}
-    <div class="h-32" style="background: linear-gradient(180deg, #ffffff 0%, #c8dff0 100%);"></div>
+    <section class="relative z-0 h-40" style="background: linear-gradient(180deg, #ffffff 0%, #c8dff0 100%);"></section>
 
     {{-- FOOTER --}}
     @include('components.footer')

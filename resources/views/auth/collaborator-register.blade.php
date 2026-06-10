@@ -199,6 +199,8 @@
         </div>
     </main>
 
+    <section class="relative z-0 h-40" style="background: linear-gradient(180deg, #ffffff 0%, #c8dff0 100%);"></section>
+
     @include('components.footer')
 
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>

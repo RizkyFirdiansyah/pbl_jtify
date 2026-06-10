@@ -222,7 +222,7 @@
         </div>
     </section>
 
-    <section class="relative z-0 h-40" style="background: linear-gradient(180deg, #EEF4FF 0%, #c8dff0 100%);"></section>
+    <section class="relative z-0 h-40" style="background: linear-gradient(180deg, #ffffff 0%, #c8dff0 100%);"></section>
     
     @include('components.footer')
 
