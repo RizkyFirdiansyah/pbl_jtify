@@ -104,7 +104,7 @@ class LikeController extends Controller
         }
 
         return response()->json([
-            'message' => $isActive ? 'Minat ditambahkan' : 'Minat dibatalkan',
+            'message' => $isActive ? 'Disukai' : 'Batal disukai',
             'is_active' => $isActive,
             'count' => $information->likes()->where('status', 'active')->count(),
         ]);
