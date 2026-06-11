@@ -6,7 +6,6 @@ use App\Filament\Resources\Information\Pages\CreateInformation;
 use App\Filament\Resources\Information\Pages\EditInformation;
 use App\Filament\Resources\Information\Pages\ListInformation;
 use App\Filament\Resources\Information\Pages\ViewInformation;
-use App\Filament\Resources\Information\RelationManagers\RecruitmentsRelationManager;
 use App\Filament\Resources\Information\Schemas\InformationForm;
 use App\Filament\Resources\Information\Tables\InformationTable;
 use App\Models\Information;
@@ -32,6 +31,7 @@ class InformationResource extends Resource
     protected static ?string $navigationLabel = 'Informasi';
     protected static ?string $pluralModelLabel = 'Informasi';
     protected static string|UnitEnum|null $navigationGroup = 'Konten JTI';
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {
@@ -46,7 +46,7 @@ class InformationResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RecruitmentsRelationManager::class,
+            //
         ];
     }
 

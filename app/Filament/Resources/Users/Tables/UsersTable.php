@@ -9,7 +9,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
-
+use Filament\Tables\Filters\SelectFilter;
 
 class UsersTable
 {
@@ -30,7 +30,7 @@ class UsersTable
 
                 TextColumn::make('role')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'admin' => 'success',
                         'collaborator' => 'primary',
                         'reguler' => 'warning',
@@ -43,7 +43,13 @@ class UsersTable
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
-                
+                SelectFilter::make('role')
+                    ->options([
+                        'admin' => 'Admin',
+                        'collaborator' => 'Collaborator',
+                        'reguler' => 'Reguler',
+                    ])
+                    ->searchable(),
             ])
             ->recordActions([
                 ViewAction::make(),

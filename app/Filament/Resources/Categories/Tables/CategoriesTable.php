@@ -24,6 +24,11 @@ class CategoriesTable
                     ->searchable()
                     ->sortable(),
 
+                TextColumn::make('informations_count')
+                    ->label('Jumlah Informasi')
+                    ->counts('informations')
+                    ->sortable(),
+
                 TextColumn::make('created_at')
                     ->label('Tanggal Dibuat')
                     ->dateTime('d M Y')

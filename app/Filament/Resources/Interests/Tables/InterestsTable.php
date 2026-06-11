@@ -2,11 +2,9 @@
 
 namespace App\Filament\Resources\Interests\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\SelectColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class InterestsTable
@@ -28,29 +26,41 @@ class InterestsTable
                     ->label('Kategori')
                     ->sortable()
                     ->searchable(),
-                SelectColumn::make('status')
+                TextColumn::make('status')
                     ->label('Status')
-                    ->options([
-                        'active' => 'Active',
-                        'cancelled' => 'Cancelled',
-                    ])
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'active' => 'success',
+                        'cancelled' => 'gray',
+                    })
                     ->sortable()
                     ->searchable(),
+                TextColumn::make('consented_at')
+                    ->label('Persetujuan')
+                    ->dateTime('d M Y H:i')
+                    ->sortable(),
                 TextColumn::make('created_at')
-                    ->label('Tanggal Tertarik')
+                    ->label('Tanggal Daftar')
                     ->dateTime()
                     ->sortable(),
             ])
             ->filters([
-                //
+                SelectFilter::make('category')
+                    ->label('Kategori')
+                    ->relationship('information.category', 'name'),
+                SelectFilter::make('information_id')
+                    ->label('Informasi')
+                    ->relationship('information', 'title'),
+                SelectFilter::make('status')
+                    ->label('Status')
+                    ->options([
+                        'active' => 'Active',
+                        'cancelled' => 'Cancelled',
+                    ]),
             ])
             ->recordActions([
-                EditAction::make(),
+                ViewAction::make(),
             ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->toolbarActions([]);
     }
 }

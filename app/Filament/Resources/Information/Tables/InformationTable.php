@@ -23,6 +23,7 @@ class InformationTable
             ->columns([
                 ImageColumn::make('poster_path')
                     ->label('Poster')
+                    ->disk('public')
                     ->circular(),
                 TextColumn::make('title')
                     ->searchable()
@@ -30,13 +31,14 @@ class InformationTable
                 TextColumn::make('slug')
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('category.name')
-                    ->badge()
-                    ->color('info'),
+                    ->label('Kategori')
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('deadline')
                     ->date()
                     ->sortable()
                     ->badge()
-                    ->color(fn($state) => $state < now() ? 'danger' : 'success'),
+                    ->color(fn($state) => $state < now() ? 'danger' : 'warning'),
                 TextColumn::make('status')
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {
@@ -46,6 +48,12 @@ class InformationTable
                         'archived' => 'danger',
                         default => 'gray',
                     }),
+                TextColumn::make('interests_count')
+                    ->label('Jumlah Peminat')
+                    ->counts([
+                        'interests' => fn($query) => $query->where('status', 'active'),
+                    ])
+                    ->sortable(),
                 TextColumn::make('user.name')
                     ->label('Penulis')
                     ->searchable()
@@ -73,10 +81,12 @@ class InformationTable
                     ]),
             ])
             ->recordActions([
-                ViewAction::make(),
+                ViewAction::make()->iconButton(),
                 DeleteAction::make()
+                    ->iconButton()
                     ->visible(fn($record) => Auth::user()?->isAdmin() || Auth::id() === $record->user_id),
                 EditAction::make()
+                    ->iconButton()
                     ->visible(fn($record) => Auth::user()?->isAdmin() || Auth::id() === $record->user_id),
             ])
             ->toolbarActions([

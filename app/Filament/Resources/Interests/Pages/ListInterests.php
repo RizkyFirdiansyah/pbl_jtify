@@ -2,18 +2,14 @@
 
 namespace App\Filament\Resources\Interests\Pages;
 
-use App\Filament\Resources\Interests\InterestResource;
-use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListInterests extends ListRecords
 {
-    protected static string $resource = InterestResource::class;
+  protected static string $resource = 'App\\Filament\\Resources\\Interests\\InterestResource';
 
-    protected function getHeaderActions(): array
-    {
-        return [
-            //
-        ];
-    }
+  protected function getHeaderActions(): array
+  {
+    return [];
+  }
 }

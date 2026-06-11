@@ -9,12 +9,13 @@ use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 
 class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -74,14 +75,19 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Bookmark::class);
     }
 
-    public function notifications()
+    public function userNotifications()
     {
         return $this->hasMany(Notification::class);
     }
 
-    public function interests()
+    public function like()
     {
-        return $this->hasMany(Interest::class);
+        return $this->hasMany(Like::class);
+    }
+
+    public function feedbacks()
+    {
+        return $this->hasMany(Feedback::class);
     }
 
     public function canAccessPanel(Panel $panel): bool

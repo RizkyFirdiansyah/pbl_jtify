@@ -2,29 +2,48 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Feedback;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\User;
+use Illuminate\View\View;
 
 class UserProfileController extends Controller
 {
     //Show user profile
-    public function show()
+    public function show(Request $request): JsonResponse|View
     {
         $user = Auth::user();
+
+        if ($request->expectsJson() || $request->is('api/*') || ! view()->exists('profile.show')) {
+            return response()->json([
+                'success' => true,
+                'data' => $user,
+            ]);
+        }
+
         return view('profile.show', ['user' => $user]);
     }
 
     //Show edit profile form
-    public function edit()
+    public function edit(Request $request): JsonResponse|View
     {
         $user = Auth::user();
+
+        if ($request->expectsJson() || $request->is('api/*') || ! view()->exists('profile.edit')) {
+            return response()->json([
+                'success' => true,
+                'data' => $user,
+            ]);
+        }
+
         return view('profile.edit', ['user' => $user]);
     }
 
     //Update user profile
-    public function update(Request $request)
+    public function update(Request $request): JsonResponse|\Illuminate\Http\RedirectResponse
     {
         $user = User::find(Auth::id());
 
@@ -39,16 +58,24 @@ class UserProfileController extends Controller
         // Handle CV upload
         if ($request->hasFile('cv_path')) {
             // Hapus CV lama jika ada
-            if ($user->cv_path && Storage::disk('public')->exists($user->cv_path)) {
-                Storage::disk('public')->delete($user->cv_path);
+            if ($user->cv_path && Storage::disk('local')->exists($user->cv_path)) {
+                Storage::disk('local')->delete($user->cv_path);
             }
 
-            // Simpan CV baru ke disk 'public' agar bisa diakses oleh Filament juga
-            $path = $request->file('cv_path')->store('cvs', 'public');
+            // Simpan CV baru ke disk 'local' agar private
+            $path = $request->file('cv_path')->store('cvs', 'local');
             $validated['cv_path'] = $path;
         }
 
         $user->update($validated);
+
+        if ($request->expectsJson() || $request->is('api/*')) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Profil berhasil diperbarui!',
+                'data' => $user->fresh(),
+            ]);
+        }
 
         return redirect()
             ->route('profile.show')
@@ -56,21 +83,102 @@ class UserProfileController extends Controller
     }
 
     // Delete CV file
-    public function deleteCv()
+    public function deleteCv(Request $request): JsonResponse|\Illuminate\Http\RedirectResponse
     {
         $user = User::find(Auth::id());
 
-        if ($user->cv_path && Storage::disk('public')->exists($user->cv_path)) {
-            Storage::disk('public')->delete($user->cv_path);
+        if ($user->cv_path && Storage::disk('local')->exists($user->cv_path)) {
+            Storage::disk('local')->delete($user->cv_path);
             $user->update(['cv_path' => null]);
+
+            if ($request->expectsJson() || $request->is('api/*')) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'CV berhasil dihapus!',
+                    'data' => $user->fresh(),
+                ]);
+            }
 
             return redirect()
                 ->route('profile.edit')
                 ->with('success', 'CV berhasil dihapus!');
         }
 
+        if ($request->expectsJson() || $request->is('api/*')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'CV tidak ditemukan!',
+            ], 404);
+        }
+
         return redirect()
             ->route('profile.edit')
             ->with('error', 'CV tidak ditemukan!');
+    }
+
+    public function feedbacks(Request $request): JsonResponse
+    {
+        $user = Auth::user();
+
+        if (! $user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthenticated',
+            ], 401);
+        }
+
+        $feedbacks = Feedback::query()
+            ->where('user_id', $user->id)
+            ->latest()
+            ->paginate(10);
+
+        return response()->json([
+            'success' => true,
+            'data' => $feedbacks,
+        ]);
+    }
+
+    public function updatePassword(Request $request): JsonResponse
+    {
+        $user = User::find(Auth::id());
+
+        $validated = $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        if (!\Illuminate\Support\Facades\Hash::check($request->current_password, $user->password)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Kata sandi lama tidak cocok.',
+            ], 422);
+        }
+
+        $user->update([
+            'password' => $validated['password']
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Kata sandi berhasil diperbarui!',
+        ]);
+    }
+
+    // Download CV file securely
+    public function downloadCv(Request $request)
+    {
+        $user = User::find(Auth::id());
+
+        if (!$user || !$user->cv_path || !Storage::disk('local')->exists($user->cv_path)) {
+            if ($request->expectsJson() || $request->is('api/*')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'CV tidak ditemukan',
+                ], 404);
+            }
+            return abort(404, 'CV tidak ditemukan');
+        }
+
+        return Storage::disk('local')->download($user->cv_path, 'CV_' . \Illuminate\Support\Str::slug($user->name) . '.' . pathinfo($user->cv_path, PATHINFO_EXTENSION));
     }
 }
