@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Handle empty state
             if (emptyEl) emptyEl.remove();
-            if (visibleCount === 0) {
+            if (visibleCount === 0 && cards.length > 0) {
                 const empty = document.createElement('div');
                 empty.className = 'like-empty-state col-span-4 flex flex-col items-center justify-center py-20 text-[#8FA9C0]';
                 empty.innerHTML = `

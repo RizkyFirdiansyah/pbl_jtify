@@ -18,6 +18,9 @@ class LikeController extends Controller
         $query = Like::query()
             ->with(['information.category'])
             ->where('status', 'active')
+            ->whereHas('information', function ($q) {
+                $q->where('status', 'published');
+            })
             ->when(Auth::check(), fn($builder) => $builder->where('user_id', Auth::id()), fn($builder) => $builder->whereRaw('1 = 0'));
 
         if ($request->filled('category') && $request->category !== 'Semua Kategori') {
@@ -77,9 +80,11 @@ class LikeController extends Controller
             return response()->json(['message' => 'Unauthenticated'], 401);
         }
 
-        $information = Information::find($request->information_id);
+        $information = Information::where('id', $request->information_id)
+            ->where('status', 'published')
+            ->first();
         if (!$information) {
-            return response()->json(['message' => 'Information not found'], 404);
+            return response()->json(['message' => 'Information not found or not published'], 404);
         }
 
         // Cek apakah sudah ada like

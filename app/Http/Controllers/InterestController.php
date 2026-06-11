@@ -72,9 +72,11 @@ class InterestController extends Controller
             return response()->json(['message' => 'Unauthenticated'], 401);
         }
 
-        $information = Information::find($request->information_id);
+        $information = Information::where('id', $request->information_id)
+            ->where('status', 'published')
+            ->first();
         if (!$information) {
-            return response()->json(['message' => 'Information not found'], 404);
+            return response()->json(['message' => 'Information not found or not published'], 404);
         }
 
         $interest = Interest::where('user_id', $user->id)
@@ -108,6 +110,7 @@ class InterestController extends Controller
             'message' => $isActive ? 'Daftar berhasil' : 'Pendaftaran dibatalkan',
             'is_active' => $isActive,
             'count' => $information->interests()->where('status', 'active')->count(),
+            'registration_link' => $information->registration_link,
         ]);
     }
 

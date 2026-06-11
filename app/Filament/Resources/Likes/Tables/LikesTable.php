@@ -29,12 +29,19 @@ class LikesTable
                     ->label('Kategori')
                     ->sortable()
                     ->searchable(),
-                SelectColumn::make('status')
+                TextColumn::make('status')
                     ->label('Status')
-                    ->options([
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'active' => 'success',
+                        'cancelled' => 'danger',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
                         'active' => 'Active',
                         'cancelled' => 'Cancelled',
-                    ])
+                        default => ucfirst($state),
+                    })
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('created_at')

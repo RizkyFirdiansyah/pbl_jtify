@@ -57,6 +57,7 @@ class UserForm
                         FileUpload::make('cv_path')
                             ->label('CV')
                             ->acceptedFileTypes(['application/pdf', 'image/*'])
+                            ->disk('local')
                             ->directory('cvs')
                             ->preserveFilenames() //mempertahankan nama file asli
                             ->maxSize(5120)

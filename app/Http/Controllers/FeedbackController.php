@@ -42,6 +42,28 @@ class FeedbackController extends Controller
         return view('feature.feedback');
     }
 
+    /**
+     * Public endpoint — returns published feedbacks for the homepage (no auth required).
+     */
+    public function publicIndex(): JsonResponse
+    {
+        $feedbacks = Feedback::with('user:id,name')
+            ->where('status', 'published')
+            ->latest()
+            ->limit(12)
+            ->get()
+            ->map(fn ($fb) => [
+                'id'      => $fb->id,
+                'message' => $fb->message,
+                'name'    => $fb->user?->name ?? 'Mahasiswa JTIFY',
+            ]);
+
+        return response()->json([
+            'success' => true,
+            'data'    => $feedbacks,
+        ]);
+    }
+
     public function store(Request $request): JsonResponse|\Illuminate\Http\RedirectResponse
     {
         $user = Auth::user();

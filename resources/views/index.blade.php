@@ -129,85 +129,7 @@
 
             <div class="overflow-x-hidden overflow-y-visible pb-4">
                 <div id="cardsSlider" class="flex transition-transform duration-700 ease-in-out cursor-grab active:cursor-grabbing select-none py-3" style="gap: 16px;">
-                    @php
-                        $cardData = [
-                            ['label' => 'Lomba',    'color' => '#FFB8B8', 'text' => '#EE2828'],
-                            ['label' => 'Seminar',  'color' => '#B8D4FF', 'text' => '#1A56DB'],
-                            ['label' => 'Beasiswa', 'color' => '#B8F5D4', 'text' => '#0D7A4E'],
-                            ['label' => 'Lomba',    'color' => '#FFB8B8', 'text' => '#EE2828'],
-                            ['label' => 'Seminar',  'color' => '#B8D4FF', 'text' => '#1A56DB'],
-                            ['label' => 'Beasiswa', 'color' => '#B8F5D4', 'text' => '#0D7A4E'],
-                            ['label' => 'Lomba',    'color' => '#FFB8B8', 'text' => '#EE2828'],
-                            ['label' => 'Seminar',  'color' => '#B8D4FF', 'text' => '#1A56DB'],
-                        ];
-                        $deadlines = [
-                            '10 Jun 2025', '15 Jun 2025', '20 Jun 2025', '25 Jun 2025',
-                            '30 Jun 2025', '05 Jul 2025', '10 Jul 2025', '15 Jul 2025',
-                        ];
-                        $titles = [
-                            'UI/UX Design Competition 2025',
-                            'Seminar Inovasi Teknologi Nasional',
-                            'Beasiswa Prestasi Mahasiswa Berprestasi',
-                            'Hackathon Data Science Challenge',
-                            'Workshop Kecerdasan Buatan & ML',
-                            'Beasiswa Polinema Unggulan 2025',
-                            'National Coding Competition 2025',
-                            'Seminar Kewirausahaan Digital',
-                        ];
-                    @endphp
-
-                    @for($i = 0; $i < 8; $i++)
-                    <div class="card-item flex-none relative" data-index="{{ $i }}">
-                        {{-- Seluruh card bisa di-klik --}}
-                        <a href="#" class="card-link block group relative rounded-[10px] overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.06)] bg-gradient-to-br from-[#E8EEF8] to-[#D0DCEE] hover:shadow-[0_18px_45px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-500 cursor-pointer" style="aspect-ratio: 3/4;">
-
-                            {{-- Poster Placeholder / Dynamic Image --}}
-                            <img src="" alt="" class="card-image absolute inset-0 w-full h-full object-cover hidden group-hover:scale-105 transition-transform duration-500">
-                            <div class="absolute inset-0 bg-gradient-to-t from-[#1A2E5A]/60 via-transparent to-transparent hidden card-image-overlay"></div>
-                            <div class="card-placeholder absolute inset-0 flex items-center justify-center transition-colors duration-500 ">
-                                <svg class="w-16 h-16 text-[#486284]/30 group-hover:scale-110 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M21 19V5C21 3.9 20.1 3 19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19ZM8.5 13.5L11 16.51L14.5 12L19 18H5L8.5 13.5Z"/>
-                                </svg>
-                            </div>
-
-                            {{-- Badge Kategori (top-left) --}}
-                            <div class="absolute top-3 left-3 z-20">
-                                <span class="card-badge text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full shadow-sm"
-                                    style="background: {{ $cardData[$i]['color'] }}; color: {{ $cardData[$i]['text'] }};">
-                                    {{ $cardData[$i]['label'] }}
-                                </span>
-                            </div>
-
-                            {{-- Content overlay gradient (bottom) --}}
-                            <div class="absolute bottom-0 left-0 right-0 z-10 p-4"
-                                style="background: linear-gradient(to top, rgba(26,46,90,0.95) 0%, rgba(26,46,90,0.5) 70%, transparent 100%);">
-
-                                {{-- Judul --}}
-                                <h3 class="card-title text-white font-bold text-sm leading-snug line-clamp-2 mb-2 drop-shadow-sm">
-                                    {{ $titles[$i] }}
-                                </h3>
-
-                                {{-- Deadline --}}
-                                <div class="flex items-center gap-1.5 mb-3">
-                                    <svg class="w-3.5 h-3.5 text-white/70 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                    </svg>
-                                    <span class="card-deadline text-white/70 text-[11px]">Deadline: {{ $deadlines[$i] }}</span>
-                                </div>
-
-                                {{-- Tombol Lihat Detail --}}
-                                <span class="card-detail-btn inline-flex items-center gap-2 w-full justify-center bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 text-white text-xs font-bold py-2 rounded-xl transition-all duration-300 group-hover:bg-[#3B4C7E] group-hover:border-[#3B4C7E]">
-                                    Lihat Detail
-                                    <svg class="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
-                                    </svg>
-                                </span>
-
-                            </div>
-
-                        </a>
-                    </div>
-                    @endfor
+                    {{-- Cards dirender oleh home-interaction.js via AJAX --}}
                 </div>
             </div>
 
@@ -292,41 +214,7 @@
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 overflow-x-hidden overflow-y-visible pb-10 pt-4">
             <div id="feedbackSlider" class="flex transition-transform duration-700 ease-in-out py-3" style="gap: 16px;">
-                @if(isset($feedbacks) && $feedbacks->isNotEmpty())
-                    @foreach($feedbacks as $fb)
-                    <div class="flex-none w-[calc(100%-32px)] sm:w-[calc((100%-24px)/2)] lg:w-[calc((100%-48px)/3)]">
-                        <div class="bg-white border border-gray-100 rounded-[28px] p-4 sm:p-6 lg:p-8 h-full shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_18px_45px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-500">
-                            <div class="flex items-center gap-3 mb-4 sm:mb-6">
-                                <div class="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-[#1A2E5A] to-[#5D8EFF] flex-shrink-0 flex items-center justify-center font-bold text-white text-base">
-                                    {{ strtoupper(substr($fb->user?->name ?? 'M', 0, 1)) }}
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <h4 class="font-bold text-[#1A2E5A] text-xs sm:text-sm truncate">{{ $fb->user?->name ?? 'Mahasiswa JTIFY' }}</h4>
-                                </div>
-                            </div>
-                            <p class="text-xs sm:text-sm leading-relaxed text-gray-500">
-                                "{{ $fb->message }}"
-                            </p>
-                        </div>
-                    </div>
-                    @endforeach
-                @else
-                    @for($i = 0; $i < 6; $i++)
-                    <div class="flex-none w-[calc(100%-32px)] sm:w-[calc((100%-24px)/2)] lg:w-[calc((100%-48px)/3)]">
-                        <div class="bg-white border border-gray-100 rounded-[28px] p-4 sm:p-6 lg:p-8 h-full shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_18px_45px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-500">
-                            <div class="flex items-center gap-3 mb-4 sm:mb-6">
-                                <div class="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-[#1A2E5A] to-[#5D8EFF] flex-shrink-0"></div>
-                                <div class="flex-1 min-w-0">
-                                    <h4 class="font-bold text-[#1A2E5A] text-xs sm:text-sm truncate">Mahasiswa JTIFY</h4>
-                                </div>
-                            </div>
-                            <p class="text-xs sm:text-sm leading-relaxed text-gray-500">
-                                "JTIFY membantu saya menemukan banyak informasi lomba, seminar, dan peluang pengembangan diri. Tampilannya modern dan nyaman digunakan."
-                            </p>
-                        </div>
-                    </div>
-                    @endfor
-                @endif
+                {{-- Feedback cards dirender oleh home-interaction.js via AJAX --}}
             </div>
         </div>
 

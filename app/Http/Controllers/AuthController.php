@@ -75,7 +75,7 @@ class AuthController extends Controller
 
       // Create welcome notification if there's any information posting available
       try {
-        $firstInfo = \App\Models\Information::first();
+        $firstInfo = \App\Models\Information::where('status', 'published')->latest()->first();
         if ($firstInfo) {
           $createdUser->userNotifications()->create([
             'information_id' => $firstInfo->id,

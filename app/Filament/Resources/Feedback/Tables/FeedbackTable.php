@@ -24,13 +24,25 @@ class FeedbackTable
                     ->searchable(),
                 TextColumn::make('message')
                     ->label('Pesan'),
-                SelectColumn::make('status')
+                TextColumn::make('status')
                     ->label('Status')
-                    ->options([
-                        'draft' => 'Draft',
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'published' => 'success',
+                        'pending' => 'warning',
+                        'rejected' => 'danger',
+                        'draft' => 'gray',
+                        'archived' => 'gray',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
                         'published' => 'Published',
+                        'pending' => 'Pending',
+                        'rejected' => 'Rejected',
+                        'draft' => 'Draft',
                         'archived' => 'Arsip',
-                    ])
+                        default => ucfirst($state),
+                    })
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('created_at')

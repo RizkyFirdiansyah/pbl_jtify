@@ -53,31 +53,55 @@
         </div>
 
         <div id="bookmark-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 relative z-10">
-            @foreach ($bookmarks as $item)
-            <div data-aos="fade-up" data-aos-delay="{{ $loop->index * 70 }}">
-                <div class="bookmark-card h-[340px] w-full bg-[#E5E7EB] rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500 relative group cursor-pointer overflow-hidden flex flex-col justify-end border border-gray-100"
-                     data-info-id="{{ $item->information_id }}"
-                     data-category="{{ $item->category }}">
-                    
-                    <button type="button" 
-                            onclick="toggleReminder(this, event)" 
-                            data-reminder-enabled="{{ $item->reminder_enabled ? 'true' : 'false' }}"
-                            class="absolute top-4 left-5 z-20 w-8 h-8 rounded-full bg-[#486284]  hover:bg-white/40 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white transition-all duration-300 hover:scale-110 active:scale-95">
+            @forelse ($bookmarks as $item)
+            <div class="bookmark-card h-[340px] w-full bg-[#E5E7EB] rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500 relative group cursor-pointer overflow-hidden flex flex-col justify-end border border-gray-100"
+                 data-info-id="{{ $item->information_id }}"
+                 data-category="{{ $item->category }}"
+                 data-aos="fade-up"
+                 data-aos-delay="{{ $loop->index * 70 }}">
+                
+                <!-- Reminder -->
+                <button type="button"
+                        onclick="toggleReminder(this, event)"
+                        data-reminder-enabled="{{ $item->reminder_enabled ? 'true' : 'false' }}"
+                        class="absolute top-0 right-16 z-20 hover:scale-105 hover:-translate-y-1 transition-transform">
+
+                    <div class="bg-[#486284] text-white w-9 h-12 flex justify-center items-center shadow-md pb-1 transition-colors duration-300"
+                        style="clip-path: polygon(100% 0, 100% 100%, 50% 80%, 0 100%, 0 0);">
+
                         @if($item->reminder_enabled)
-                            <svg class="w-4 h-4 text-yellow-300 filter drop-shadow" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
+                            <svg class="w-4 h-4 text-yellow-300" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/>
                             </svg>
                         @else
-                            <svg class="w-4 h-4 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
                             </svg>
                         @endif
-                    </button>
 
-                    <button type="button" onclick="toggleBookmark(this, event)" class="absolute top-0 right-5 z-20 hover:scale-105 hover:-translate-y-1 transition-transform">
-                        <div class="bookmark-ribbon bg-[#486284] text-white w-9 h-12 flex justify-center items-center shadow-md pb-1 transition-colors duration-300" style="clip-path: polygon(100% 0, 100% 100%, 50% 80%, 0 100%, 0 0);">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
+                    </div>
+                </button>
+
+                <button type="button" onclick="toggleBookmark(this, event)" class="absolute top-0 right-5 z-20 hover:scale-105 hover:-translate-y-1 transition-transform">
+                    <div class="bookmark-ribbon bg-[#486284] text-white w-9 h-12 flex justify-center items-center shadow-md pb-1 transition-colors duration-300" style="clip-path: polygon(100% 0, 100% 100%, 50% 80%, 0 100%, 0 0);">
+                        
+                        <svg class="w-4 h-4 text-yellow-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
+                        </svg>
+                    </div>
+                </button>
+
+                <div class="absolute inset-0 z-0">
+                    @if(!empty($item->poster_path) && (\Illuminate\Support\Facades\Storage::disk('public')->exists($item->poster_path) || file_exists(public_path('storage/' . $item->poster_path))))
+                        <img src="{{ asset('storage/' . $item->poster_path) }}" alt="{{ $item->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#273266]/60 via-transparent to-transparent"></div>
+                    @else
+                        <div class="flex justify-center items-center bg-[#E5E7EB] group-hover:bg-[#D1D5DB] transition-colors duration-500 w-full h-full">
+                            <svg class="w-16 h-16 text-[#486284]/40 group-hover:scale-110 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M21 19V5C21 3.9 20.1 3 19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19ZM8.5 13.5L11 16.51L14.5 12L19 18H5L8.5 13.5Z"/>
                             </svg>
                         </div>
                     </button>
@@ -105,7 +129,15 @@
                     </div>
                 </div>
             </div>
-            @endforeach
+            @empty
+            <div class="col-span-full flex flex-col items-center justify-center py-20 text-center" data-aos="fade-up">
+                <svg class="w-16 h-16 text-[#486284]/20 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+                </svg>
+                <p class="text-lg font-semibold text-[#486284]/60">Belum ada bookmark yang tersedia.</p>
+                <p class="text-sm text-gray-400 mt-1">Tandai informasi yang menarik untuk melihatnya kembali di sini.</p>
+            </div>
+            @endforelse
         </div>
 
         {{ $bookmarks->links('components.pagination') }}

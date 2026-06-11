@@ -272,6 +272,34 @@
         </div>
     </div>
 
+    {{-- ── MODAL PENDAFTARAN BERHASIL ── --}}
+    <div id="successModalBackdrop" class="modal-backdrop" onclick="handleSuccessBackdropClick(event)">
+        <div class="modal-box max-w-[480px] w-full" id="successModalBox">
+            <div class="modal-icon">
+                <svg class="w-9 h-9 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+
+            <h3 class="text-[#273266] font-bold text-xl mb-3">Pendaftaran Berhasil</h3>
+            <p class="text-[#486284] font-medium text-sm leading-relaxed mb-3">
+                Terima kasih telah menyatakan minat pada informasi ini.
+            </p>
+            <p class="text-[#898383] text-xs leading-relaxed mb-4">
+                Silakan lanjutkan proses pendaftaran melalui link berikut:
+            </p>
+
+            <div class="bg-[#F4F6FF] rounded-xl p-4 mb-6 text-left break-all">
+                <a id="successRegistrationLink" href="#" target="_blank" class="text-sm text-[#3B4C7E] font-medium hover:underline"></a>
+            </div>
+
+            <div class="flex gap-3 justify-center">
+                <button class="modal-btn-cancel" onclick="closeSuccessModal()">Batal</button>
+                <button class="modal-btn-confirm" id="btnOpenLink">Open Link</button>
+            </div>
+        </div>
+    </div>
+
     {{-- ===========================
          FOOTER GRADIENT TRANSITION
     ============================ --}}
@@ -285,7 +313,8 @@
     <script>
         window.detailConfig = {
             isLoggedIn: {{ Auth::check() ? 'true' : 'false' }},
-            informationId: {{ $informationId }}
+            informationId: {{ $informationId }},
+            registrationLink: @json($information->registration_link ?? '')
         };
     </script>
     {{-- AOS Script --}}
