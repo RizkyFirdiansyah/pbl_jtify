@@ -58,12 +58,12 @@ class UserProfileController extends Controller
         // Handle CV upload
         if ($request->hasFile('cv_path')) {
             // Hapus CV lama jika ada
-            if ($user->cv_path && Storage::disk('public')->exists($user->cv_path)) {
-                Storage::disk('public')->delete($user->cv_path);
+            if ($user->cv_path && Storage::disk('local')->exists($user->cv_path)) {
+                Storage::disk('local')->delete($user->cv_path);
             }
 
-            // Simpan CV baru ke disk 'public' agar bisa diakses oleh Filament juga
-            $path = $request->file('cv_path')->store('cvs', 'public');
+            // Simpan CV baru ke disk 'local' agar private
+            $path = $request->file('cv_path')->store('cvs', 'local');
             $validated['cv_path'] = $path;
         }
 
@@ -87,8 +87,8 @@ class UserProfileController extends Controller
     {
         $user = User::find(Auth::id());
 
-        if ($user->cv_path && Storage::disk('public')->exists($user->cv_path)) {
-            Storage::disk('public')->delete($user->cv_path);
+        if ($user->cv_path && Storage::disk('local')->exists($user->cv_path)) {
+            Storage::disk('local')->delete($user->cv_path);
             $user->update(['cv_path' => null]);
 
             if ($request->expectsJson() || $request->is('api/*')) {
@@ -162,5 +162,23 @@ class UserProfileController extends Controller
             'success' => true,
             'message' => 'Kata sandi berhasil diperbarui!',
         ]);
+    }
+
+    // Download CV file securely
+    public function downloadCv(Request $request)
+    {
+        $user = User::find(Auth::id());
+
+        if (!$user || !$user->cv_path || !Storage::disk('local')->exists($user->cv_path)) {
+            if ($request->expectsJson() || $request->is('api/*')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'CV tidak ditemukan',
+                ], 404);
+            }
+            return abort(404, 'CV tidak ditemukan');
+        }
+
+        return Storage::disk('local')->download($user->cv_path, 'CV_' . \Illuminate\Support\Str::slug($user->name) . '.' . pathinfo($user->cv_path, PATHINFO_EXTENSION));
     }
 }

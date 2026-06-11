@@ -11,12 +11,16 @@ use App\Http\Controllers\UserProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/auth/login', [AuthController::class, 'login']);
-Route::post('/auth/register', [AuthController::class, 'register']);
+Route::middleware('throttle:5,1')->group(function () {
+    Route::post('/auth/login', [AuthController::class, 'login']);
+    Route::post('/auth/register', [AuthController::class, 'register']);
+});
 
 Route::get('/informations', [InformationController::class, 'index']);
 Route::get('/informations/categories', [InformationController::class, 'categories']);
 Route::get('/informations/{information}', [InformationController::class, 'show']);
+
+Route::get('/feedbacks/public', [FeedbackController::class, 'publicIndex']);
 
 Route::get('/site-content', [SiteContentController::class, 'index']);
 Route::get('/site-content/pages', [SiteContentController::class, 'pages']);
@@ -62,5 +66,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/profile', [UserProfileController::class, 'update']);
     Route::put('/profile/password', [UserProfileController::class, 'updatePassword']);
     Route::delete('/profile/cv', [UserProfileController::class, 'deleteCv']);
+    Route::get('/profile/cv/download', [UserProfileController::class, 'downloadCv']);
     Route::get('/profile/feedbacks', [UserProfileController::class, 'feedbacks']);
 });

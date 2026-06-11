@@ -81,11 +81,11 @@ class CollaboratorController extends Controller
         // Handle CV upload if provided
         if ($request->hasFile('cv')) {
             // Delete old CV if exists
-            if ($user->cv_path && Storage::disk('public')->exists($user->cv_path)) {
-                Storage::disk('public')->delete($user->cv_path);
+            if ($user->cv_path && Storage::disk('local')->exists($user->cv_path)) {
+                Storage::disk('local')->delete($user->cv_path);
             }
 
-            $path = $request->file('cv')->store('cvs', 'public');
+            $path = $request->file('cv')->store('cvs', 'local');
             $user->cv_path = $path;
         }
 

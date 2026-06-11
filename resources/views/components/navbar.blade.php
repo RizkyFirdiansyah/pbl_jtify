@@ -6,12 +6,12 @@
 
     <!-- KIRI: Logo -->
     <div class="flex items-center gap-3 shrink-0">
-        <svg class="nav-icon w-7 h-7 transition-colors duration-400"
+        <!-- <svg class="nav-icon w-7 h-7 transition-colors duration-400"
              fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
+        </svg> -->
         <a href="{{ route('home') }}" class="nav-logo font-bold text-xl sm:text-2xl transition-colors duration-400">
-            {{ $pageContents['navbar']['brand_name'] ?? ($siteSettings['logo_text'] ?? 'JTIFY') }}
+            {{ $pageContents['navbar']['brand_name'] ?? ($siteSettings['logo_text'] ?? '') }}
         </a>
     </div>
 

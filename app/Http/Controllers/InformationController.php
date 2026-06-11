@@ -14,8 +14,17 @@ class InformationController extends Controller
     {
         $query = Information::where('status', 'published')
             ->where('deadline', '>=', now())
-            ->with(['category', 'user'])
-            ->latest('created_at');
+            ->with(['category', 'user']);
+
+        if ($request->input('sort') === 'popular') {
+            $query->withCount(['likes' => function ($q) {
+                $q->where('status', 'active');
+            }])
+            ->orderByDesc('likes_count')
+            ->orderByDesc('created_at');
+        } else {
+            $query->latest('created_at');
+        }
 
         // Filter by category
         if ($request->has('category') && $request->category !== '') {

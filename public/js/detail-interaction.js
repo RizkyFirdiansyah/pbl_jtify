@@ -255,7 +255,10 @@ async function confirmDaftar() {
 
         if (response.ok && result.is_active) {
             hasRegisteredInterest = true;
-            showToast('Minat Anda telah tercatat!', 'success');
+            closeModal();
+            // Tampilkan modal sukses dengan link pendaftaran
+            const link = result.registration_link || (window.detailConfig ? window.detailConfig.registrationLink : null);
+            showSuccessModal(link);
         } else {
             showToast(result.message || 'Terjadi kesalahan.', 'error');
         }
@@ -265,12 +268,56 @@ async function confirmDaftar() {
     } finally {
         btnConfirmInterest.disabled = false;
         btnConfirmInterest.innerText = 'Ya, Saya Berminat';
-        closeModal();
     }
 }
 
+function showSuccessModal(registrationLink) {
+    const modal = document.getElementById('successModalBackdrop');
+    const linkEl = document.getElementById('successRegistrationLink');
+    const openBtn = document.getElementById('btnOpenLink');
+
+    if (!modal) return;
+
+    if (registrationLink && registrationLink.trim() !== '') {
+        if (linkEl) {
+            linkEl.href = registrationLink;
+            linkEl.textContent = registrationLink;
+            linkEl.parentElement.style.display = '';
+        }
+        if (openBtn) {
+            openBtn.style.display = '';
+            openBtn.onclick = function() {
+                window.open(registrationLink, '_blank');
+                closeSuccessModal();
+            };
+        }
+    } else {
+        // Sembunyikan link dan tombol Open Link jika tidak ada registration_link
+        if (linkEl) linkEl.parentElement.style.display = 'none';
+        if (openBtn) openBtn.style.display = 'none';
+    }
+
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeSuccessModal() {
+    const modal = document.getElementById('successModalBackdrop');
+    if (modal) {
+        modal.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+}
+
+function handleSuccessBackdropClick(e) {
+    if (e.target === document.getElementById('successModalBackdrop')) closeSuccessModal();
+}
+
 document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeModal();
+    if (e.key === 'Escape') {
+        closeModal();
+        closeSuccessModal();
+    }
 });
 
 // DOMContentLoaded listeners

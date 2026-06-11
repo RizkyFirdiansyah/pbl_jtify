@@ -57,7 +57,7 @@
 
         <!-- Grid Cards -->
         <div id="peminatan-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 relative z-10">
-            @foreach ($bookmarks as $item)
+            @forelse ($bookmarks as $item)
             <!-- Card -->
             <div class="like-card h-[340px] w-full bg-[#E5E7EB] rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500 relative group cursor-pointer overflow-hidden flex flex-col justify-end border border-gray-100"
                  data-info-id="{{ $item->information_id }}"
@@ -99,7 +99,15 @@
                     </p>
                 </div>
             </div>
-            @endforeach
+            @empty
+            <div class="col-span-full flex flex-col items-center justify-center py-20 text-center" data-aos="fade-up">
+                <svg class="w-16 h-16 text-[#486284]/20 mb-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+                <p class="text-lg font-semibold text-[#486284]/60">Belum ada informasi yang disukai.</p>
+                <p class="text-sm text-gray-400 mt-1">Sukai informasi yang menarik untuk melihatnya kembali di sini.</p>
+            </div>
+            @endforelse
         </div>
 
             {{ $bookmarks->links('components.pagination') }}

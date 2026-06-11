@@ -16,6 +16,9 @@ class BookmarkController extends Controller
     {
         $query = Bookmark::query()
             ->with(['information.category'])
+            ->whereHas('information', function ($q) {
+                $q->where('status', 'published');
+            })
             ->when(Auth::check(), fn($builder) => $builder->where('user_id', Auth::id()), fn($builder) => $builder->whereRaw('1 = 0'));
 
         if ($request->filled('category') && $request->category !== 'Semua Kategori') {
@@ -72,9 +75,11 @@ class BookmarkController extends Controller
             return response()->json(['message' => 'Unauthenticated'], 401);
         }
 
-        $information = Information::find($request->information_id);
+        $information = Information::where('id', $request->information_id)
+            ->where('status', 'published')
+            ->first();
         if (!$information) {
-            return response()->json(['message' => 'Information not found'], 404);
+            return response()->json(['message' => 'Information not found or not published'], 404);
         }
 
         $bookmark = Bookmark::where('user_id', $user->id)
