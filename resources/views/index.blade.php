@@ -290,12 +290,12 @@
             </div>
         </div>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 overflow-hidden">
-            <div id="feedbackSlider" class="flex transition-transform duration-700 ease-in-out" style="gap: 16px;">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 overflow-x-hidden overflow-y-visible pb-10 pt-4">
+            <div id="feedbackSlider" class="flex transition-transform duration-700 ease-in-out py-3" style="gap: 16px;">
                 @if(isset($feedbacks) && $feedbacks->isNotEmpty())
                     @foreach($feedbacks as $fb)
                     <div class="flex-none w-[calc(100%-32px)] sm:w-[calc((100%-24px)/2)] lg:w-[calc((100%-48px)/3)]">
-                        <div class="bg-white border border-gray-100 rounded-[28px] p-4 sm:p-6 lg:p-8 h-full shadow-[0_8px_30px_rgba(0,0,0,0.05)] hover:shadow-[0_15px_40px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-500">
+                        <div class="bg-white border border-gray-100 rounded-[28px] p-4 sm:p-6 lg:p-8 h-full shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_18px_45px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-500">
                             <div class="flex items-center gap-3 mb-4 sm:mb-6">
                                 <div class="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-[#1A2E5A] to-[#5D8EFF] flex-shrink-0 flex items-center justify-center font-bold text-white text-base">
                                     {{ strtoupper(substr($fb->user?->name ?? 'M', 0, 1)) }}
@@ -313,7 +313,7 @@
                 @else
                     @for($i = 0; $i < 6; $i++)
                     <div class="flex-none w-[calc(100%-32px)] sm:w-[calc((100%-24px)/2)] lg:w-[calc((100%-48px)/3)]">
-                        <div class="bg-white border border-gray-100 rounded-[28px] p-4 sm:p-6 lg:p-8 h-full shadow-[0_8px_30px_rgba(0,0,0,0.05)] hover:shadow-[0_15px_40px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-500">
+                        <div class="bg-white border border-gray-100 rounded-[28px] p-4 sm:p-6 lg:p-8 h-full shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_18px_45px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-500">
                             <div class="flex items-center gap-3 mb-4 sm:mb-6">
                                 <div class="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-[#1A2E5A] to-[#5D8EFF] flex-shrink-0"></div>
                                 <div class="flex-1 min-w-0">

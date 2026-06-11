@@ -121,6 +121,9 @@
                                        [&::-webkit-scrollbar-thumb]:bg-gray-200
                                        [&::-webkit-scrollbar-thumb]:rounded-full">
                 @php
+                    if (auth()->check()) {
+                        \App\Models\Notification::generateBookmarkReminders(auth()->id());
+                    }
                     $notifs = auth()->check() ? auth()->user()->userNotifications()->latest()->take(10)->get() : collect();
                 @endphp
 

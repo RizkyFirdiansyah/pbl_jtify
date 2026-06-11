@@ -15,12 +15,12 @@
 
     @include('components.navbar')
     @include('components.header-detail', [
-        'label'      => 'Mengenal Lebih Dekat',
-        'titleWords' => ['TENTANG KAMI'],
-        'subtitle1'  => 'Hubungkan',
-        'highlight1' => 'Inspirasi,',
-        'subtitle2'  => 'Wujudkan',
-        'highlight2' => 'Ambisi',
+        'label'      => $pageContents['tentang-kami']['header_label'] ?? 'Mengenal Lebih Dekat',
+        'title'      => $pageContents['tentang-kami']['header_title'] ?? 'Tentang Kami',
+        'subtitle1'  => $pageContents['tentang-kami']['header_subtitle_1'] ?? 'Hubungkan',
+        'highlight1' => $pageContents['tentang-kami']['header_highlight_1'] ?? 'Inspirasi,',
+        'subtitle2'  => $pageContents['tentang-kami']['header_subtitle_2'] ?? 'Wujudkan',
+        'highlight2' => $pageContents['tentang-kami']['header_highlight_2'] ?? 'Ambisi',
     ])
 
 
@@ -222,7 +222,7 @@
         </div>
     </section>
 
-    <section class="relative z-0 h-40" style="background: linear-gradient(180deg, #ffffff 0%, #c8dff0 100%);"></section>
+    <section class="relative z-0 h-24" style="background: linear-gradient(180deg, #EEF4FF 0%, #c8dff0 100%);"></section>
     
     @include('components.footer')
 
