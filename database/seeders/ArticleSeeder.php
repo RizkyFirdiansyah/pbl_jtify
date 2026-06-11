@@ -34,7 +34,7 @@ class ArticleSeeder extends Seeder
                     'user_id' => $authorIds[$index % max(count($authorIds), 1)] ?? $adminId,
                     'title' => $title,
                     'content' => 'Konten artikel edukatif untuk halaman tips JTIFY: ' . $title . '.',
-                    'poster_path' => 'articles/' . Str::slug($title) . '.jpg',
+                    'poster_path' => 'articles/GambarTips'. '.jpeg',
                     'status' => $article['status'],
                     'approved_by' => $article['status'] === 'published' ? $adminId : null,
                     'approved_at' => $article['status'] === 'published' ? now()->subDays($index + 1) : null,

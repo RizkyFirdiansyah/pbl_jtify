@@ -28,14 +28,14 @@ class DatabaseSeeder extends Seeder
             PageSeeder::class,
             SettingSeeder::class,
             PageContentSeeder::class,
-            // CollaboratorSeeder::class,
-            // InformationSeeder::class,
-            // ArticleSeeder::class,
-            // BookmarkSeeder::class,
+            CollaboratorSeeder::class,
+            InformationSeeder::class,
+            ArticleSeeder::class,
+            BookmarkSeeder::class,
             // LikeSeeder::class,
-            // InterestSeeder::class,
+            InterestSeeder::class,
             FeedbackSeeder::class,
-            // NotificationSeeder::class,
+            NotificationSeeder::class,
         ]);
     }
 }

@@ -69,7 +69,7 @@ class LikesTable
                     ]),
             ])
             ->recordActions([
-                EditAction::make(),
+                // EditAction::make(),  
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
