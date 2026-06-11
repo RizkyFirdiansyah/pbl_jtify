@@ -59,44 +59,44 @@
         <div id="peminatan-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 relative z-10">
             @foreach ($bookmarks as $item)
             <!-- Card -->
-            <div class="like-card h-[340px] w-full bg-[#E5E7EB] rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500 relative group cursor-pointer overflow-hidden flex flex-col justify-end border border-gray-100"
-                 data-info-id="{{ $item->information_id }}"
-                 data-category="{{ $item->category }}"
-                 data-aos="fade-up"
-                 data-aos-delay="{{ $loop->index * 70 }}">
-                
-                <!-- Like Icon Top Right -->
-                <button type="button" onclick="toggleLike(this, event)" class="absolute top-0 right-4 z-20 hover:scale-110 transition-transform">
-                    <div class="like-btn bg-white w-8 h-8 rounded-b-md flex justify-center items-center shadow-sm border border-gray-100 transition-colors duration-300">
-                        <!-- Solid Red Heart Icon -->
-                        <svg class="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                        </svg>
-                    </div>
-                </button>
-
-                <!-- Center Placeholder Icon / Dynamic Poster -->
-                <div class="absolute inset-0 z-0">
-                    @if(!empty($item->poster_path) && (\Illuminate\Support\Facades\Storage::disk('public')->exists($item->poster_path) || file_exists(public_path('storage/' . $item->poster_path))))
-                        <img src="{{ asset('storage/' . $item->poster_path) }}" alt="{{ $item->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-[#273266]/60 via-transparent to-transparent"></div>
-                    @else
-                        <div class="flex justify-center items-center bg-[#E5E7EB] group-hover:bg-[#D1D5DB] transition-colors duration-500 w-full h-full">
-                            <svg class="w-16 h-16 text-[#486284]/40 group-hover:scale-110 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M21 19V5C21 3.9 20.1 3 19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19ZM8.5 13.5L11 16.51L14.5 12L19 18H5L8.5 13.5Z"/>
+            <div data-aos="fade-up" data-aos-delay="{{ $loop->index * 70 }}">
+                <div class="like-card h-[340px] w-full bg-[#E5E7EB] rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500 relative group cursor-pointer overflow-hidden flex flex-col justify-end border border-gray-100"
+                     data-info-id="{{ $item->information_id }}"
+                     data-category="{{ $item->category }}">
+                    
+                    <!-- Like Icon Top Right -->
+                    <button type="button" onclick="toggleLike(this, event)" class="absolute top-0 right-4 z-20 hover:scale-110 transition-transform">
+                        <div class="like-btn bg-white w-8 h-8 rounded-b-md flex justify-center items-center shadow-sm border border-gray-100 transition-colors duration-300">
+                            <!-- Solid Red Heart Icon -->
+                            <svg class="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                             </svg>
                         </div>
-                    @endif
-                </div>
-                
-                <!-- Improvisation: Content Overlay on Hover -->
-                <div class="bg-gradient-to-t from-[#273266] via-[#273266]/80 to-transparent p-6 pt-16 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 relative">
-                    <span class="bg-[#FFB8B8] text-[#EE2828] text-[10px] font-bold px-2 py-1 rounded-md w-max mb-2 uppercase tracking-wider">{{ $item->category }}</span>
-                    <h3 class="text-white font-semibold text-[17px] line-clamp-1 leading-snug">{{ $item->title }}</h3>
-                    <p class="text-white/70 text-[13px] mt-1.5 flex items-center gap-1.5">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        {{ $item->date }}
-                    </p>
+                    </button>
+
+                    <!-- Center Placeholder Icon / Dynamic Poster -->
+                    <div class="absolute inset-0 z-0">
+                        @if(!empty($item->poster_path) && (\Illuminate\Support\Facades\Storage::disk('public')->exists($item->poster_path) || file_exists(public_path('storage/' . $item->poster_path))))
+                            <img src="{{ asset('storage/' . $item->poster_path) }}" alt="{{ $item->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#273266]/60 via-transparent to-transparent"></div>
+                        @else
+                            <div class="flex justify-center items-center bg-[#E5E7EB] group-hover:bg-[#D1D5DB] transition-colors duration-500 w-full h-full">
+                                <svg class="w-16 h-16 text-[#486284]/40 group-hover:scale-110 transition-transform duration-500" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M21 19V5C21 3.9 20.1 3 19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19ZM8.5 13.5L11 16.51L14.5 12L19 18H5L8.5 13.5Z"/>
+                                </svg>
+                            </div>
+                        @endif
+                    </div>
+                    
+                    <!-- Improvisation: Content Overlay on Hover -->
+                    <div class="bg-gradient-to-t from-[#273266] via-[#273266]/80 to-transparent p-6 pt-16 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 relative">
+                        <span class="bg-[#FFB8B8] text-[#EE2828] text-[10px] font-bold px-2 py-1 rounded-md w-max mb-2 uppercase tracking-wider">{{ $item->category }}</span>
+                        <h3 class="text-white font-semibold text-[17px] line-clamp-1 leading-snug">{{ $item->title }}</h3>
+                        <p class="text-white/70 text-[13px] mt-1.5 flex items-center gap-1.5">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            {{ $item->date }}
+                        </p>
+                    </div>
                 </div>
             </div>
             @endforeach

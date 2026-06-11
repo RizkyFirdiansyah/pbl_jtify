@@ -188,12 +188,12 @@
             <div class="mt-6 slider-wrapper flex-1" id="sliderWrapper">
                 <div class="slider-track cursor-grab active:cursor-grabbing select-none" id="sliderTrack">
                     @forelse ($recommendations as $rec)
-                    <div class="card-item flex-none" style="width: 260px;">
+                    <div class="card-item flex-none" style="width: 260px;"
+                         data-aos="fade-up"
+                         data-aos-delay="{{ $loop->index * 80 }}">
                         <a href="{{ route('lomba.detail', ['id' => $rec->id]) }}"
                            style="height: 380px;"
-                           class="card-link group relative block rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_18px_45px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-500"
-                           data-aos="fade-up"
-                           data-aos-delay="{{ $loop->index * 80 }}">
+                           class="card-link group relative block rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_18px_45px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-500">
 
                             @if($rec->poster_path && (Storage::disk('public')->exists($rec->poster_path) || file_exists(public_path('storage/' . $rec->poster_path)) || file_exists(public_path($rec->poster_path))))
                                 <img src="{{ asset(strpos($rec->poster_path, 'storage/') !== false ? $rec->poster_path : 'storage/' . $rec->poster_path) }}" alt="{{ $rec->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
